@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.DocumentsController">
+    <Label fx:id="documentsLabel" text="Documents View" layoutX="50" layoutY="50" style="-fx-font-size: 24px; -fx-text-fill: black;"/>
+</AnchorPane>

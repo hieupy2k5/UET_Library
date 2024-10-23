@@ -33,30 +33,30 @@
             <Font name="System Bold" size="17.0" />
           </font>
         </Button>
-<!--        <Button fx:id="button_Users" mnemonicParsing="false" onAction="#loadUsersView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@main.css" text="Users" textAlignment="JUSTIFY">-->
-<!--          <cursor>-->
-<!--            <Cursor fx:constant="HAND" />-->
-<!--          </cursor>-->
-<!--          <font>-->
-<!--            <Font name="System Bold" size="17.0" />-->
-<!--          </font>-->
-<!--        </Button>-->
-<!--        <Button fx:id="button_Documents" mnemonicParsing="false" onAction="#loadDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@main.css" text="Documents" textAlignment="JUSTIFY">-->
-<!--          <cursor>-->
-<!--            <Cursor fx:constant="HAND" />-->
-<!--          </cursor>-->
-<!--          <font>-->
-<!--            <Font name="System Bold" size="17.0" />-->
-<!--          </font>-->
-<!--        </Button>-->
-<!--        <Button fx:id="button_BorrowDocument" mnemonicParsing="false" onAction="#loadBorrowDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@main.css" text="Borrow Documents" textAlignment="JUSTIFY">-->
-<!--          <cursor>-->
-<!--            <Cursor fx:constant="HAND" />-->
-<!--          </cursor>-->
-<!--          <font>-->
-<!--            <Font name="System Bold" size="17.0" />-->
-<!--          </font>-->
-<!--        </Button>-->
+        <Button fx:id="button_Users" mnemonicParsing="false" onAction="#loadUsersView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Users" textAlignment="JUSTIFY">
+          <cursor>
+            <Cursor fx:constant="HAND" />
+          </cursor>
+          <font>
+            <Font name="System Bold" size="17.0" />
+          </font>
+        </Button>
+        <Button fx:id="button_Documents" mnemonicParsing="false" onAction="#loadDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Documents" textAlignment="JUSTIFY">
+          <cursor>
+            <Cursor fx:constant="HAND" />
+          </cursor>
+          <font>
+            <Font name="System Bold" size="17.0" />
+          </font>
+        </Button>
+        <Button fx:id="button_BorrowDocument" mnemonicParsing="false" onAction="#loadBorrowDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Borrow Documents" textAlignment="JUSTIFY">
+          <cursor>
+            <Cursor fx:constant="HAND" />
+          </cursor>
+          <font>
+            <Font name="System Bold" size="17.0" />
+          </font>
+        </Button>
       </children>
     </VBox>
   </left>

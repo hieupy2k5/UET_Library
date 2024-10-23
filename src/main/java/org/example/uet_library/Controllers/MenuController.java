@@ -3,6 +3,7 @@ package org.example.uet_library.Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -44,28 +46,25 @@ public class MenuController implements Initializable {
         loadView("/fxml/homeview.fxml");
     }
 
-    // Tải nội dung Home khi bấm nút Home
     @FXML
     public void loadHomeView() {
         loadView("/fxml/homeview.fxml");
     }
-    //
-    // Tải nội dung Documents khi bấm nút Documents
-//    @FXML
-//    public void loadDocumentsView() {
-//        loadView("documentsView.fxml");
-//    }
-//    //
-//    // Tải nội dung Users khi bấm nút Users
-//    @FXML
-//    public void loadUsersView() {
-//        loadView("usersView.fxml");
-//    }
-//    //
-//    @FXML
-//    public void loadBorrowDocumentsView() {
-//        loadView("borrowDocumentView.fxml");
-//    }
+
+    @FXML
+    public void loadDocumentsView() {
+        loadView("/fxml/documentsView.fxml");
+    }
+
+    @FXML
+    public void loadUsersView() {
+        loadView("/fxml/usersView.fxml");
+    }
+
+    @FXML
+    public void loadBorrowDocumentsView() {
+        loadView("/fxml/borrowDocumentView.fxml");
+    }
 
 
 
@@ -86,7 +85,15 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public void handleLogOut() {
-        System.exit(0);
+    public void handleLogOut() throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        Scene logInScene = new Scene(root);
+
+        Stage currentStage = (Stage) button_LogOut.getScene().getWindow();
+        currentStage.close();
+
+        Stage newStage = new Stage();
+        newStage.setScene(logInScene);
+        newStage.show();
     }
 }
