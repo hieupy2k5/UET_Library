@@ -1,28 +1,21 @@
 package org.example.uet_library.Controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Random;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.nimbus.State;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class MenuController implements Initializable {
+
     @FXML
     public Button button_Documents;
 
@@ -40,6 +33,9 @@ public class MenuController implements Initializable {
 
     @FXML
     public AnchorPane contentPane;
+
+    @FXML
+    public Label welcomeText;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,7 +62,18 @@ public class MenuController implements Initializable {
         loadView("/fxml/borrowDocumentView.fxml");
     }
 
+    private String[] welcomeStrings = {
+        "Welcome, %s! What is on your mind today?",
+        "Hey there, %s! What do you want to read today?",
+        "Greetings, %s! What book do you want to read?",
+        "Hello, %s! Great to see you visiting our library?"
+    };
 
+    public void setWelcomeMessage(String username) {
+        Random random = new Random();
+        int randomIndex = random.nextInt(welcomeStrings.length);
+        welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
+    }
 
     public void loadView(String fxmlFileName) {
         try {
@@ -85,7 +92,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public void handleLogOut() throws Exception{
+    public void handleLogOut() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         Scene logInScene = new Scene(root);
 
