@@ -66,7 +66,7 @@ public class MenuController implements Initializable {
         "Welcome, %s! What is on your mind today?",
         "Hey there, %s! What do you want to read today?",
         "Greetings, %s! What book do you want to read?",
-        "Hello, %s! Great to see you visiting our library?"
+        "Hello, %s! Great to see you visiting our library!"
     };
 
     public void setWelcomeMessage(String username) {
