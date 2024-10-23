@@ -2,6 +2,7 @@ package org.example.uet_library.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class LogInController {
@@ -32,6 +34,15 @@ public class LogInController {
 
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(menuScene);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+            window.setWidth(1280);
+            window.setHeight(800);
+
+            window.setX((screenBounds.getWidth() - 1280) / 2);
+            window.setY((screenBounds.getHeight() - 800) / 2);
+
             window.show();
         } else {
             messageLbl.setText("Wrong username or password");
