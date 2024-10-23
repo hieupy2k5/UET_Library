@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SignUpController {
@@ -19,6 +20,8 @@ public class SignUpController {
     public TextField firstNameFld;
     public TextField lastNameFld;
     public TextField emailFld;
+    public Button registerBtn;
+    public Text loginBtn;
     UserController userController = new UserController();
     public Label messageLbl;
 

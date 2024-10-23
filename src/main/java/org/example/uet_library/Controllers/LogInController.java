@@ -10,11 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LogInController {
 
     public TextField usernameFld;
+    public Text registerBtn;
     public PasswordField passwordFld;
     public Button loginBtn;
     public Label messageLbl;

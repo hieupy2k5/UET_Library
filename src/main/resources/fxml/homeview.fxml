@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.HomeController">
+    <children>
+        <RadioButton fx:id="radioButton_Document" layoutX="319.0" layoutY="143.0" mnemonicParsing="false" text="Document" />
+        <RadioButton fx:id="radioButton_Author" layoutX="434.0" layoutY="143.0" mnemonicParsing="false" text="Author" />
+        <RadioButton fx:id="radioButton_Publisher" layoutX="534.0" layoutY="143.0" mnemonicParsing="false" text="Publisher" />
+        <RadioButton fx:id="radioButton_Category" layoutX="644.0" layoutY="143.0" mnemonicParsing="false" text="Category" />
+        <TextField fx:id="TextField" layoutX="213.0" layoutY="76.0" prefHeight="50.0" prefWidth="500.0" promptText="Enter Document name">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </TextField>
+        <Label fx:id="label_Search" layoutX="213.0" layoutY="142.0" text="Search by :">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+        <ImageView fx:id="imageView_Search" fitHeight="50.0" fitWidth="50.0" layoutX="713.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+<!--            <image>-->
+<!--                <Image url="@SearchButton.png" />-->
+<!--            </image>-->
+        </ImageView>
+        <Button fx:id="button_Search" layoutX="713.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="50.0" prefWidth="50.0" style="-fx-cursor: hand;" wrapText="true" />
+        <Label fx:id="label_Error" layoutX="213.0" layoutY="49.0" text="Vui lòng nhập từ khóa tìm kiếm!" textFill="RED">
+            <font>
+                <Font name="System Bold Italic" size="14.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

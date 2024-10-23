@@ -1,26 +1,92 @@
 package org.example.uet_library.Controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class MenuController {
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    public void handleLogOutButton(ActionEvent event) throws Exception {
-        Parent logInScreen = FXMLLoader.load(getClass().getResource("/fxml/LogIn.fxml"));
-        Scene logInScene = new Scene(logInScreen);
+public class MenuController implements Initializable {
+    @FXML
+    public Button button_Documents;
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(logInScene);
-        window.show();
+    @FXML
+    public Button button_BorrowDocument;
+
+    @FXML
+    public Button button_Users;
+
+    @FXML
+    public Button button_LogOut;
+
+    @FXML
+    public Button button_Home;
+
+    @FXML
+    public AnchorPane contentPane;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadView("/fxml/homeview.fxml");
+    }
+
+    // Tải nội dung Home khi bấm nút Home
+    @FXML
+    public void loadHomeView() {
+        loadView("/fxml/homeview.fxml");
+    }
+    //
+    // Tải nội dung Documents khi bấm nút Documents
+//    @FXML
+//    public void loadDocumentsView() {
+//        loadView("documentsView.fxml");
+//    }
+//    //
+//    // Tải nội dung Users khi bấm nút Users
+//    @FXML
+//    public void loadUsersView() {
+//        loadView("usersView.fxml");
+//    }
+//    //
+//    @FXML
+//    public void loadBorrowDocumentsView() {
+//        loadView("borrowDocumentView.fxml");
+//    }
+
+
+
+    public void loadView(String fxmlFileName) {
+        try {
+            if (contentPane != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
+                AnchorPane newPane = loader.load();
+
+                contentPane.getChildren().clear();
+                contentPane.getChildren().add(newPane);
+            } else {
+                System.out.println("contentPane is null. Cannot load the view.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleLogOut() {
+        System.exit(0);
     }
 }
