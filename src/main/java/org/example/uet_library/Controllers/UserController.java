@@ -9,16 +9,14 @@ import org.example.uet_library.Database;
 
 public class UserController {
 
-    private final Connection dbConnection = Database.getInstance().getConnection();
-
     public boolean signUpUser(String username, String password, String firstName, String lastName,
         String email) {
         String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-
+        Database connection = new Database();
         String insertUserQuery = "INSERT INTO users (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement statement = dbConnection.prepareStatement(insertUserQuery);
+        try(Connection conDB = connection.getConnection()) {
+            PreparedStatement statement = conDB.prepareStatement(insertUserQuery);
             statement.setString(1, username);
             statement.setString(2, hashedPassword);
             statement.setString(3, firstName);
@@ -36,9 +34,9 @@ public class UserController {
 
     public boolean checkLoginCredentials(String username, String password) {
         String selectUserQuery = "SELECT * FROM users WHERE username = ?";
-
-        try {
-            PreparedStatement statement = dbConnection.prepareStatement(selectUserQuery);
+        Database connection = new Database();
+        try(Connection conDB = connection.getConnection()) {
+            PreparedStatement statement = conDB.prepareStatement(selectUserQuery);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
 

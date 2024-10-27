@@ -1,0 +1,61 @@
+.root {
+    -fx-background-color: #f2f2f2;
+    -fx-font-family: "Arial", sans-serif;
+}
+
+.text {
+    -fx-font-size: 16px;
+    -fx-fill: #333333;
+}
+
+.text:hover {
+    -fx-fill: #0077b6;
+}
+
+.button {
+    -fx-background-color: #0077b6;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #e6e6e6;
+    -fx-text-fill: #0077b6;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.button-back {
+    -fx-background-color: #e6e6e6;
+    -fx-text-fill: #333333;
+}
+
+.button-back:hover {
+    -fx-background-color: #cccccc;
+}
+
+.button-edit {
+    -fx-background-color: #2ecc71;
+}
+
+.button-edit:hover {
+    -fx-background-color: #27ae60;
+}
+
+.button-remove {
+    -fx-background-color: #e74c3c;
+}
+
+.button-remove:hover {
+    -fx-background-color: #c0392b;
+}
+
+.button-save {
+    -fx-background-color: #3498db;
+}
+
+.button-save:hover {
+    -fx-background-color: #2980b9;
+}

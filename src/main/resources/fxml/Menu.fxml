@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
+<BorderPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
     <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
       <children>
@@ -35,7 +35,7 @@
             <Font name="System Bold" size="17.0" />
           </font>
         </Button>
-        <Button fx:id="button_Users" mnemonicParsing="false" onAction="#loadUsersView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Users" textAlignment="JUSTIFY">
+        <Button fx:id="button_Users" mnemonicParsing="false" onAction="#loadUsersView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Book Manager" textAlignment="JUSTIFY">
           <cursor>
             <Cursor fx:constant="HAND" />
           </cursor>
@@ -43,7 +43,7 @@
             <Font name="System Bold" size="17.0" />
           </font>
         </Button>
-        <Button fx:id="button_Documents" mnemonicParsing="false" onAction="#loadDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Documents" textAlignment="JUSTIFY">
+        <Button fx:id="button_Documents" mnemonicParsing="false" onAction="#loadDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Show Book" textAlignment="JUSTIFY">
           <cursor>
             <Cursor fx:constant="HAND" />
           </cursor>
@@ -51,7 +51,7 @@
             <Font name="System Bold" size="17.0" />
           </font>
         </Button>
-        <Button fx:id="button_BorrowDocument" mnemonicParsing="false" onAction="#loadBorrowDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Borrow Documents" textAlignment="JUSTIFY">
+        <Button fx:id="button_BorrowDocument" mnemonicParsing="false" onAction="#loadBorrowDocumentsView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Add Book" textAlignment="JUSTIFY">
           <cursor>
             <Cursor fx:constant="HAND" />
           </cursor>

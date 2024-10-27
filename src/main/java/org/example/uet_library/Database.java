@@ -5,11 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-
-    private static final Database instance = new Database();
-    private final Connection connection;
-
-    private Database() {
+    public Connection connection;
+    public Connection getConnection() {
         Config config = Config.getInstance();
         String dbName = config.get("DATABASE_NAME");
         String dbUsername = config.get("DATABASE_USERNAME");
@@ -25,13 +22,6 @@ public class Database {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-    }
-
-    public static Database getInstance() {
-        return instance;
-    }
-
-    public Connection getConnection() {
         return connection;
     }
 }

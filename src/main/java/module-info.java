@@ -6,8 +6,10 @@ module org.example.uet_library {
     requires java.desktop;
     requires io.github.cdimascio.dotenv.java;
     requires bcrypt;
+    requires org.json;
 
     opens org.example.uet_library to javafx.fxml;
     exports org.example.uet_library;
     exports org.example.uet_library.Controllers;
+    opens org.example.uet_library.Controllers to javafx.fxml;
 }
