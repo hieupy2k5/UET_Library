@@ -7,7 +7,7 @@ public class Book {
     private int year;
     private int quantity;
     private String type;
-
+    private byte[] qrCode;
     public void setType(String type) {
         this.type = type;
     }
@@ -24,6 +24,7 @@ public class Book {
         this.year = year;
         this.type = type;
         this.quantity = 0;
+        this.qrCode = null;
     }
 
     public Book(String title, String author, String isbn, String imageLink, int year, String type, int quantity) {
@@ -74,7 +75,21 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book [title=" + title + ", author=" + author + ", isbn=" + isbn;
+        return "Book:\n" +
+                "Title: " + title + "\n" +
+                "Author: " + author + "\n" +
+                "ISBN: " + isbn + "\n" +
+                "Image Link: " + imageLink + "\n" +
+                "Year: " + year + "\n" +
+                "Quantity: " + quantity + "\n" +
+                "Type: " + type;
+    }
+
+    public byte[] getqrCode() {
+        return this.qrCode;
+    }
+    public void setqrCode(byte[] qrCode) {
+        this.qrCode = qrCode;
     }
 }
 

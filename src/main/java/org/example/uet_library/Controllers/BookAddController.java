@@ -135,6 +135,7 @@ public class BookAddController {
         Task<Void> task = BookService.getInstance().addBook(book);
 
         task.setOnSucceeded(event->{
+
             Alert alter = new Alert(Alert.AlertType.INFORMATION);
             alter.setTitle("Information");
             alter.setHeaderText(null);
@@ -189,4 +190,15 @@ public class BookAddController {
             e.printStackTrace();
         }
     }
+
+   /* private void setQRcode(Book book) {
+        Task<Void> qrCodeGenerator = BookService.getInstance().bookQRGenerator(book, book.getIsbn());
+        qrCodeGenerator.setOnSucceeded(event->{
+           System.out.println("Successfully generated QR code");
+        });
+        qrCodeGenerator.setOnFailed(event->{
+            System.err.println("Failed to generate QR code");
+        });
+        new Thread(qrCodeGenerator).start();
+    }*/
 }
