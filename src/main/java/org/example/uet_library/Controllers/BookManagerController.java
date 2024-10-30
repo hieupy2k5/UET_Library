@@ -15,7 +15,6 @@ import org.example.uet_library.BookService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Optional;
 
 public class BookManagerController {
@@ -237,7 +236,7 @@ public class BookManagerController {
             ISBNSearch.setText(null);
             yearOfPublication.setText(null);
             categoryBook.setText(null);
-            URL imageUrl = getClass().getResource("/Image/imageNotFound.jpg");
+            URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
 
             if (imageUrl != null) {
                 Image image = new Image(imageUrl.toExternalForm());

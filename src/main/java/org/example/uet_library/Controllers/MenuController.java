@@ -39,17 +39,17 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadView("/fxml/homeview.fxml");
+        loadView("/fxml/HomeView.fxml");
     }
 
     @FXML
     public void loadHomeView() {
-        loadView("/fxml/homeview.fxml");
+        loadView("/fxml/HomeView.fxml");
     }
 
     @FXML
     public void loadDocumentsView(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/documentsView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DocumentsView.fxml"));
         Scene logInScene = new Scene(root);
 
         Stage currentStage = (Stage) button_LogOut.getScene().getWindow();
