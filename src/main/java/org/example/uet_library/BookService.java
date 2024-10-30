@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 
+import javax.print.DocFlavor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,8 +39,9 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database connection = new Database();
-                String queryInsert = "INSERT INTO bookinfo(ISBN, Title, Author, yearpublished, imageUrl, quantity, category) values(?,?,?,?,?,?,?)";
-
+                String queryInsert = "INSERT INTO bookinfo(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE) values(?,?,?,?,?,?,?,?)";
+                QRGenerateAPI qrGenerateAPI = new QRGenerateAPI();
+                byte[] qr = qrGenerateAPI.generateQRCode(book.toString());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
                     ps.setString(1, book.getIsbn());
@@ -49,6 +51,7 @@ public class BookService {
                     ps.setString(5, book.getImageUrl());
                     ps.setInt(6, book.getQuantity());
                     ps.setString(7, book.getType());
+                    ps.setBytes(8, qr);
                     ps.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -112,8 +115,9 @@ public class BookService {
                         String imageUrl = resultSet.getString("ImageUrl");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
-
-                        bookList.add(new Book(title, author, isbn, imageUrl, year, type, quantity));
+                        Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        //book.setqrCode(resultSet.getBytes("QRCODE"));
+                        bookList.add(book);
                     }
 
                 } catch (SQLException e) {
@@ -147,8 +151,9 @@ public class BookService {
                         String imageUrl = resultSet.getString("ImageUrl");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
-
-                        bookList.add(new Book(title, author, isbn, imageUrl, year, type, quantity));
+                        Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setqrCode(resultSet.getBytes("QRCODE"));
+                        bookList.add(book);
                     }
 
                 } catch (SQLException e) {
@@ -184,6 +189,4 @@ public class BookService {
             }
         };
     }
-
-
 }

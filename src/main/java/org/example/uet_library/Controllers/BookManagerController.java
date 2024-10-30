@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -54,6 +56,9 @@ public class BookManagerController {
 
     @FXML
     private ImageView imageOfBook;
+
+    @FXML
+    private ImageView qrcodeImage;
 
     public void initialize() {
         listViewTable.setCellFactory(new Callback<ListView<Book>, ListCell<Book>>() {
@@ -105,6 +110,15 @@ public class BookManagerController {
             imageOfBook.setPreserveRatio(true);
             imageOfBook.setSmooth(true);
             imageOfBook.setCache(true);
+            byte[] qrCode = new byte[1];
+            qrCode = bookSelected.getqrCode();
+            ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
+            Image imageQR = new Image(bis);
+            qrcodeImage.setImage(imageQR);
+            qrcodeImage.setFitHeight(imageOfBook.getFitHeight());
+            qrcodeImage.setFitWidth(imageOfBook.getFitWidth());
+            qrcodeImage.setPreserveRatio(true);
+            qrcodeImage.setCache(true);
         });
 
         if(listViewTable.getSelectionModel().getSelectedItem() == null || bookSelected == null) {
