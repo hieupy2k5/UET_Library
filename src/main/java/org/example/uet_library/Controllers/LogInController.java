@@ -42,11 +42,11 @@ public class LogInController {
 
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
-            window.setWidth(1280);
-            window.setHeight(800);
+            window.setWidth(1180);
+            window.setHeight(850);
 
-            window.setX((screenBounds.getWidth() - 1280) / 2);
-            window.setY((screenBounds.getHeight() - 800) / 2);
+            window.setX((screenBounds.getWidth() - 1180) / 2);
+            window.setY((screenBounds.getHeight() - 850) / 2);
 
             window.show();
         } else {

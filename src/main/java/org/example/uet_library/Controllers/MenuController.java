@@ -49,15 +49,7 @@ public class MenuController implements Initializable {
 
     @FXML
     public void loadDocumentsView(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DocumentsView.fxml"));
-        Scene logInScene = new Scene(root);
-
-        Stage currentStage = (Stage) button_LogOut.getScene().getWindow();
-        currentStage.close();
-
-        Stage newStage = new Stage();
-        newStage.setScene(logInScene);
-        newStage.show();
+        loadView("/fxml/DocumentsView.fxml");
     }
 
     @FXML
@@ -67,26 +59,15 @@ public class MenuController implements Initializable {
 
     @FXML
     public void loadBorrowDocumentsView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookAPISearch.fxml"));
-            AnchorPane newPane = loader.load();
-
-            BookAPISearch controller = loader.getController();
-            controller.setMenuController(this);
-
-            contentPane.getChildren().clear();
-            contentPane.getChildren().add(newPane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadView("/fxml/BookAPISearch.fxml");
     }
 
 
     private String[] welcomeStrings = {
-        "Welcome, %s! What is on your mind today?",
-        "Hey there, %s! What do you want to read today?",
-        "Greetings, %s! What book do you want to read?",
-        "Hello, %s! Great to see you visiting our library!"
+            "Welcome, %s! What is on your mind today?",
+            "Hey there, %s! What do you want to read today?",
+            "Greetings, %s! What book do you want to read?",
+            "Hello, %s! Great to see you visiting our library!"
     };
 
     public void setWelcomeMessage(String username) {
