@@ -50,6 +50,6 @@
         <Button layoutX="748.0" layoutY="94.0" mnemonicParsing="false" onAction="#searchBookOnAction" text="Search" />
         <HBox layoutX="89.0" layoutY="467.0" prefHeight="61.0" prefWidth="599.0" />
         <ChoiceBox fx:id="filterSearch" layoutX="828.0" layoutY="93.0" prefHeight="27.0" prefWidth="92.0" />
-          <Button layoutX="569.0" layoutY="651.0" mnemonicParsing="false" onAction="#AddBookOnAction" prefHeight="61.0" prefWidth="305.0" text="ADD THIS BOOK" />
+          <Button layoutX="328.0" layoutY="683.0" mnemonicParsing="false" onAction="#AddBookOnAction" prefHeight="61.0" prefWidth="305.0" text="ADD THIS BOOK" />
     </children>
 </AnchorPane>

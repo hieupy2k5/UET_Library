@@ -40,8 +40,7 @@ public class BookService {
             protected Void call() throws Exception {
                 Database connection = new Database();
                 String queryInsert = "INSERT INTO bookinfo(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE) values(?,?,?,?,?,?,?,?)";
-                QRGenerateAPI qrGenerateAPI = new QRGenerateAPI();
-                byte[] qr = qrGenerateAPI.generateQRCode(book.toString());
+                byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.toString());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
                     ps.setString(1, book.getIsbn());
@@ -172,15 +171,17 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database database = new Database();
-                String query = "UPDATE bookinfo SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
+                String query = "UPDATE bookinfo SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ?, QRCODE = ? WHERE isbn LIKE ?";
                 try(Connection conDB = database.getConnection()) {
+                    byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.toString());
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, book.getTitle());
                     preparedStatement.setString(2, book.getAuthor());
                     preparedStatement.setInt(3, book.getQuantity());
                     preparedStatement.setString(4, book.getYear()+"");
                     preparedStatement.setString(5, book.getType());
-                    preparedStatement.setString(6, book.getIsbn());
+                    preparedStatement.setBytes(6, qr);
+                    preparedStatement.setString(7, book.getIsbn());
                     preparedStatement.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();

@@ -104,8 +104,8 @@ public class BookAddController {
             Integer year = Integer.parseInt(yearBook.getText());
             String url = newBook.getImageUrl();
             Integer quantity = Integer.parseInt(quantityAdd.getText());
-            newBook = new Book(title, author, isbn,url, year,type);
-            newBook.setQuantity(Integer.parseInt(quantityAdd.getText()));
+            newBook = new Book(title, author, isbn, url, year, type, quantity);
+            //newBook.setQuantity(quantity);
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("Are you sure you want to save this book?");
@@ -119,12 +119,12 @@ public class BookAddController {
                     a.setContentText("Book already exists");
                     a.showAndWait();
                 } else {
+                    Alert alter = new Alert(Alert.AlertType.INFORMATION);
+                    alter.setTitle("Information");
+                    alter.setHeaderText(null);
+                    alter.setContentText("Book added successfully");
+                    alter.showAndWait();
                     this.saveBookTask(newBook);
-                    Alert a = new Alert(Alert.AlertType.INFORMATION);
-                    a.setTitle("Status");
-                    a.setHeaderText(null);
-                    a.setContentText("Book added successfully");
-                    a.showAndWait();
                 }
             }} else {
             return;
@@ -136,12 +136,6 @@ public class BookAddController {
 
         task.setOnSucceeded(event->{
 
-            Alert alter = new Alert(Alert.AlertType.INFORMATION);
-            alter.setTitle("Information");
-            alter.setHeaderText(null);
-            alter.setContentText("Book added successfully");
-            alter.showAndWait();
-            //ChangeSceneMachine.getInstance().changeScene("");
         });
 
         task.setOnFailed(event -> {

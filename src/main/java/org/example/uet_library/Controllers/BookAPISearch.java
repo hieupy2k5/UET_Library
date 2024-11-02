@@ -170,7 +170,6 @@ public class BookAPISearch {
         });
         tableOfBook.setOnMouseClicked(event -> {
             selectedBook = tableOfBook.getSelectionModel().getSelectedItem();
-            System.out.println(selectedBook.toString());
         });
         filterSearch.valueProperty().addListener((observable, oldValue, newValue) -> {
             tableOfBook.getItems().clear();
@@ -179,6 +178,7 @@ public class BookAPISearch {
 
     @FXML
     public void AddBookOnAction(ActionEvent actionEvent) throws IOException {
+        System.out.println("Ok");
         if (selectedBook == null || tableOfBook.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

@@ -18,12 +18,12 @@ import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
     @FXML
-    private Button document_show;
+    private Button button_BookShow;
     @FXML
-    public Button button_BorrowDocument;
+    public Button button_AddBook;
 
     @FXML
-    public Button button_Users;
+    public Button button_ManagerBook;
 
     @FXML
     public Button button_LogOut;
@@ -48,18 +48,19 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public void loadDocumentsView(ActionEvent event) throws IOException {
-        loadView("/fxml/DocumentsView.fxml");
+    public void loadBookView(ActionEvent event) throws IOException {
+        loadView("/fxml/BooksView.fxml");
     }
 
     @FXML
-    public void loadUsersView() {
+    public void loadManagerBookView() {
         loadView("/fxml/BookManager.fxml");
     }
 
     @FXML
-    public void loadBorrowDocumentsView() {
+    public void loadBookAPISearchView() {
         loadView("/fxml/BookAPISearch.fxml");
+        BookAPISearch.menuController = this;
     }
 
 

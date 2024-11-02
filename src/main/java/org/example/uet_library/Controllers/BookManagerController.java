@@ -61,6 +61,7 @@ public class BookManagerController {
     private ImageView qrcodeImage;
 
     public void initialize() {
+        this.resetImage();
         listViewTable.setCellFactory(new Callback<ListView<Book>, ListCell<Book>>() {
             @Override
             public ListCell<Book> call(ListView<Book> bookListView) {
@@ -84,7 +85,6 @@ public class BookManagerController {
             } else {
                 Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB(newValue);
                 task.setOnSucceeded(event -> {
-                    System.out.println("Successfully retrieved book from database");
                     listViewTable.setItems(task.getValue());
                 });
                 task.setOnFailed(
@@ -95,11 +95,7 @@ public class BookManagerController {
             }
         });
 
-        /*String url = bookSelected.getImageUrl();
-        if (url != null) {
-            Image image = new Image(url);
 
-        }*/
         listViewTable.setOnMouseClicked(event -> {
             bookSelected = listViewTable.getSelectionModel().getSelectedItem();
             this.setTextField(bookSelected);
@@ -199,6 +195,7 @@ public class BookManagerController {
     private void removeBook(String isbn) {
         Task<Void> task = BookService.getInstance().deleteBook(isbn);
         task.setOnSucceeded(event -> {
+            this.resetImage();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Notion");
             alert.setHeaderText(null);
@@ -219,9 +216,8 @@ public class BookManagerController {
     }
 
     public void SaveBookOnAction(ActionEvent eventT) {
-        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageLink(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText());
+        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageLink(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
         Task<Void> edit = BookService.getInstance().editBook(bookSelected);
-        System.out.println(bookSelected.toString());
         edit.setOnSucceeded(event->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
@@ -239,8 +235,7 @@ public class BookManagerController {
             URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
 
             if (imageUrl != null) {
-                Image image = new Image(imageUrl.toExternalForm());
-                imageOfBook.setImage(image);
+                this.resetImage();
             } else {
                 System.out.println("Ảnh không tìm thấy hoặc đường dẫn không hợp lệ.");
             }
@@ -249,5 +244,12 @@ public class BookManagerController {
            System.out.println("Failed to edit book");
         });
         new Thread(edit).start();
+    }
+
+    private void resetImage() {
+        URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
+        Image image = new Image(imageUrl.toExternalForm());
+        imageOfBook.setImage(image);
+        qrcodeImage.setImage(image);
     }
 }
