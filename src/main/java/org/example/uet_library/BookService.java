@@ -39,8 +39,8 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database connection = new Database();
-                String queryInsert = "INSERT INTO bookinfo(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE) values(?,?,?,?,?,?,?,?)";
-                byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.toString());
+                String queryInsert = "INSERT INTO bookinfo(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE, bookLink) values(?,?,?,?,?,?,?,?,?)";
+                byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.getInfoBookLink());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
                     ps.setString(1, book.getIsbn());
@@ -51,6 +51,7 @@ public class BookService {
                     ps.setInt(6, book.getQuantity());
                     ps.setString(7, book.getType());
                     ps.setBytes(8, qr);
+                    ps.setString(9, book.getInfoBookLink());
                     ps.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -171,17 +172,15 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database database = new Database();
-                String query = "UPDATE bookinfo SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ?, QRCODE = ? WHERE isbn LIKE ?";
+                String query = "UPDATE bookinfo SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
                 try(Connection conDB = database.getConnection()) {
-                    byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.toString());
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, book.getTitle());
                     preparedStatement.setString(2, book.getAuthor());
                     preparedStatement.setInt(3, book.getQuantity());
                     preparedStatement.setString(4, book.getYear()+"");
                     preparedStatement.setString(5, book.getType());
-                    preparedStatement.setBytes(6, qr);
-                    preparedStatement.setString(7, book.getIsbn());
+                    preparedStatement.setString(6, book.getIsbn());
                     preparedStatement.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();

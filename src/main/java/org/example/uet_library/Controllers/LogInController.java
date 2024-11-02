@@ -50,7 +50,7 @@ public class LogInController {
 
             window.show();
         } else {
-            messageLbl.setText("Wrong username or password");
+            messageLbl.setText("Wrong user or password!");
         }
     }
 

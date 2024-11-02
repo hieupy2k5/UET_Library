@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.LogInController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.LogInController">
   <left>
     <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
       <children>
@@ -41,12 +41,15 @@
             <Font name="Wingdings 3" size="27.0" />
           </font>
         </Text>
-        <Text fx:id="registerBtn" fill="#404040" layoutX="65.0" layoutY="313.0" onMouseClicked="#handleSignUpButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account? Register">
+        <Text fx:id="registerBtn" layoutX="65.0" layoutY="313.0" onMouseClicked="#handleSignUpButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account? Register">
           <cursor>
             <Cursor fx:constant="HAND" />
           </cursor>
         </Text>
-            <Label fx:id="messageLbl" layoutX="138.0" layoutY="325.0" />
+            <Label fx:id="messageLbl" layoutX="52.0" layoutY="225.0" prefHeight="19.0" prefWidth="207.0" textFill="#ff0037">
+               <font>
+                  <Font name="Black Ops One Regular" size="12.0" />
+               </font></Label>
       </children>
     </AnchorPane>
   </right>

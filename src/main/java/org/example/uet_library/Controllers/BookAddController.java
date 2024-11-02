@@ -27,7 +27,6 @@ public class BookAddController {
     }
     public void setNewBook(Book newBook) {
         this.newBook = newBook;
-        //System.out.println("Successfully set new book");
         if (newBook != null) {
             if(newBook.getAuthor() == null || newBook.getAuthor().isEmpty()) {
                 authoradd.setText("No author");
@@ -104,7 +103,8 @@ public class BookAddController {
             Integer year = Integer.parseInt(yearBook.getText());
             String url = newBook.getImageUrl();
             Integer quantity = Integer.parseInt(quantityAdd.getText());
-            newBook = new Book(title, author, isbn, url, year, type, quantity);
+            String bookLink = newBook.getInfoBookLink();
+            newBook = new Book(title, author, isbn, url,year, type, bookLink);
             //newBook.setQuantity(quantity);
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");

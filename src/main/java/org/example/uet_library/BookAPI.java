@@ -20,7 +20,7 @@ public class BookAPI {
             case "ISBN" -> Baseurl = "https://www.googleapis.com/books/v1/volumes?q=isbn";
         }
 
-        String url = Baseurl + query + "&key=" + ApiKey;
+        String url = Baseurl + query + "&key=" + ApiKey + "&maxResults=10";
 
         Request request = new Request.Builder()
                 .url(url)
