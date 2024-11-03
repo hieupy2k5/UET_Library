@@ -174,7 +174,7 @@ public class BookAddController {
     @FXML
     public void BackOnAction(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookAPISearch.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAPISearch.fxml"));
             Parent root = loader.load();
             menuController = BookAPISearch.menuController;
             if (menuController != null) {

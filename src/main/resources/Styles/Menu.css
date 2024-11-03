@@ -14,6 +14,9 @@
     -fx-background-radius: 50px;
     -fx-border-style: solid;
     -fx-border-color: #333A56;
+    -fx-font-family: "Black Ops One";
+    -font-size: 14px;
+    -fx-text-alignment: right;
 }
 
 .logout {
@@ -32,4 +35,8 @@
     -fx-background-radius: 10px;
     -fx-border-style: solid;
     -fx-border-color: #A4ABEE;
+}
+
+.alata-text{
+    -fx-font-family: "Alata";
 }

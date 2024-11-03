@@ -186,7 +186,7 @@ public class BookAPISearch {
         }
         else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookAdd.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
                 Parent root = loader.load();
 
                 // Fetch controller of MenuController
