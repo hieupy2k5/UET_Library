@@ -34,7 +34,7 @@ public class LogInController {
             Parent menuParent = loader.load();
 
             MenuController menuController = loader.getController();
-            menuController.setWelcomeMessage(username);
+            //menuController.setWelcomeMessage(username);
 
             Scene menuScene = new Scene(menuParent);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

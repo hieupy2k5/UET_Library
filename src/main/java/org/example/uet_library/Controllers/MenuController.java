@@ -74,7 +74,7 @@ public class MenuController implements Initializable {
     public void setWelcomeMessage(String username) {
         Random random = new Random();
         int randomIndex = random.nextInt(welcomeStrings.length);
-        welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
+        //welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
     }
 
     public void loadView(String fxmlFileName) {
