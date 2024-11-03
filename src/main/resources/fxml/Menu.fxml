@@ -1,84 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
-    <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
+    <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" BorderPane.alignment="CENTER">
       <children>
-            <AnchorPane fx:id="MenuBar" prefHeight="200.0" prefWidth="200.0" stylesheets="@../Styles/Menu.css">
-               <children>
-              <Button fx:id="button_Home" layoutY="-8.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="799.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0; ;" styleClass="bt" stylesheets="@../Styles/main.css" text="Home" textAlignment="JUSTIFY">
-                <opaqueInsets>
-                  <Insets />
-                </opaqueInsets>
-                <cursor>
-                  <Cursor fx:constant="HAND" />
-                </cursor>
-                <font>
-                  <Font name="System Bold" size="17.0" />
-                </font>
-              </Button>
-              <Button fx:id="button_AddBook" layoutY="534.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Add Book" textAlignment="JUSTIFY">
-                <cursor>
-                  <Cursor fx:constant="HAND" />
-                </cursor>
-                <font>
-                  <Font name="System Bold" size="17.0" />
-                </font>
-              </Button>
-              <Button fx:id="button_BookShow" layoutY="424.0" mnemonicParsing="false" onAction="#loadBookView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Show Book" textAlignment="JUSTIFY">
-                <cursor>
-                  <Cursor fx:constant="HAND" />
-                </cursor>
-                <font>
-                  <Font name="System Bold" size="17.0" />
-                </font>
-              </Button>
-              <Button fx:id="button_ManagerBook" layoutY="484.0" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="50.0" prefWidth="200.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Book Manager" textAlignment="JUSTIFY">
-                <cursor>
-                  <Cursor fx:constant="HAND" />
-                </cursor>
-                <font>
-                  <Font name="System Bold" size="17.0" />
-                </font>
-              </Button>
-               </children>
-            </AnchorPane>
+        <AnchorPane fx:id="MenuBar" prefHeight="859.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
+          <children>
+            <Button fx:id="button_Home" layoutX="2.0" layoutY="316.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="199.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="HOME" textFill="WHITE">
+              <font>
+                <Font name="Black Ops One Regular" size="14.0" />
+              </font>
+            </Button>
+            <Button fx:id="button_AddBook" layoutX="2.0" layoutY="525.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="   Add Book" textAlignment="JUSTIFY" textFill="WHITE">
+              <cursor>
+                <Cursor fx:constant="HAND" />
+              </cursor>
+              <font>
+                <Font name="Black Ops One Regular" size="14.0" />
+              </font>
+            </Button>
+            <Button fx:id="button_BookShow" layoutY="383.0" mnemonicParsing="false" onAction="#loadBookView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="         Show Book" textAlignment="JUSTIFY" textFill="WHITE">
+              <cursor>
+                <Cursor fx:constant="HAND" />
+              </cursor>
+              <font>
+                <Font name="Black Ops One Regular" size="14.0" />
+              </font>
+            </Button>
+            <Button fx:id="button_ManagerBook" layoutY="452.0" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Book Manager" textAlignment="JUSTIFY" textFill="WHITE">
+              <cursor>
+                <Cursor fx:constant="HAND" />
+              </cursor>
+              <font>
+                <Font name="Black Ops One Regular" size="14.0" />
+              </font>
+              <graphic>
+                <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@../Images/bookManagerIcon.png" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <Button fx:id="button_LogOut" layoutX="29.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="    Log Out" textAlignment="JUSTIFY" textFill="WHITE">
+              <cursor>
+                <Cursor fx:constant="HAND" />
+              </cursor>
+              <font>
+                <Font name="Black Ops One Regular" size="14.0" />
+              </font>
+              <graphic>
+                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@../Images/logoutIcon.png" />
+                  </image>
+                </ImageView>
+              </graphic>
+            </Button>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="27.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@../Images/home_icon.png" />
+              </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="27.0" layoutY="534.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@../Images/bookAddIcon.png" />
+              </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="27.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@../Images/bookShowIcon.png" />
+              </image>
+            </ImageView>
+          </children>
+        </AnchorPane>
       </children>
     </VBox>
   </left>
-  <top>
-    <HBox alignment="CENTER_RIGHT" prefHeight="50.0" style="-fx-background-color: #2b2a26;" BorderPane.alignment="TOP_RIGHT">
-      <children>
-        <Label fx:id="welcomeText" text="Welcome!" textFill="WHITE">
-               <padding>
-                  <Insets left="15.0" />
-               </padding></Label>
-        <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="button_LogOut" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="107.0" style="-fx-text-fill: #f0f0f0;" styleClass="bt" stylesheets="@../Styles/main.css" text="Log Out" textAlignment="JUSTIFY">
-          <cursor>
-            <Cursor fx:constant="HAND" />
-          </cursor>
-          <font>
-            <Font name="System Bold" size="16.0" />
-          </font>
-               <HBox.margin>
-                  <Insets right="30.0" />
-               </HBox.margin>
-        </Button>
-      </children>
-    </HBox>
-  </top>
   <center>
     <AnchorPane fx:id="contentPane" prefHeight="800.0" prefWidth="980.0" BorderPane.alignment="CENTER" />
   </center>

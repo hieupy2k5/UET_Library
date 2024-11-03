@@ -1,36 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="980.0" style="-fx-background-color: #EAEEF4;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <RadioButton fx:id="radioButton_Document" layoutX="319.0" layoutY="143.0" mnemonicParsing="false" text="Document" />
-        <RadioButton fx:id="radioButton_Author" layoutX="434.0" layoutY="143.0" mnemonicParsing="false" text="Author" />
-        <RadioButton fx:id="radioButton_Publisher" layoutX="534.0" layoutY="143.0" mnemonicParsing="false" text="Publisher" />
-        <RadioButton fx:id="radioButton_Category" layoutX="644.0" layoutY="143.0" mnemonicParsing="false" text="Category" />
-        <TextField fx:id="TextField" layoutX="213.0" layoutY="76.0" prefHeight="50.0" prefWidth="500.0" promptText="Enter Document name">
-            <font>
-                <Font size="13.0" />
-            </font>
-        </TextField>
-        <Label fx:id="label_Search" layoutX="213.0" layoutY="142.0" text="Search by :">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-        <ImageView fx:id="imageView_Search" fitHeight="50.0" fitWidth="50.0" layoutX="713.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
-<!--            <image>-->
-<!--                <Image url="@SearchButton.png" />-->
-<!--            </image>-->
-        </ImageView>
-        <Button fx:id="button_Search" layoutX="713.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="50.0" prefWidth="50.0" style="-fx-cursor: hand;" wrapText="true" />
-        <Label fx:id="label_Error" layoutX="213.0" layoutY="49.0" text="Vui lòng nhập từ khóa tìm kiếm!" textFill="RED">
-            <font>
-                <Font name="System Bold Italic" size="14.0" />
-            </font>
-        </Label>
+        <VBox layoutX="0.0" layoutY="0.0" prefHeight="800.0" prefWidth="980.0">
+            <children>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #96CBCE;">
+                    <children>
+                        <Text layoutX="67.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello! Welcome Back ...">
+                            <font>
+                                <Font name="Arial Rounded MT Bold" size="36.0" />
+                            </font>
+                        </Text>
+                        <Text layoutX="691.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEATHER ..">
+                            <font>
+                                <Font name="Bauhaus 93" size="48.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="250.0" prefWidth="980.0">
+                    <children>
+                        <Pane layoutX="54.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book">
+                                    <font>
+                                        <Font name="Blackadder ITC" size="28.0" />
+                                    </font>
+                                </Text>
+                                <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../Images/bookIcon.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="263.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+                                    <font>
+                                        <Font name="Blackadder ITC" size="28.0" />
+                                    </font>
+                                </Text>
+                                <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../Images/userIcon.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="463.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Issued Book" wrappingWidth="129.33333333333326">
+                                    <font>
+                                        <Font name="Blackadder ITC" size="28.0" />
+                                    </font>
+                                </Text>
+                                <ImageView fitHeight="75.0" fitWidth="50.0" layoutX="40.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../Images/hand-book_4797819.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="668.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0">
+                                    <font>
+                                        <Font name="Blackadder ITC" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <Text layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Most Borrowed Books">
+                            <font>
+                                <Font name="Alata Regular" size="14.0" />
+                            </font>
+                        </Text>
+                        <ImageView fitHeight="34.0" fitWidth="29.0" layoutX="172.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Images/hotBookIcon.png" />
+                            </image>
+                        </ImageView>
+                        <Pane layoutX="59.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FF6B6B;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#1">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="522.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FFF3B0;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#4">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="360.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FFAD60;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#3">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="208.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FFAD60;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#2">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="683.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FFF3B0;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#5">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                        <Pane layoutX="834.0" layoutY="38.0" prefHeight="145.0" prefWidth="113.0" style="-fx-background-color: #FFF3B0;" styleClass="pane" stylesheets="@../Styles/Menu.css">
+                            <children>
+                                <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#5">
+                                    <font>
+                                        <Font name="Alata Regular" size="28.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </Pane>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

@@ -24,3 +24,12 @@
     -fx-border-style: solid;
     -fx-border-color: #2A2A2A;
 }
+
+.pane {
+    -fx-background-color: #A4ABEE;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 0 10px 10px 10px;
+    -fx-background-radius: 10px;
+    -fx-border-style: solid;
+    -fx-border-color: #A4ABEE;
+}
