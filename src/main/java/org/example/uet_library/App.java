@@ -20,6 +20,10 @@ public class App extends Application {
             getClass().getResource("/Fonts/Alata-Regular.ttf").toExternalForm(),
             14
         );
+        Font.loadFont(
+            getClass().getResource("/Fonts/blackadder-itc/BITCBLKAD.ttf").toExternalForm(),
+            14
+        );
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
