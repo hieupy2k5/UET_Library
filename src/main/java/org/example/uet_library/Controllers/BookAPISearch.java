@@ -4,25 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URL;
-import java.time.Year;
 
 public class BookAPISearch {
     public static MenuController menuController;
@@ -186,7 +180,7 @@ public class BookAPISearch {
         }
         else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookAdd.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
                 Parent root = loader.load();
 
                 // Fetch controller of MenuController

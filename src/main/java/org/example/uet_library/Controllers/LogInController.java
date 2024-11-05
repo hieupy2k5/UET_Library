@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +29,7 @@ public class LogInController {
         String password = passwordFld.getText();
 
         if (userController.checkLoginCredentials(username, password)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Menu.fxml"));
             Parent menuParent = loader.load();
 
             MenuController menuController = loader.getController();
@@ -55,7 +54,7 @@ public class LogInController {
     }
 
     public void handleSignUpButton(MouseEvent event) throws Exception {
-        Parent signUpScreen = FXMLLoader.load(getClass().getResource("/fxml/SignUp.fxml"));
+        Parent signUpScreen = FXMLLoader.load(getClass().getResource("/FXMLs/SignUp.fxml"));
         Scene signUpScene = new Scene(signUpScreen);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
