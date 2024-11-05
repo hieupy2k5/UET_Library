@@ -7,10 +7,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.SignUpController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.SignUpController">
   <left>
     <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
       <children>
@@ -45,12 +46,17 @@
           <cursor>
             <Cursor fx:constant="HAND" />
           </cursor></Button>
-        <Text fx:id="loginBtn" fill="#404040" layoutX="66.0" layoutY="358.0" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? Login">
-          <cursor>
-            <Cursor fx:constant="HAND" />
-          </cursor>
-        </Text>
             <Label fx:id="messageLbl" layoutX="135.0" layoutY="362.0" />
+            <HBox layoutX="61.0" layoutY="349.0" prefHeight="26.0" prefWidth="182.0" spacing="3.0">
+               <children>
+                  <Label text="Already have an account?" />
+              <Text fx:id="loginBtn" fill="#0a41ff" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
+                <cursor>
+                  <Cursor fx:constant="HAND" />
+                </cursor>
+              </Text>
+               </children>
+            </HBox>
       </children>
     </AnchorPane>
   </right>

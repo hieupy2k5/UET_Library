@@ -2,15 +2,17 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.LogInController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.LogInController">
   <left>
     <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
       <children>
@@ -32,7 +34,7 @@
       <children>
         <TextField fx:id="usernameFld" layoutX="52.0" layoutY="104.0" prefHeight="25.0" prefWidth="202.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
         <PasswordField fx:id="passwordFld" layoutX="52.0" layoutY="143.0" prefHeight="25.0" prefWidth="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-        <Button fx:id="loginBtn" layoutX="112.0" layoutY="255.0" mnemonicParsing="false" onAction="#handleLogInButton" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #404040; -fx-background-radius: 0px;" text="Log in" textFill="WHITE">
+        <Button fx:id="loginBtn" layoutX="113.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleLogInButton" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #404040; -fx-background-radius: 0px;" text="Log in" textFill="WHITE">
           <cursor>
             <Cursor fx:constant="OPEN_HAND" />
           </cursor></Button>
@@ -41,15 +43,22 @@
             <Font name="Wingdings 3" size="27.0" />
           </font>
         </Text>
-        <Text fx:id="registerBtn" layoutX="65.0" layoutY="313.0" onMouseClicked="#handleSignUpButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have an account? Register">
-          <cursor>
-            <Cursor fx:constant="HAND" />
-          </cursor>
-        </Text>
-            <Label fx:id="messageLbl" layoutX="52.0" layoutY="225.0" prefHeight="19.0" prefWidth="207.0" textFill="#ff0037">
+            <Label fx:id="messageLbl" layoutX="50.0" layoutY="339.0" prefHeight="19.0" prefWidth="207.0" textAlignment="CENTER" textFill="#ff0037">
                <font>
                   <Font name="Black Ops One Regular" size="12.0" />
                </font></Label>
+            <ChoiceBox fx:id="choiceBox" layoutX="115.0" layoutY="219.0" prefHeight="26.0" prefWidth="71.0" />
+            <Label layoutX="77.0" layoutY="192.0" text="Choose your account type:" />
+            <HBox layoutX="56.0" layoutY="324.0" prefHeight="31.0" prefWidth="188.0" spacing="3.0">
+               <children>
+                  <Label fx:id="askingLabel" text="Haven't got an account?" />
+              <Text fx:id="registerButton" fill="#0a41ff" onMouseClicked="#handleSignUpButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Register" underline="true">
+                <cursor>
+                  <Cursor fx:constant="HAND" />
+                </cursor>
+              </Text>
+               </children>
+            </HBox>
       </children>
     </AnchorPane>
   </right>

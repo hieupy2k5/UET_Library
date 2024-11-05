@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
-    <Label fx:id="borrowLabel" text="Borrow Document View" layoutX="50" layoutY="50" style="-fx-font-size: 24px; -fx-text-fill: black;"/>
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
+   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="800.0" prefWidth="980.0">
+      <children>
+         <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="740.0" prefWidth="980.0">
+            <columns>
+               <TableColumn fx:id="titleShow" prefWidth="400.0" text="Title" />
+               <TableColumn fx:id="isbnShow" prefWidth="120.0" text="ISBN" />
+               <TableColumn fx:id="authorShow" minWidth="0.0" prefWidth="160.0" text="Author" />
+               <TableColumn fx:id="yearShow" minWidth="0.0" text="Year" />
+               <TableColumn fx:id="typeShow" minWidth="0.0" prefWidth="120.0" text="Type" />
+               <TableColumn fx:id="quantityShow" minWidth="0.0" prefWidth="100.0" text="Quantity" />
+            </columns>
+         </TableView>
+         <Button layoutX="890.0" layoutY="16.0" mnemonicParsing="false" text="Search" />
+         <ProgressIndicator fx:id="waitprogress" layoutX="444.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" rotate="45.0" />
+         <TextField fx:id="searchField" layoutX="126.0" layoutY="15.0" prefHeight="27.0" prefWidth="719.0" />
+         <Button layoutX="30.0" layoutY="16.0" mnemonicParsing="false" onAction="#BackOnAction" text="Back" />
+      </children>
+   </AnchorPane>
 </AnchorPane>

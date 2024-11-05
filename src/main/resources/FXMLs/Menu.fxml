@@ -16,7 +16,7 @@
       <children>
         <AnchorPane fx:id="MenuBar" prefHeight="859.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
           <children>
-            <Button fx:id="button_LogOut" layoutX="27.0" layoutY="784.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
+            <Button fx:id="button_LogOut" layoutX="27.0" layoutY="770.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
               <cursor>
                 <Cursor fx:constant="HAND" />
               </cursor>
@@ -91,6 +91,42 @@
                       <Insets left="20.0" />
                     </padding>
                   </Button>
+                        <Button fx:id="button_BorrowBook" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="223.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Borrow Document" textAlignment="CENTER" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/bookManagerIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="button_ReturnBook" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="223.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Return Document" textAlignment="CENTER" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/bookManagerIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Button>
                      </children>
                   </VBox>
           </children>
