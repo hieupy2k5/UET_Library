@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<VBox alignment="CENTER" minHeight="150" minWidth="150" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ClockController">
+    <Group fx:id="analogueClock">
+        <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="-75.0" layoutY="-74.0" pickOnBounds="true" preserveRatio="true">
+            
+        </ImageView>
+        <Line fx:id="hourHand" endX="0" endY="-37.5" startX="0" startY="0" stroke="black" />
+        <Line fx:id="minuteHand" endX="0" endY="-56.25" startX="0" startY="0" stroke="black" />
+        <Line fx:id="secondHand" endX="0" endY="-66.0" startX="0" startY="15" stroke="red" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-74.0" layoutY="-74.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/clock.png" />
+         </image>
+      </ImageView>
+    </Group>
+</VBox>
