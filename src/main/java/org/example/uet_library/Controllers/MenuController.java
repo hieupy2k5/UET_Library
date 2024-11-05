@@ -14,9 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
+    @FXML
+    public VBox Clock;
     @FXML
     private Button button_BookShow;
     @FXML
@@ -37,9 +40,22 @@ public class MenuController implements Initializable {
     @FXML
     public Label welcomeText;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadClock();
         loadView("/fxml/HomeView.fxml");
+    }
+
+    public void loadClock() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clock.fxml"));
+            VBox clockVBox = loader.load();
+            Clock.getChildren().clear();
+            Clock.getChildren().add(clockVBox);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
