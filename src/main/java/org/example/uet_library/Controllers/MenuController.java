@@ -51,7 +51,7 @@ public class MenuController implements Initializable {
 
     public void loadClock() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/clock.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Clock.fxml"));
             VBox clockVBox = loader.load();
             Clock.getChildren().clear();
             Clock.getChildren().add(clockVBox);

@@ -1,184 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane prefHeight="850.0"
-  prefWidth="1180.0"
-  xmlns="http://javafx.com/javafx/23"
-  xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.example.uet_library.Controllers.MenuController">
+
+<BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
-    <VBox alignment="TOP_CENTER"
-      nodeOrientation="LEFT_TO_RIGHT"
-      prefHeight="200.0"
-      BorderPane.alignment="CENTER">
+    <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" BorderPane.alignment="CENTER">
       <children>
-        <AnchorPane fx:id="MenuBar"
-          prefHeight="859.0"
-          prefWidth="141.0"
-          styleClass="MenuBar"
-          stylesheets="@../Styles/Menu.css">
+        <AnchorPane fx:id="MenuBar" prefHeight="859.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
           <children>
-            <Button fx:id="button_Home"
-              alignment="BASELINE_LEFT"
-              layoutX="2.0"
-              layoutY="316.0"
-              mnemonicParsing="false"
-              onAction="#loadHomeView"
-              prefHeight="57.0"
-              prefWidth="199.0"
-              styleClass="Button"
-              stylesheets="@../Styles/Menu.css"
-              text="Home"
-              textAlignment="CENTER"
-              textFill="WHITE">
+            <Button fx:id="button_Home" alignment="BASELINE_LEFT" layoutX="2.0" layoutY="316.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="199.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
               <graphic>
-                <ImageView fitHeight="40.0"
-                  fitWidth="40.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/home_icon.png"/>
+                    <Image url="@../Images/home_icon.png" />
                   </image>
                 </ImageView>
               </graphic>
               <padding>
-                <Insets left="20.0"/>
+                <Insets left="20.0" />
               </padding>
             </Button>
-            <Button fx:id="button_AddBook"
-              alignment="BASELINE_LEFT"
-              layoutX="2.0"
-              layoutY="525.0"
-              mnemonicParsing="false"
-              onAction="#loadBookAPISearchView"
-              prefHeight="57.0"
-              prefWidth="200.0"
-              styleClass="Button"
-              stylesheets="@../Styles/Menu.css"
-              text="Add Book"
-              textAlignment="RIGHT"
-              textFill="WHITE">
+            <Button fx:id="button_AddBook" alignment="BASELINE_LEFT" layoutX="2.0" layoutY="525.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Add Book" textAlignment="RIGHT" textFill="WHITE">
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
               <graphic>
-                <ImageView fitHeight="40.0"
-                  fitWidth="40.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/bookAddIcon.png"/>
+                    <Image url="@../Images/bookAddIcon.png" />
                   </image>
                 </ImageView>
               </graphic>
               <padding>
-                <Insets left="20.0"/>
+                <Insets left="20.0" />
               </padding>
             </Button>
-            <Button fx:id="button_BookShow"
-              alignment="BASELINE_LEFT"
-              layoutY="383.0"
-              mnemonicParsing="false"
-              onAction="#loadBookView"
-              prefHeight="57.0"
-              prefWidth="200.0"
-              styleClass="Button"
-              stylesheets="@../Styles/Menu.css"
-              text="Show Book"
-              textAlignment="CENTER"
-              textFill="WHITE">
+            <Button fx:id="button_BookShow" alignment="BASELINE_LEFT" layoutY="383.0" mnemonicParsing="false" onAction="#loadBookView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Show Book" textAlignment="CENTER" textFill="WHITE">
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
               <graphic>
-                <ImageView fitHeight="40.0"
-                  fitWidth="40.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/bookShowIcon.png"/>
+                    <Image url="@../Images/bookShowIcon.png" />
                   </image>
                 </ImageView>
               </graphic>
               <padding>
-                <Insets left="20.0"/>
+                <Insets left="20.0" />
               </padding>
             </Button>
-            <Button fx:id="button_ManagerBook"
-              alignment="BASELINE_LEFT"
-              layoutY="452.0"
-              mnemonicParsing="false"
-              onAction="#loadManagerBookView"
-              prefHeight="57.0"
-              prefWidth="200.0"
-              styleClass="Button"
-              stylesheets="@../Styles/Menu.css"
-              text="Book Manager"
-              textAlignment="CENTER"
-              textFill="WHITE">
+            <Button fx:id="button_ManagerBook" alignment="BASELINE_LEFT" layoutY="452.0" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="200.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Book Manager" textAlignment="CENTER" textFill="WHITE">
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
               <graphic>
-                <ImageView fitHeight="40.0"
-                  fitWidth="200.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/bookManagerIcon.png"/>
+                    <Image url="@../Images/bookManagerIcon.png" />
                   </image>
                 </ImageView>
               </graphic>
               <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
               </font>
               <padding>
-                <Insets left="20.0"/>
+                <Insets left="20.0" />
               </padding>
             </Button>
-            <Button fx:id="button_LogOut"
-              layoutX="29.0"
-              layoutY="759.0"
-              mnemonicParsing="false"
-              onAction="#handleLogOut"
-              prefHeight="40.0"
-              prefWidth="142.0"
-              styleClass="logout"
-              stylesheets="@../Styles/Menu.css"
-              text="Log Out"
-              textAlignment="JUSTIFY"
-              textFill="WHITE">
+            <Button fx:id="button_LogOut" layoutX="29.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
               <graphic>
-                <ImageView fitHeight="40.0"
-                  fitWidth="30.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/logoutIcon.png"/>
+                    <Image url="@../Images/logoutIcon.png" />
                   </image>
                 </ImageView>
               </graphic>
             </Button>
+                  <VBox fx:id="Clock" layoutX="53.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
           </children>
         </AnchorPane>
       </children>
     </VBox>
   </left>
   <center>
-    <AnchorPane fx:id="contentPane"
-      prefHeight="800.0"
-      prefWidth="980.0"
-      BorderPane.alignment="CENTER"/>
+    <AnchorPane fx:id="contentPane" prefHeight="800.0" prefWidth="980.0" BorderPane.alignment="CENTER" />
   </center>
 </BorderPane>
