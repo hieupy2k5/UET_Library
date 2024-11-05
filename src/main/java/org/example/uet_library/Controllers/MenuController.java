@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -83,10 +82,10 @@ public class MenuController implements Initializable {
 
 
     private String[] welcomeStrings = {
-            "Welcome, %s! What is on your mind today?",
-            "Hey there, %s! What do you want to read today?",
-            "Greetings, %s! What book do you want to read?",
-            "Hello, %s! Great to see you visiting our library!"
+        "Welcome, %s! What is on your mind today?",
+        "Hey there, %s! What do you want to read today?",
+        "Greetings, %s! What book do you want to read?",
+        "Hello, %s! Great to see you visiting our library!"
     };
 
     public void setWelcomeMessage(String username) {
