@@ -26,15 +26,13 @@ import java.time.Year;
 
 public class BookAPISearch {
     public static MenuController menuController;
+    private Book selectedBook;
 
     public void setMenuController(MenuController menuController) {
         this.menuController = menuController;
     }
     @FXML
     private Button AddBookOnAction;
-
-    @FXML
-    private Button BackOnAction;
 
     @FXML
     private TableColumn<Book, String> ISBN;
@@ -82,8 +80,6 @@ public class BookAPISearch {
         }
     }
 
-    private Book selectedBook;
-
     public void searchBook(String query, String filter) {
         Task<JSONArray> task = BookService.getInstance().searchBooks(query, filter);
 
@@ -104,7 +100,6 @@ public class BookAPISearch {
         ObservableList<Book> bookList = FXCollections.observableArrayList();
         for(int i = 0; i < bookArrJson.length(); i++) {
             JSONObject bookJson = bookArrJson.getJSONObject(i).getJSONObject("volumeInfo");
-            //JSONObject bookJson = bookArrJson.optJSONObject(i);
             if(bookJson != null) {
                 JSONObject volumeInfo = bookJson.optJSONObject("volumeInfo");
                 String title = bookJson.optString("title", "No title");
@@ -130,8 +125,11 @@ public class BookAPISearch {
                         year = Integer.parseInt(pushlishedDate.substring(0, 4));
                     }
                 }
-
-                bookList.add(new Book(title, author, isbn,imageUrl, year, type));
+                String url = "";
+                if(bookJson.has("infoLink")) {
+                    url = bookJson.optString("infoLink","");
+                }
+                bookList.add(new Book(title, author, isbn,imageUrl, year, type, url));
             }
         }
         tableOfBook.setItems(bookList);
@@ -178,7 +176,7 @@ public class BookAPISearch {
 
     @FXML
     public void AddBookOnAction(ActionEvent actionEvent) throws IOException {
-        System.out.println("Ok");
+
         if (selectedBook == null || tableOfBook.getSelectionModel().getSelectedItem() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -188,7 +186,7 @@ public class BookAPISearch {
         }
         else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookAdd.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
                 Parent root = loader.load();
 
                 // Fetch controller of MenuController

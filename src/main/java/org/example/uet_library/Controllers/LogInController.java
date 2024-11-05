@@ -30,11 +30,11 @@ public class LogInController {
         String password = passwordFld.getText();
 
         if (userController.checkLoginCredentials(username, password)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Menu.fxml"));
             Parent menuParent = loader.load();
 
             MenuController menuController = loader.getController();
-            menuController.setWelcomeMessage(username);
+            //menuController.setWelcomeMessage(username);
 
             Scene menuScene = new Scene(menuParent);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -50,12 +50,12 @@ public class LogInController {
 
             window.show();
         } else {
-            messageLbl.setText("Wrong username or password");
+            messageLbl.setText("Wrong user or password!");
         }
     }
 
     public void handleSignUpButton(MouseEvent event) throws Exception {
-        Parent signUpScreen = FXMLLoader.load(getClass().getResource("/fxml/SignUp.fxml"));
+        Parent signUpScreen = FXMLLoader.load(getClass().getResource("/FXMLs/SignUp.fxml"));
         Scene signUpScene = new Scene(signUpScreen);
 
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -17,6 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
+
+    public AnchorPane MenuBar;
     @FXML
     private Button button_BookShow;
     @FXML
@@ -39,27 +41,27 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadView("/fxml/HomeView.fxml");
+        loadView("/FXMLs/HomeView.fxml");
     }
 
     @FXML
     public void loadHomeView() {
-        loadView("/fxml/HomeView.fxml");
+        loadView("/FXMLs/HomeView.fxml");
     }
 
     @FXML
     public void loadBookView(ActionEvent event) throws IOException {
-        loadView("/fxml/BooksView.fxml");
+        loadView("/FXMLs/BooksView.fxml");
     }
 
     @FXML
     public void loadManagerBookView() {
-        loadView("/fxml/BookManager.fxml");
+        loadView("/FXMLs/BookManager.fxml");
     }
 
     @FXML
     public void loadBookAPISearchView() {
-        loadView("/fxml/BookAPISearch.fxml");
+        loadView("/FXMLs/BookAPISearch.fxml");
         BookAPISearch.menuController = this;
     }
 
@@ -74,7 +76,7 @@ public class MenuController implements Initializable {
     public void setWelcomeMessage(String username) {
         Random random = new Random();
         int randomIndex = random.nextInt(welcomeStrings.length);
-        welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
+        //welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
     }
 
     public void loadView(String fxmlFileName) {
@@ -95,7 +97,7 @@ public class MenuController implements Initializable {
 
     @FXML
     public void handleLogOut() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/Login.fxml"));
         Scene logInScene = new Scene(root);
 
         Stage currentStage = (Stage) button_LogOut.getScene().getWindow();

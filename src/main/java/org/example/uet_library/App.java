@@ -4,13 +4,26 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LogIn.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/LogIn.fxml"));
+        Font.loadFont(
+            getClass().getResource("/Fonts/BlackOpsOne-Regular.ttf").toExternalForm(),
+            14
+        );
+        Font.loadFont(
+            getClass().getResource("/Fonts/Alata-Regular.ttf").toExternalForm(),
+            14
+        );
+        Font.loadFont(
+            getClass().getResource("/Fonts/blackadder-itc/BITCBLKAD.ttf").toExternalForm(),
+            14
+        );
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
