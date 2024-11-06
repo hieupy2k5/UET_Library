@@ -1,6 +1,7 @@
 package org.example.uet_library.Controllers;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,13 +25,15 @@ public class ChangeSceneMachine {
         return instance;
     }
 
-    public void changeScene(String file, ActionEvent event, int width, int height) throws IOException {
+    public void changeScene(String file, Event event, int width, int height) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/" + file));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, width, height);
         stage.setScene(scene);
         stage.show();
     }
+
+
 
     public void changeScene2(String file, ActionEvent event, int width, int height, boolean check) throws IOException {
         URL resourse = getClass().getResource(file);

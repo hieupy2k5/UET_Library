@@ -1,17 +1,17 @@
 package org.example.uet_library;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 
-import javax.print.DocFlavor;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 
 public class BookService {
+
     private static BookService instance;
     private final BookAPI bookAPI = new BookAPI();
 
@@ -46,7 +46,7 @@ public class BookService {
                     ps.setString(1, book.getIsbn());
                     ps.setString(2, book.getTitle());
                     ps.setString(3, book.getAuthor());
-                    ps.setInt(4,book.getYear());
+                    ps.setInt(4, book.getYear());
                     ps.setString(5, book.getImageUrl());
                     ps.setInt(6, book.getQuantity());
                     ps.setString(7, book.getType());
@@ -67,7 +67,7 @@ public class BookService {
             protected Void call() throws Exception {
                 String queryDelete = "DELETE FROM book WHERE ISBN= ?";
                 Database connection = new Database();
-                try (Connection conDB =  connection.getConnection()) {
+                try (Connection conDB = connection.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
                     preparedStatement.setString(1, ISBN);
                     preparedStatement.execute();
@@ -82,14 +82,14 @@ public class BookService {
     public boolean isExitsBook(String isbn) {
         String query = "SELECT COUNT(*) FROM book WHERE ISBN = ?";
         Database connection = new Database();
-        try (Connection conDB = connection.getConnection()){
+        try (Connection conDB = connection.getConnection()) {
             PreparedStatement preparedStatement = conDB.prepareStatement(query);
             preparedStatement.setString(1, isbn);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1) == 1;
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return false;
@@ -123,7 +123,8 @@ public class BookService {
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
                     System.err.println("Error fetching books from database: " + e.getMessage());
-                    throw new Exception("Database query failed", e); // Re-throw with cause for chaining
+                    throw new Exception("Database query failed",
+                        e); // Re-throw with cause for chaining
                 }
 
                 return bookList;
@@ -159,7 +160,8 @@ public class BookService {
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
                     System.err.println("Error fetching books from database: " + e.getMessage());
-                    throw new Exception("Database query failed", e); // Re-throw with cause for chaining
+                    throw new Exception("Database query failed",
+                        e); // Re-throw with cause for chaining
                 }
 
                 return bookList;
@@ -173,12 +175,12 @@ public class BookService {
             protected Void call() throws Exception {
                 Database database = new Database();
                 String query = "UPDATE book SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
-                try(Connection conDB = database.getConnection()) {
+                try (Connection conDB = database.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, book.getTitle());
                     preparedStatement.setString(2, book.getAuthor());
                     preparedStatement.setInt(3, book.getQuantity());
-                    preparedStatement.setString(4, book.getYear()+"");
+                    preparedStatement.setString(4, book.getYear() + "");
                     preparedStatement.setString(5, book.getType());
                     preparedStatement.setString(6, book.getIsbn());
                     preparedStatement.execute();

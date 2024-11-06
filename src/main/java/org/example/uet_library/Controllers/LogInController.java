@@ -12,9 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -65,12 +63,7 @@ public class LogInController implements Initializable {
     }
 
     public void handleSignUpButton(MouseEvent event) throws Exception {
-        Parent signUpScreen = FXMLLoader.load(getClass().getResource("/FXMLs/SignUp.fxml"));
-        Scene signUpScene = new Scene(signUpScreen);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(signUpScene);
-        window.show();
+        ChangeSceneMachine.getInstance().changeScene("SignUp.fxml", event, -1, -1);
     }
 
     @Override
