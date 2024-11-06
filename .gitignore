@@ -39,3 +39,6 @@ build/
 .DS_Store
 
 .env
+src/main/resources/fxml/UserBorrow.fxml
+src/main/resources/FXMLs/UserHome.fxml
+src/main/resources/FXMLs/Card.fxml

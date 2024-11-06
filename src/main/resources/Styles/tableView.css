@@ -1,0 +1,18 @@
+.table-view {
+    -fx-background-color: #4A4E71; // Màu nền xám nhạt
+    -fx-border-color: transparent; // Không có viền
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e0e0e0; // Màu nền tiêu đề cột
+    -fx-font-weight: bold; // Font chữ đậm
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #d0d0d0; // Màu nền khi chọn hàng
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #33C481; // Màu nền khi di chuột qua
+
+}
