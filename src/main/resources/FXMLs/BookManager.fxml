@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookManagerController">
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookManagerController">
     <children>
         <GridPane hgap="16" layoutX="63.0" layoutY="121.0" prefHeight="300.0" prefWidth="500.0" vgap="16">
             <columnConstraints>
