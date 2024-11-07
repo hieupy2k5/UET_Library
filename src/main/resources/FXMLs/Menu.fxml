@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
+<BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
     <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" BorderPane.alignment="CENTER">
       <children>
-        <AnchorPane fx:id="MenuBar" prefHeight="859.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
+        <AnchorPane fx:id="MenuBar" prefHeight="900.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
           <children>
-            <Button fx:id="button_LogOut" layoutX="27.0" layoutY="770.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
+            <Button fx:id="button_LogOut" layoutX="37.0" layoutY="770.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="OtherButton" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
               <cursor>
                 <Cursor fx:constant="HAND" />
               </cursor>
@@ -26,7 +26,11 @@
                     <Image url="@../Images/logoutIcon.png" />
                   </image>
                 </ImageView>
+
               </graphic>
+                <font>
+                    <Font size="14.0" />
+                </font>
             </Button>
                   <VBox fx:id="Clock" layoutX="53.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
                   <VBox fx:id="Buttons_Container" layoutX="-1.0" layoutY="245.0" prefHeight="502.0" prefWidth="212.0" spacing="15.0">
@@ -39,6 +43,9 @@
                         </image>
                       </ImageView>
                     </graphic>
+                      <font>
+                          <Font size="14.0" />
+                      </font>
                     <padding>
                       <Insets left="20.0" />
                     </padding>
@@ -54,6 +61,9 @@
                         </image>
                       </ImageView>
                     </graphic>
+                      <font>
+                          <Font size="14.0" />
+                      </font>
                     <padding>
                       <Insets left="20.0" />
                     </padding>
@@ -69,6 +79,9 @@
                         </image>
                       </ImageView>
                     </graphic>
+                      <font>
+                          <Font size="14.0" />
+                      </font>
                     <padding>
                       <Insets left="20.0" />
                     </padding>
@@ -129,6 +142,21 @@
                         </Button>
                      </children>
                   </VBox>
+                  <Button fx:id="button_Settings" layoutX="37.0" layoutY="717.0" mnemonicParsing="false" onAction="#loadSettingsView" prefHeight="40.0" prefWidth="142.0" styleClass="OtherButton" stylesheets="@../Styles/Menu.css" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/pinionIcon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                      <font>
+                          <Font size="14.0" />
+                      </font>
+                  </Button>
           </children>
         </AnchorPane>
       </children>
