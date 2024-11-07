@@ -51,10 +51,10 @@ public class LogInController implements Initializable {
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
             window.setWidth(1180);
-            window.setHeight(850);
+            window.setHeight(900);
 
             window.setX((screenBounds.getWidth() - 1180) / 2);
-            window.setY((screenBounds.getHeight() - 850) / 2);
+            window.setY((screenBounds.getHeight() - 900) / 2);
 
             window.show();
         } else {

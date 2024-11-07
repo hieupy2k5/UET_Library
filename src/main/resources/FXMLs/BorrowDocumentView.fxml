@@ -7,8 +7,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
-   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="800.0" prefWidth="980.0">
+<AnchorPane prefHeight="900.0" prefWidth="980.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
+   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="900.0" prefWidth="980.0">
       <children>
          <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="740.0" prefWidth="980.0">
             <columns>

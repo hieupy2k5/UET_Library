@@ -21,7 +21,7 @@ public class DocumentsController {
 
     @FXML
     public void BackOnAction(ActionEvent event) throws IOException {
-        ChangeSceneMachine.getInstance().changeScene("Menu.fxml",event,1180,850);
+//        ChangeSceneMachine.getInstance().changeScene("Menu.fxml",event,1180,900);
     }
 
     ObservableList<Book> books;

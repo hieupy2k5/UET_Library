@@ -46,6 +46,9 @@ public class MenuController implements Initializable {
     public Button button_Home;
 
     @FXML
+    public Button button_Settings;
+
+    @FXML
     public AnchorPane contentPane;
 
     @FXML
@@ -105,6 +108,11 @@ public class MenuController implements Initializable {
     public void loadBookAPISearchView() {
         loadView("/FXMLs/BookAPISearch.fxml");
         BookAPISearch.menuController = this;
+    }
+
+    @FXML
+    public void loadSettingsView() {
+        loadView("/FXMLs/Settings.fxml");
     }
 
 
