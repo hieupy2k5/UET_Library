@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
+/**
+ * This is a feature for admins.
+ */
 public class BookManagerController {
 
     @FXML

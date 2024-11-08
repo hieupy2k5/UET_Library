@@ -196,29 +196,32 @@ public class BookService {
         };
     }
 
-    // Return true => Borrow successfully, else => Something has gone wrong (not our faults ;) )
-    public boolean borrowBook(int userId, int bookId, int quantity) {
+    /**
+     * Return true => Borrow successfully, else => Something has gone wrong (not our faults ;) )
+     */
+    public boolean borrowBook(int userId, String bookId, int borrowedQuantity) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            String checkQuery = "SELECT quantity FROM book WHERE ISBN = ?";
+            String checkQuery = "SELECT quantity FROM books WHERE ISBN = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-            checkStmt.setInt(1, bookId);
+            checkStmt.setString(1, bookId);
             ResultSet rs = checkStmt.executeQuery();
 
             // Sufficient # of books => Allow users to borrow
-            if (rs.next() && rs.getInt("quantity") >= quantity) {
+            if (rs.next() && rs.getInt("quantity") >= borrowedQuantity) {
                 // Update # of books in db after borrowing
-                String updateQuery = "UPDATE book SET quantity = book.quantity - ? WHERE ISBN = ?";
+                String updateQuery = "UPDATE books SET quantity = books.quantity - ? WHERE ISBN = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setInt(1, quantity);
-                updateStmt.setInt(2, bookId);
+                updateStmt.setInt(1, borrowedQuantity);
+                updateStmt.setString(2, bookId);
                 updateStmt.executeUpdate();
 
                 // Record the borrowing action
-                String insertQuery = "INSERT INTO borrow (user_id, book_id, borrow_date, status) VALUES (?, ?, NOW(), 'borrowed')";
+                String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
                 PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
                 insertStmt.setInt(1, userId);
-                insertStmt.setInt(2, bookId);
+                insertStmt.setString(2, bookId);
+                insertStmt.setInt(3, borrowedQuantity);
                 insertStmt.executeUpdate();
 
                 return true;
