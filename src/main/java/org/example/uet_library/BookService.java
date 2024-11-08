@@ -1,5 +1,6 @@
 package org.example.uet_library;
 
+import com.mysql.cj.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,9 @@ import javafx.concurrent.Task;
 import org.json.JSONArray;
 
 
+/**
+ * Every operation on books are here.
+ */
 public class BookService {
 
     private static BookService instance;
@@ -39,7 +43,7 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database connection = new Database();
-                String queryInsert = "INSERT INTO book(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE, bookLink) values(?,?,?,?,?,?,?,?,?)";
+                String queryInsert = "INSERT INTO books(ISBN, title, author, year_published, image_url, quantity, category, qrcode, book_link) values(?,?,?,?,?,?,?,?,?)";
                 byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.getInfoBookLink());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
@@ -65,7 +69,7 @@ public class BookService {
         return new Task<>() {
             @Override
             protected Void call() throws Exception {
-                String queryDelete = "DELETE FROM book WHERE ISBN= ?";
+                String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
@@ -80,7 +84,7 @@ public class BookService {
     }
 
     public boolean isExitsBook(String isbn) {
-        String query = "SELECT COUNT(*) FROM book WHERE ISBN = ?";
+        String query = "SELECT COUNT(*) FROM books WHERE ISBN = ?";
         Database connection = new Database();
         try (Connection conDB = connection.getConnection()) {
             PreparedStatement preparedStatement = conDB.prepareStatement(query);
@@ -103,16 +107,16 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
 
-                    String query = "SELECT * FROM book";
+                    String query = "SELECT * FROM books";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
-                        String title = resultSet.getString("Title");
-                        String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("yearpublished"); // Use alias for clarity
-                        String isbn = resultSet.getString("ISBN");
-                        String imageUrl = resultSet.getString("ImageUrl");
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        String isbn = resultSet.getString("isbn");
+                        String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
@@ -140,7 +144,7 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
 
-                    String query = "SELECT * FROM book wheel WHERE ISBN LIKE ?";
+                    String query = "SELECT * FROM books WHERE ISBN LIKE ?";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, "%" + ISBN + "%");
                     ResultSet resultSet = preparedStatement.executeQuery();
@@ -174,7 +178,7 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database database = new Database();
-                String query = "UPDATE book SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
+                String query = "UPDATE books SET title = ?, author = ?, quantity = ?, year_published = ?, category = ? WHERE ISBN LIKE ?";
                 try (Connection conDB = database.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, book.getTitle());
