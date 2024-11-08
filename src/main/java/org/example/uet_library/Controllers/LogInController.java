@@ -10,15 +10,17 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.example.uet_library.AlertHelper;
+import org.example.uet_library.SessionManager;
 
 public class LogInController implements Initializable {
 
@@ -26,7 +28,6 @@ public class LogInController implements Initializable {
     public Text registerBtn;
     public PasswordField passwordFld;
     public Button loginBtn;
-    public Label messageLbl;
     public ChoiceBox<String> choiceBox;
     private String[] choices = {"Admin", "User"};
     private UserController userController = new UserController();
@@ -34,9 +35,12 @@ public class LogInController implements Initializable {
     public void handleLogInButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
+        Integer userID = userController.checkLoginCredentials(username, password);
         boolean isAdmin = (Objects.equals(choiceBox.getValue(), "Admin"));
 
-        if (userController.checkLoginCredentials(username, password)) {
+        if (userID != null && userID != -1) {
+            SessionManager.getInstance().setUserId(userID);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Menu.fxml"));
             Parent menuParent = loader.load();
 
@@ -57,8 +61,12 @@ public class LogInController implements Initializable {
             window.setY((screenBounds.getHeight() - 900) / 2);
 
             window.show();
+        } else if (userID == null) {
+            AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
+                "Wrong username or password. Please try again.");
         } else {
-            messageLbl.setText("Wrong user or password!");
+            AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
+                "An unexpected error occurred. Please try again later.");
         }
     }
 
