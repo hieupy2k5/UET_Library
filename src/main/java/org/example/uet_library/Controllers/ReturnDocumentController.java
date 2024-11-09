@@ -50,7 +50,18 @@ public class ReturnDocumentController {
 
         task.setOnSucceeded(_ -> Platform.runLater(() -> {
             borrowedBooks = task.getValue();
-            tableView.setItems(borrowedBooks);
+            SortedList<Borrow> sortedBorrowedBooks = new SortedList<>(borrowedBooks);
+
+            sortedBorrowedBooks.setComparator((b1, b2) -> {
+                if (b1.getReturnDate() == null && b2.getReturnDate() != null) {
+                    return -1;
+                } else if (b1.getReturnDate() != null && b2.getReturnDate() == null) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+            tableView.setItems(sortedBorrowedBooks);
             waitProgress.setVisible(false);
             setupSearch();
             setUpReturnButton();
@@ -74,6 +85,8 @@ public class ReturnDocumentController {
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
+
+        tableView.getSortOrder().add(returnDateColumn);
 
         fetchFromDB();
     }

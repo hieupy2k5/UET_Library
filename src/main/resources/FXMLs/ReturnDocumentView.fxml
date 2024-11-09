@@ -37,7 +37,8 @@
           editable="false"
           minWidth="0.0"
           prefWidth="138.0"
-          text="Return Date"/>
+          text="Return Date"
+        />
         <TableColumn fx:id="actionColumn"
           editable="false"
           prefWidth="105.0"
