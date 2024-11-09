@@ -159,7 +159,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public void loadBorrowView(ActionEvent event) throws Exception {
+    public void loadBorrowView(ActionEvent event) {
         loadView("/FXMLs/BorrowDocumentView.fxml");
     }
 

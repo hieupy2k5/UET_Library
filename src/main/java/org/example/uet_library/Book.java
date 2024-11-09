@@ -84,6 +84,8 @@ public class Book {
         this.imageLink = imageLink;
     }
 
+    public String getInformation() { return title + " - " + author; }
+
     public int getYear() {
         return this.year;
     }

@@ -1,5 +1,7 @@
 package org.example.uet_library.Controllers;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -18,16 +20,26 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 import org.example.uet_library.SessionManager;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.sql.SQLOutput;
 
 /**
  * This is a feature for users.
  */
 public class BorrowDocumentController {
+
+    @FXML
+    private AnchorPane root;
 
     @FXML
     public Label documentsLabel;
@@ -51,8 +63,43 @@ public class BorrowDocumentController {
     @FXML
     private TableColumn<Book, String> image;
     @FXML
-    private TableColumn<Book, Void> actionColumn;  // New column for the "Borrow" button
+    private TableColumn<Book, Void> actionColumn;
     private ObservableList<Book> books;
+
+    @FXML
+    private TableColumn<Book, Void> titleAuthorColumn;
+
+    @FXML
+    private Pane slidingPane;
+
+    private void setupTitleAuthorColumn() {
+        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
+            private final VBox hbox = new VBox();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                hbox.getChildren().addAll(titleLabel, authorLabel);
+                hbox.setSpacing(3);
+
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Book book = getTableView().getItems().get(getIndex());
+                    titleLabel.setText(book.getTitle());
+                    authorLabel.setText(book.getAuthor());
+                    setGraphic(hbox);
+                }
+            }
+        });
+    }
 
     public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
@@ -83,14 +130,23 @@ public class BorrowDocumentController {
 
     // Initializes the controller
     public void initialize() {
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         waitProgress.setVisible(true);
 
+        setupTitleAuthorColumn();
         fetchFromDB();
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        slidingPane = new Pane();
+        slidingPane.setPrefWidth(400);
+        slidingPane.setPrefHeight(820);
+        slidingPane.setStyle("-fx-background-color: #505050;");
+        slidingPane.setTranslateX(980);
+        slidingPane.setTranslateY(60);
+        root.getChildren().add(slidingPane);
     }
 
     private void setupSearch() {
@@ -120,7 +176,25 @@ public class BorrowDocumentController {
 
     private void setupBorrowButton() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
-            private final Button borrowButton = new Button("Borrow");
+
+            private final Button borrowButton = new Button();
+
+            {
+                Image borrowImage = new Image(getClass().getResource("/Images/insertToCart.png").toExternalForm());
+                ImageView imageView = new ImageView(borrowImage);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                borrowButton.setGraphic(imageView);
+                borrowButton.setStyle("-fx-background-color: transparent;");
+                setStyle("-fx-alignment: CENTER;");
+                borrowButton.setStyle(borrowButton.getStyle() + "; -fx-cursor: hand;");
+
+                borrowButton.setOnAction(event -> {
+                    Book selectedBook = getTableView().getItems().get(getIndex());
+                    showQuantityDialog(selectedBook);
+                });
+            }
 
             {
                 borrowButton.setOnAction(event -> {
@@ -201,5 +275,24 @@ public class BorrowDocumentController {
             AlertHelper.showAlert(AlertType.ERROR, "Error",
                 "Database Error");
         }
+    }
+
+    private boolean isPaneOpen = false;
+
+    public void cartButtonClicked() {
+        TranslateTransition slide = new TranslateTransition(Duration.millis(300), slidingPane);
+
+        if (isPaneOpen) {
+            slide.setFromX(580);
+            slide.setToX(980);
+            isPaneOpen = false;
+
+        } else {
+            slide.setFromX(980);
+            slide.setToX(580);
+            isPaneOpen = true;
+        }
+
+        slide.play();
     }
 }
