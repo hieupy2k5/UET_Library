@@ -1,10 +1,12 @@
 package org.example.uet_library;
 
-import com.mysql.cj.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -173,6 +175,57 @@ public class BookService {
         };
     }
 
+    public Task<ObservableList<Borrow>> fetchBorrowFromDB() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return new Task<>() {
+            @Override
+            protected ObservableList<Borrow> call() throws Exception {
+                ObservableList<Borrow> borrowList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                int userID = SessionManager.getInstance().getUserId();
+                try (Connection conDB = connection.getConnection()) {
+
+                    String query = "SELECT borrow.*, books.title, books.author, books.category " +
+                        "FROM borrow " +
+                        "JOIN books ON borrow.book_id = books.ISBN " +
+                        "WHERE borrow.user_id = ?";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                    preparedStatement.setInt(1, userID);
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        String isbn = resultSet.getString("book_id");
+                        int quantity = resultSet.getInt("quantity");
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        String category = resultSet.getString("category");
+                        Timestamp borrowTimestamp = resultSet.getTimestamp("borrow_date");
+                        Timestamp returnTimestamp = resultSet.getTimestamp("return_date");
+
+                        LocalDateTime borrow_date =
+                            (borrowTimestamp != null) ? borrowTimestamp.toLocalDateTime() : null;
+                        LocalDateTime return_date =
+                            (returnTimestamp != null) ? returnTimestamp.toLocalDateTime() : null;
+
+                        String status = resultSet.getString("status");
+                        Borrow borrow = new Borrow(isbn, title, author, category, quantity,
+                            borrow_date, return_date, status);
+                        borrowList.add(borrow);
+                    }
+
+                } catch (SQLException e) {
+
+                    System.err.println("Error fetching borrow from database: " + e.getMessage());
+                    throw new Exception("Database query failed",
+                        e); // Re-throw with cause for chaining
+                }
+
+                return borrowList;
+            }
+        };
+    }
+
     public Task<Void> editBook(Book book) {
         return new Task<>() {
             @Override
@@ -235,24 +288,26 @@ public class BookService {
         }
     }
 
-    // Return books (For responsible readers who do not steal books)
-    public boolean returnBook(int userId, int bookId, int quantity) {
+    /**
+     * Return books (For responsible readers who do not steal books)
+     */
+    public boolean returnBook(int userId, String bookId, LocalDateTime borrowDate) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            // Increment # of books in db
-            String updateQuery = "UPDATE book SET quantity = quantity + ? WHERE ISBN = ?";
+            // Add the return books to library
+            String updateQuery = "UPDATE books SET quantity = quantity + (SELECT quantity FROM borrow WHERE user_id = ? AND book_id = ? AND status = 'borrowed' and borrow_date = ?) WHERE ISBN = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-            updateStmt.setInt(1, quantity);
-            updateStmt.setInt(2, bookId);
+            updateStmt.setInt(1, userId);
+            updateStmt.setString(2, bookId);
+            updateStmt.setString(3, borrowDate.toString());
+            updateStmt.setString(4, bookId);
             updateStmt.executeUpdate();
 
-            // Update the borrow record
-            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = NOW() WHERE user_id = ? AND book_id = ? AND status = 'borrowed' LIMIT ?";
-            // Why auto-formatting doesn't work with the above line??? It is too longgggggg ToT
+            // Update each selected borrow entry with the return date
+            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = NOW() WHERE book_id = ? and borrow_date = ?";
             PreparedStatement returnStmt = conn.prepareStatement(returnQuery);
-            returnStmt.setInt(1, userId);
-            returnStmt.setInt(2, bookId);
-            returnStmt.setInt(3, quantity); // Only update the specified # of return books
+            returnStmt.setString(1, bookId);
+            returnStmt.setString(2, borrowDate.toString());
             returnStmt.executeUpdate();
 
             return true;

@@ -214,7 +214,7 @@
                 <Button fx:id="button_ReturnBook"
                   alignment="BASELINE_LEFT"
                   mnemonicParsing="false"
-                  onAction="#loadManagerBookView"
+                  onAction="#loadReturnView"
                   prefHeight="57.0"
                   prefWidth="223.0"
                   styleClass="Button"
