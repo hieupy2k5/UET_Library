@@ -39,7 +39,7 @@ public class ReturnDocumentController {
     public ProgressIndicator waitProgress;
     private ObservableList<Borrow> borrowedBooks;
 
-    public void refresh() {
+    public void fetchFromDB() {
         Task<ObservableList<Borrow>> task = BookService.getInstance().fetchBorrowFromDB();
 
         // Bind progress indicator to task status
@@ -75,7 +75,7 @@ public class ReturnDocumentController {
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
 
-        refresh();
+        fetchFromDB();
     }
 
     private void setupSearch() {
@@ -163,7 +163,7 @@ public class ReturnDocumentController {
 
         if (BookService.getInstance()
             .returnBook(userID, borrowedBook.getIsbn(), borrowDate)) {
-            refresh(); // Update the table after modifying the database
+            fetchFromDB(); // Update the table after modifying the database
 
             AlertHelper.showAlert(AlertType.INFORMATION, "Return successfully",
                 String.format("You have returned %d copies of %s", quantity,

@@ -54,7 +54,7 @@ public class BorrowDocumentController {
     private TableColumn<Book, Void> actionColumn;  // New column for the "Borrow" button
     private ObservableList<Book> books;
 
-    public void refresh() {
+    public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
         // Bind progress indicator to task status
@@ -90,7 +90,7 @@ public class BorrowDocumentController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         waitProgress.setVisible(true);
 
-        refresh();
+        fetchFromDB();
     }
 
     private void setupSearch() {
@@ -193,7 +193,7 @@ public class BorrowDocumentController {
 
         // Decrement quantity in the database, update the view as necessary
         if (BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity)) {
-            refresh(); // Update the table after modifying the database
+            fetchFromDB(); // Update the table after modifying the database
 
             AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
                 String.format("You have borrowed %d copies of %s", quantity, book.getTitle()));
