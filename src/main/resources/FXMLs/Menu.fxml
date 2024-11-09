@@ -125,7 +125,17 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                 </Button>
-                <Button fx:id="button_ReturnBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Return Document" textAlignment="CENTER" textFill="WHITE">
+                <Button fx:id="button_ReturnBook"
+                  alignment="BASELINE_LEFT"
+                  mnemonicParsing="false"
+                  onAction="#loadReturnView"
+                  prefHeight="57.0"
+                  prefWidth="223.0"
+                  styleClass="Button"
+                  stylesheets="@../Styles/Menu.css"
+                  text="Return Document"
+                  textAlignment="CENTER"
+                  textFill="WHITE">
                   <cursor>
                     <Cursor fx:constant="HAND" />
                   </cursor>

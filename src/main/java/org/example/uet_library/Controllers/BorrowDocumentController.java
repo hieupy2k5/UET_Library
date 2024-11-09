@@ -248,7 +248,7 @@ public class BorrowDocumentController {
                 borrowBook(book, quantity);
             } else if (quantity.equals(0)) {
                 AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
-                    "So are you gonna borrow books or not?");
+                    "You came here to borrow 0 book? None? Seriously?");
             } else if (book.getQuantity() == 0) {
                 AlertHelper.showAlert(AlertType.ERROR, "Out of stock",
                     "Sorry, we ran out of that book in stock today.");

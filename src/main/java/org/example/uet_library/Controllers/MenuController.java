@@ -163,6 +163,11 @@ public class MenuController implements Initializable {
         loadView("/FXMLs/BorrowDocumentView.fxml");
     }
 
+    @FXML
+    public void loadReturnView(ActionEvent event) throws Exception {
+        loadView("/FXMLs/ReturnDocumentView.fxml");
+    }
+
     public void setContent(Parent root) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(root);
