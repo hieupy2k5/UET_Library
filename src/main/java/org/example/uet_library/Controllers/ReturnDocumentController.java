@@ -6,21 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.BookService;
-import org.example.uet_library.Borrow;
-import org.example.uet_library.SessionManager;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import org.example.uet_library.*;
 
 /**
  * This is a feature for users
@@ -38,6 +31,38 @@ public class ReturnDocumentController {
     public TableColumn<Borrow, Void> actionColumn;
     public ProgressIndicator waitProgress;
     private ObservableList<Borrow> borrowedBooks;
+
+    @FXML
+    private TableColumn<Borrow, Void> titleAuthorColumn;
+
+    private void setupTitleAuthorColumn() {
+        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
+            private final VBox hbox = new VBox();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                hbox.getChildren().addAll(titleLabel, authorLabel);
+                hbox.setSpacing(3);
+
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Borrow borrow = getTableView().getItems().get(getIndex());
+                    titleLabel.setText(borrow.getTitle());
+                    authorLabel.setText(borrow.getAuthor());
+                    setGraphic(hbox);
+                }
+            }
+        });
+    }
 
     public void fetchFromDB() {
         Task<ObservableList<Borrow>> task = BookService.getInstance().fetchBorrowFromDB();
@@ -78,15 +103,18 @@ public class ReturnDocumentController {
     }
 
     public void initialize() {
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+//        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+//        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
 
+        setupTitleAuthorColumn();
         tableView.getSortOrder().add(returnDateColumn);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
 
         fetchFromDB();
     }
@@ -118,9 +146,19 @@ public class ReturnDocumentController {
 
     private void setUpReturnButton() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
-            private final Button returnButton = new Button("Return");
+            private final Button returnButton = new Button();
 
             {
+                Image returnImage = new Image(getClass().getResource("/Images/returnBook.png").toExternalForm());
+                ImageView imageView = new ImageView(returnImage);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+
+                returnButton.setGraphic(imageView);
+                returnButton.setStyle("-fx-background-color: transparent;");
+                setStyle("-fx-alignment: CENTER;");
+                returnButton.setStyle(returnButton.getStyle() + "; -fx-cursor: hand;");
+
                 returnButton.setOnAction(event -> {
                     Borrow selectedBook = getTableView().getItems().get(getIndex());
                     Integer q = selectedBook.getQuantity();
