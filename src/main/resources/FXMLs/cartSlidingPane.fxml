@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="820.0" prefWidth="400.0" style="-fx-background-color: #505050;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" >
+    <children>
+        <Label contentDisplay="CENTER" layoutX="86.0" layoutY="60.0" text="Document Cart" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="32.0" />
+            </font>
+        </Label>
+        <Button layoutX="173.0" layoutY="746.0" mnemonicParsing="false" onAction="#borrowClicked" text="Borrow">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+      <TableView fx:id="selectedBooksTable" layoutY="128.0" prefHeight="600.0" prefWidth="400.0">
+        <columns>
+          <TableColumn fx:id="detailColumn" prefWidth="75.0" text="Detail" />
+          <TableColumn fx:id="quantityBorrowedColumn" prefWidth="75.0" text="Quantity" />
+        </columns>
+      </TableView>
+    </children>
+</AnchorPane>
