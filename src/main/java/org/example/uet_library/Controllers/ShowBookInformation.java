@@ -18,7 +18,6 @@ import org.example.uet_library.Book;
 import javafx.scene.text.Text;
 import org.example.uet_library.BookService;
 
-import javax.smartcardio.Card;
 import java.io.IOException;
 
 public class ShowBookInformation {

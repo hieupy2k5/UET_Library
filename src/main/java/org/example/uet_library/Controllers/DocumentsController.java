@@ -14,6 +14,9 @@ import org.example.uet_library.BookService;
 
 import java.io.IOException;
 
+/**
+ * This is a feature for admins.
+ */
 public class DocumentsController {
 
     @FXML
@@ -21,7 +24,7 @@ public class DocumentsController {
 
     @FXML
     public void BackOnAction(ActionEvent event) throws IOException {
-        ChangeSceneMachine.getInstance().changeScene("Menu.fxml",event,1180,850);
+//        ChangeSceneMachine.getInstance().changeScene("Menu.fxml",event,1180,900);
     }
 
     ObservableList<Book> books;
@@ -78,7 +81,7 @@ public class DocumentsController {
             });
         });
 
-        // when task success full, show
+        // when task successful, show
         task.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 books = task.getValue();
@@ -89,7 +92,7 @@ public class DocumentsController {
             });
         });
 
-        // when task fail, show error and turn of
+        // when task fail, show error and turn off
         task.setOnFailed(event -> {
             Platform.runLater(() -> {
                 System.err.println("Error fetching books from database: " + task.getException().getMessage());

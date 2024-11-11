@@ -11,13 +11,13 @@
   maxWidth="-Infinity"
   minHeight="-Infinity"
   minWidth="-Infinity"
-  prefHeight="800.0"
+  prefHeight="900.0"
   prefWidth="980.0"
   style="-fx-background-color: #EAEEF4;"
-  xmlns="http://javafx.com/javafx/22"
+  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <VBox layoutX="0.0" layoutY="0.0" prefHeight="800.0" prefWidth="980.0">
+    <VBox layoutX="0.0" layoutY="0.0" prefHeight="900.0" prefWidth="980.0">
       <children>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #96CBCE;">
           <children>

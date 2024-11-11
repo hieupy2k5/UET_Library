@@ -14,10 +14,10 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane maxWidth="980.0"
   minWidth="980.0"
-  prefHeight="800.0"
+  prefHeight="900.0"
   prefWidth="980.0"
   style="-fx-background-color: #404040;"
-  xmlns="http://javafx.com/javafx/22"
+  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="org.example.uet_library.Controllers.BookAPISearch">
   <children>

@@ -7,8 +7,7 @@ module org.example.uet_library {
     requires io.github.cdimascio.dotenv.java;
     requires bcrypt;
     requires org.json;
-    requires java.smartcardio;
-    requires kotlin.stdlib;
+
 
     opens org.example.uet_library to javafx.fxml;
     exports org.example.uet_library;

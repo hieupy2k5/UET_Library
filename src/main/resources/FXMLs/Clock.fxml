@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<VBox alignment="CENTER" minHeight="150" minWidth="150" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ClockController">
+<VBox alignment="CENTER" minHeight="150" minWidth="150" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ClockController">
     <Group fx:id="analogueClock">
         <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="-75.0" layoutY="-74.0" pickOnBounds="true" preserveRatio="true">
             

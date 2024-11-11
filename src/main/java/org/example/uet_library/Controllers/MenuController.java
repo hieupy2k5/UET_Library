@@ -18,11 +18,21 @@ import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
 
+    @FXML
     public AnchorPane MenuBar;
+
     @FXML
     public VBox Clock;
+
+    @FXML
+    public Button button_ReturnBook;
+
+    @FXML
+    public Button button_BorrowBook;
+
     @FXML
     private Button button_BookShow;
+
     @FXML
     public Button button_AddBook;
 
@@ -36,6 +46,9 @@ public class MenuController implements Initializable {
     public Button button_Home;
 
     @FXML
+    public Button button_Settings;
+
+    @FXML
     public AnchorPane contentPane;
 
     @FXML
@@ -46,6 +59,23 @@ public class MenuController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadClock();
         loadView("/FXMLs/HomeView.fxml");
+    }
+
+    public void configureMenu(boolean isAdmin) {
+        if (isAdmin) {
+            button_BorrowBook.setVisible(false);
+            button_BorrowBook.setManaged(false);
+
+            button_ReturnBook.setVisible(false);
+            button_ReturnBook.setManaged(false);
+
+        } else {
+            button_AddBook.setVisible(false);
+            button_AddBook.setManaged(false);
+
+            button_ManagerBook.setVisible(false);
+            button_ManagerBook.setManaged(false);
+        }
     }
 
     public void loadClock() {
@@ -78,6 +108,11 @@ public class MenuController implements Initializable {
     public void loadBookAPISearchView() {
         loadView("/FXMLs/BookAPISearch.fxml");
         BookAPISearch.menuController = this;
+    }
+
+    @FXML
+    public void loadSettingsView() {
+        loadView("/FXMLs/Settings.fxml");
     }
 
 
@@ -121,6 +156,16 @@ public class MenuController implements Initializable {
         Stage newStage = new Stage();
         newStage.setScene(logInScene);
         newStage.show();
+    }
+
+    @FXML
+    public void loadBorrowView(ActionEvent event) {
+        loadView("/FXMLs/BorrowDocumentView.fxml");
+    }
+
+    @FXML
+    public void loadReturnView(ActionEvent event) throws Exception {
+        loadView("/FXMLs/ReturnDocumentView.fxml");
     }
 
     public void setContent(Parent root) {

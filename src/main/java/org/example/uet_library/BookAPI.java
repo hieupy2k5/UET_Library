@@ -1,14 +1,14 @@
 package org.example.uet_library;
 
+import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 public class BookAPI {
+
     private static final String ApiKey = "AIzaSyC8Wq4sinCA-uJQp-QP4hrLB06K--OwYP0";
     private static String Baseurl = "https://www.googleapis.com/books/v1/volumes?";
     private final OkHttpClient client = new OkHttpClient();
@@ -23,8 +23,8 @@ public class BookAPI {
         String url = Baseurl + query + "&key=" + ApiKey + "&maxResults=3";
 
         Request request = new Request.Builder()
-                .url(url)
-                .build();
+            .url(url)
+            .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {

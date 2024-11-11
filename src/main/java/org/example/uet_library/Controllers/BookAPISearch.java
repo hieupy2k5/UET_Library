@@ -1,36 +1,38 @@
 package org.example.uet_library.Controllers;
 
+import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URL;
-import java.time.Year;
-
 public class BookAPISearch {
+
     public static MenuController menuController;
     private Book selectedBook;
 
     public void setMenuController(MenuController menuController) {
         this.menuController = menuController;
     }
+
     @FXML
     private Button AddBookOnAction;
 
@@ -56,7 +58,7 @@ public class BookAPISearch {
     private TableColumn<Book, String> type;
 
     @FXML
-    private TableColumn<Book,Integer> year;
+    private TableColumn<Book, Integer> year;
 
     @FXML
     private ChoiceBox<String> filterSearch;
@@ -64,17 +66,10 @@ public class BookAPISearch {
     @FXML
     public void searchBookOnAction(ActionEvent event) {
         if (queryBook.getText().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please enter a search term");
-            alert.showAndWait();
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please enter a search term");
         } else if (filterSearch.getValue() == null || filterSearch.getValue().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("You want to search by isbn, author or title ? please select your type");
-            alert.showAndWait();
+            AlertHelper.showAlert(AlertType.ERROR, "Error",
+                "You want to search by ISBN, author or title ? please select your type");
         } else {
             searchBook(queryBook.getText(), filterSearch.getValue());
         }
@@ -98,16 +93,17 @@ public class BookAPISearch {
 
     public void updateTableView(JSONArray bookArrJson) {
         ObservableList<Book> bookList = FXCollections.observableArrayList();
-        for(int i = 0; i < bookArrJson.length(); i++) {
+        for (int i = 0; i < bookArrJson.length(); i++) {
             JSONObject bookJson = bookArrJson.getJSONObject(i).getJSONObject("volumeInfo");
-            if(bookJson != null) {
+            if (bookJson != null) {
                 JSONObject volumeInfo = bookJson.optJSONObject("volumeInfo");
                 String title = bookJson.optString("title", "No title");
                 JSONArray authors = bookJson.optJSONArray("authors");
                 String author = (authors != null) ? authors.getString(0) : "No author";
                 String isbn = null;
-                if(bookJson.optJSONArray("industryIdentifiers") != null) {
-                    isbn = bookJson.optJSONArray("industryIdentifiers").getJSONObject(0).getString("identifier");
+                if (bookJson.optJSONArray("industryIdentifiers") != null) {
+                    isbn = bookJson.optJSONArray("industryIdentifiers").getJSONObject(0)
+                        .getString("identifier");
                 }
                 JSONArray categories = bookJson.optJSONArray("categories");
                 String type = null;
@@ -119,21 +115,21 @@ public class BookAPISearch {
                 String imageUrl = (imageLinks != null) ? imageLinks.optString("thumbnail", "") : "";
 
                 int year = 0;
-                if(bookJson.has("publishedDate")) {
+                if (bookJson.has("publishedDate")) {
                     String pushlishedDate = bookJson.optString("publishedDate");
                     if (pushlishedDate.length() >= 4) {
                         year = Integer.parseInt(pushlishedDate.substring(0, 4));
                     }
                 }
                 String url = "";
-                if(bookJson.has("infoLink")) {
-                    url = bookJson.optString("infoLink","");
+                if (bookJson.has("infoLink")) {
+                    url = bookJson.optString("infoLink", "");
                 }
                 String description = "";
-                if(bookJson.has("description")) {
-                    description = bookJson.optString("description","");
+                if (bookJson.has("description")) {
+                    description = bookJson.optString("description", "");
                 }
-                bookList.add(new Book(title, author, isbn,imageUrl, year, type, url,description));
+                bookList.add(new Book(title, author, isbn, imageUrl, year, type, url, description));
             }
         }
         tableOfBook.setItems(bookList);
@@ -142,11 +138,10 @@ public class BookAPISearch {
     @FXML
     public void initialize() {
 
-        if(filterSearch != null) {
-            filterSearch.getItems().addAll("Title", "Author","ISBN");
+        if (filterSearch != null) {
+            filterSearch.getItems().addAll("title", "author", "ISBN");
             System.out.println(filterSearch.getItems());
         }
-
 
         tittle.setCellValueFactory(new PropertyValueFactory<>("title"));
         author.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -154,17 +149,17 @@ public class BookAPISearch {
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-
         image.setCellValueFactory(new PropertyValueFactory<>("imageLink"));
-        image.setCellFactory(column ->  new TableCell<Book, String>(){
+        image.setCellFactory(column -> new TableCell<Book, String>() {
             private final ImageView imageView = new ImageView();
+
             @Override
             protected void updateItem(String imageLink, boolean empty) {
                 super.updateItem(imageLink, empty);
-                if(empty || imageLink == null || imageLink.isEmpty()) {
+                if (empty || imageLink == null || imageLink.isEmpty()) {
                     setGraphic(null);
                 } else {
-                    Image imageAdd = new Image(imageLink,70,70, true, true);
+                    Image imageAdd = new Image(imageLink, 70, 70, true, true);
                     imageView.setImage(imageAdd);
                     setGraphic(imageView);
                 }
@@ -182,13 +177,8 @@ public class BookAPISearch {
     public void AddBookOnAction(ActionEvent actionEvent) throws IOException {
 
         if (selectedBook == null || tableOfBook.getSelectionModel().getSelectedItem() == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a search term");
-            alert.showAndWait();
-        }
-        else {
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please enter a search term");
+        } else {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
                 Parent root = loader.load();
