@@ -1,8 +1,8 @@
 .MenuBar {
     -fx-background-color: #333A56;
     -fx-border-width: 2px 2px 2px 2px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    /*-fx-border-radius: 10px;*/
+    /*-fx-background-radius: 10px;*/
     -fx-border-style: solid;
     -fx-border-color: #333A56;
 }
@@ -19,13 +19,14 @@
     -fx-text-alignment: right;
 }
 
-.logout {
+.OtherButton {
     -fx-background-color: #2A2A2A;
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 60px;
     -fx-background-radius: 60px;
     -fx-border-style: solid;
     -fx-border-color: #2A2A2A;
+    -font-size: 14px;
 }
 
 .pane {
@@ -37,6 +38,30 @@
     -fx-border-color: #A4ABEE;
 }
 
+.Setting {
+    -fx-background-color: #262B40;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-style: solid;
+    -fx-border-color: #262B40;
+}
+
 .alata-text{
     -fx-font-family: "Alata";
+}
+
+.setting_textField {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #858585;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+}
+
+.Save_Change_Button {
+    -fx-background-color: #5A6076;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-border-style: solid;
+    -fx-border-color: #333A56;
+    -fx-text-alignment: right;
 }

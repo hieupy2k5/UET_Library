@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
+
     public Connection connection;
+
     public Connection getConnection() {
         Config config = Config.getInstance();
         String dbName = config.get("DATABASE_NAME");

@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
+<BorderPane prefHeight="850.0" prefWidth="1180.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
     <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" BorderPane.alignment="CENTER">
       <children>
-        <AnchorPane fx:id="MenuBar" prefHeight="859.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
+        <AnchorPane fx:id="MenuBar" prefHeight="900.0" prefWidth="141.0" styleClass="MenuBar" stylesheets="@../Styles/Menu.css">
           <children>
-            <Button fx:id="button_LogOut" layoutX="27.0" layoutY="784.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="142.0" styleClass="logout" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
+            <Button fx:id="button_LogOut" layoutX="30.0" layoutY="770.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="40.0" prefWidth="140.0" styleClass="OtherButton" stylesheets="@../Styles/Menu.css" text="Log Out" textAlignment="JUSTIFY" textFill="WHITE">
               <cursor>
                 <Cursor fx:constant="HAND" />
               </cursor>
@@ -26,73 +26,150 @@
                     <Image url="@../Images/logoutIcon.png" />
                   </image>
                 </ImageView>
+
               </graphic>
+              <font>
+                <Font size="14.0" />
+              </font>
             </Button>
-                  <VBox fx:id="Clock" layoutX="53.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
-                  <VBox fx:id="Buttons_Container" layoutX="-1.0" layoutY="245.0" prefHeight="502.0" prefWidth="212.0" spacing="15.0">
-                     <children>
-                  <Button fx:id="button_Home" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="276.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
-                    <graphic>
-                      <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                          <Image url="@../Images/home_icon.png" />
-                        </image>
-                      </ImageView>
-                    </graphic>
-                    <padding>
-                      <Insets left="20.0" />
-                    </padding>
-                  </Button>
-                  <Button fx:id="button_AddBook" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="243.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Add Book" textAlignment="RIGHT" textFill="WHITE">
-                    <cursor>
-                      <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <graphic>
-                      <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                          <Image url="@../Images/bookAddIcon.png" />
-                        </image>
-                      </ImageView>
-                    </graphic>
-                    <padding>
-                      <Insets left="20.0" />
-                    </padding>
-                  </Button>
-                  <Button fx:id="button_BookShow" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadBookView" prefHeight="57.0" prefWidth="243.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Show Book" textAlignment="CENTER" textFill="WHITE">
-                    <cursor>
-                      <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <graphic>
-                      <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                          <Image url="@../Images/bookShowIcon.png" />
-                        </image>
-                      </ImageView>
-                    </graphic>
-                    <padding>
-                      <Insets left="20.0" />
-                    </padding>
-                  </Button>
-                  <Button fx:id="button_ManagerBook" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="223.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Book Manager" textAlignment="CENTER" textFill="WHITE">
-                    <cursor>
-                      <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <graphic>
-                      <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                          <Image url="@../Images/bookManagerIcon.png" />
-                        </image>
-                      </ImageView>
-                    </graphic>
-                    <font>
-                      <Font size="14.0" />
-                    </font>
-                    <padding>
-                      <Insets left="20.0" />
-                    </padding>
-                  </Button>
-                     </children>
-                  </VBox>
+            <VBox fx:id="Clock" layoutX="53.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <VBox fx:id="Buttons_Container" layoutX="-1.0" layoutY="245.0" prefHeight="502.0" prefWidth="200.0" spacing="15.0">
+              <children>
+                <Button fx:id="button_Home" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/home_icon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+                <Button fx:id="button_AddBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Add Book" textAlignment="RIGHT" textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/bookAddIcon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+                <Button fx:id="button_BookShow" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadBookView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Show Book" textAlignment="CENTER" textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/bookShowIcon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+                <Button fx:id="button_ManagerBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadManagerBookView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Book Manager" textAlignment="CENTER" textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/bookManagerIcon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+                <Button fx:id="button_BorrowBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadBorrowView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Borrow Document" textAlignment="CENTER" textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/bookManagerIcon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+                <Button fx:id="button_ReturnBook"
+                  alignment="BASELINE_LEFT"
+                  mnemonicParsing="false"
+                  onAction="#loadReturnView"
+                  prefHeight="57.0"
+                  prefWidth="223.0"
+                  styleClass="Button"
+                  stylesheets="@../Styles/Menu.css"
+                  text="Return Document"
+                  textAlignment="CENTER"
+                  textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/bookManagerIcon.png" />
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0" />
+                  </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                </Button>
+              </children>
+            </VBox>
+            <Button fx:id="button_Settings" layoutX="30.0" layoutY="717.0" mnemonicParsing="false" onAction="#loadSettingsView" prefHeight="40.0" prefWidth="140.0" styleClass="OtherButton" stylesheets="@../Styles/Menu.css" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">
+              <cursor>
+                <Cursor fx:constant="HAND" />
+              </cursor>
+              <graphic>
+                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@../Images/pinionIcon.png" />
+                  </image>
+                </ImageView>
+              </graphic>
+              <font>
+                <Font size="14.0" />
+              </font>
+            </Button>
           </children>
         </AnchorPane>
       </children>

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Database;
 
 public class UserController {
@@ -32,8 +33,8 @@ public class UserController {
         }
     }
 
-    public boolean checkLoginCredentials(String username, String password) {
-        String selectUserQuery = "SELECT * FROM users WHERE username = ?";
+    public Integer checkLoginCredentials(String username, String password) {
+        String selectUserQuery = "SELECT id, password FROM users WHERE username = ?";
         Database connection = new Database();
         try(Connection conDB = connection.getConnection()) {
             PreparedStatement statement = conDB.prepareStatement(selectUserQuery);
@@ -44,13 +45,14 @@ public class UserController {
                 String storedPassword = resultSet.getString("password");
 
                 if (BCrypt.verifyer().verify(password.toCharArray(), storedPassword).verified) {
-                    return true;
+                    return resultSet.getInt("id");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
 
-        return false;
+        return null;
     }
 }

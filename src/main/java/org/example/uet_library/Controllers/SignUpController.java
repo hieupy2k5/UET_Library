@@ -46,12 +46,7 @@ public class SignUpController {
     }
 
     public void handleLogInButton(javafx.scene.input.MouseEvent event) throws Exception {
-        Parent logInScreen = FXMLLoader.load(getClass().getResource("/FXMLs/LogIn.fxml"));
-        Scene logInScene = new Scene(logInScreen);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(logInScene);
-        window.show();
+        ChangeSceneMachine.getInstance().changeScene("LogIn.fxml", event, -1, -1);
     }
 
 }
