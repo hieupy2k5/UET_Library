@@ -18,6 +18,12 @@ import javafx.stage.Stage;
 
 public class MenuController implements Initializable {
 
+    private boolean isAdmin = false;
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
     @FXML
     public AnchorPane MenuBar;
 
@@ -43,7 +49,7 @@ public class MenuController implements Initializable {
     public Button button_LogOut;
 
     @FXML
-    public Button button_Home;
+    public Button button_Home_Ad;
 
     @FXML
     public Button button_Settings;
@@ -54,11 +60,17 @@ public class MenuController implements Initializable {
     @FXML
     public Label welcomeText;
 
+    @FXML
+    public Button button_Home_User;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadClock();
-        loadView("/FXMLs/HomeView.fxml");
+        if (this.isAdmin) {
+            this.loadHomeView();
+        } else {
+            this.loadHomeUser();
+        }
     }
 
     public void configureMenu(boolean isAdmin) {
@@ -69,12 +81,19 @@ public class MenuController implements Initializable {
             button_ReturnBook.setVisible(false);
             button_ReturnBook.setManaged(false);
 
+            button_Home_User.setVisible(false);
+            button_Home_User.setManaged(false);
+            this.setAdmin(isAdmin);
         } else {
             button_AddBook.setVisible(false);
             button_AddBook.setManaged(false);
 
             button_ManagerBook.setVisible(false);
             button_ManagerBook.setManaged(false);
+
+            button_Home_Ad.setVisible(false);
+            button_Home_Ad.setManaged(false);
+            this.setAdmin(isAdmin);
         }
     }
 
@@ -98,6 +117,12 @@ public class MenuController implements Initializable {
     public void loadBookView(ActionEvent event) throws IOException {
         loadView("/FXMLs/BooksView.fxml");
     }
+
+    @FXML
+    public void loadHomeUser() {
+        loadView("/FXMLs/UserHome.fxml");
+    }
+
 
     @FXML
     public void loadManagerBookView() {

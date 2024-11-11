@@ -12,10 +12,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Login.fxml"));
         Parent root = loader.load();
-        UserHomeController userHomeController = loader.getController();
-        userHomeController.setPrimaryStage(primaryStage);
+//        UserHomeController userHomeController = loader.getController();
+//        userHomeController.setPrimaryStage(primaryStage);
         Font.loadFont(
             getClass().getResource("/Fonts/BlackOpsOne-Regular.ttf").toExternalForm(),
             14

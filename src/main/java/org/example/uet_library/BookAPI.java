@@ -10,34 +10,39 @@ import org.json.JSONObject;
 public class BookAPI {
 
     private static final String ApiKey = "AIzaSyC8Wq4sinCA-uJQp-QP4hrLB06K--OwYP0";
-    private static String Baseurl = "https://www.googleapis.com/books/v1/volumes?";
     private final OkHttpClient client = new OkHttpClient();
 
     public JSONArray fetchBooks(String query, String filter) {
+        String baseUrl = "https://www.googleapis.com/books/v1/volumes?q=";
+
+        // Construct the URL based on the filter
         switch (filter) {
-            case "Title" -> Baseurl = "https://www.googleapis.com/books/v1/volumes?q=";
-            case "Author" -> Baseurl = "https://www.googleapis.com/books/v1/volumes?q=author";
-            case "ISBN" -> Baseurl = "https://www.googleapis.com/books/v1/volumes?q=isbn";
+            case "Title" -> baseUrl += "intitle:" + query;
+            case "Author" -> baseUrl += "inauthor:" + query;
+            case "ISBN" -> baseUrl += "isbn:" + query;
+            default -> baseUrl += query; // Default case for generic search
         }
 
-        String url = Baseurl + query + "&key=" + ApiKey + "&maxResults=3";
+        String url = baseUrl + "&key=" + ApiKey + "&maxResults=3";
+
 
         Request request = new Request.Builder()
-            .url(url)
-            .build();
+                .url(url)
+                .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                throw new IOException("Unexpected response code: " + response);
             }
 
             String json = response.body().string();
             JSONObject jsonObject = new JSONObject(json);
 
-            return jsonObject.getJSONArray("items");
+            return jsonObject.optJSONArray("items") != null ? jsonObject.getJSONArray("items") : new JSONArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return new JSONArray();
     }
 }

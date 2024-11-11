@@ -70,7 +70,7 @@ public class BookService {
         return new Task<>() {
             @Override
             protected Void call() throws Exception {
-                String queryDelete = "DELETE FROM book WHERE ISBN= ?";
+                String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
@@ -85,7 +85,7 @@ public class BookService {
     }
 
     public boolean isExitsBook(String isbn) {
-        String query = "SELECT COUNT(*) FROM book WHERE ISBN = ?";
+        String query = "SELECT COUNT(*) FROM books WHERE ISBN = ?";
         Database connection = new Database();
         try (Connection conDB = connection.getConnection()) {
             PreparedStatement preparedStatement = conDB.prepareStatement(query);
@@ -151,9 +151,9 @@ public class BookService {
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("yearpublished"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
                         String isbn = resultSet.getString("ISBN");
-                        String imageUrl = resultSet.getString("ImageUrl");
+                        String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);

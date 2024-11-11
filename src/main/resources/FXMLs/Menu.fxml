@@ -35,7 +35,7 @@
             <VBox fx:id="Clock" layoutX="53.0" layoutY="46.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="600.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
             <VBox fx:id="Buttons_Container" layoutX="-1.0" layoutY="245.0" prefHeight="502.0" prefWidth="200.0" spacing="15.0">
               <children>
-                <Button fx:id="button_Home" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
+                <Button fx:id="button_Home_Ad" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadHomeView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
                   <cursor>
                     <Cursor fx:constant="HAND" />
                   </cursor>
@@ -53,6 +53,21 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                 </Button>
+                        <Button fx:id="button_Home_User" alignment="BASELINE_LEFT" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadHomeUser" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/home_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
                 <Button fx:id="button_AddBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Add Book" textAlignment="RIGHT" textFill="WHITE">
                   <cursor>
                     <Cursor fx:constant="HAND" />
@@ -125,17 +140,7 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                 </Button>
-                <Button fx:id="button_ReturnBook"
-                  alignment="BASELINE_LEFT"
-                  mnemonicParsing="false"
-                  onAction="#loadReturnView"
-                  prefHeight="57.0"
-                  prefWidth="223.0"
-                  styleClass="Button"
-                  stylesheets="@../Styles/Menu.css"
-                  text="Return Document"
-                  textAlignment="CENTER"
-                  textFill="WHITE">
+                <Button fx:id="button_ReturnBook" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#loadReturnView" prefHeight="57.0" prefWidth="223.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Return Document" textAlignment="CENTER" textFill="WHITE">
                   <cursor>
                     <Cursor fx:constant="HAND" />
                   </cursor>
