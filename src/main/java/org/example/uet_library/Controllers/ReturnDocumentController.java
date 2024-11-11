@@ -165,7 +165,7 @@ public class ReturnDocumentController {
 
                     if (selectedBook.getReturnDate() != null) {
                         AlertHelper.showAlert(AlertType.WARNING, "Already returned",
-                            String.format("You already have returned %s",
+                            String.format("You have already returned %s",
                                 q.equals(1) ? "it" : "them"));
                     } else {
                         showQuantityDialog(selectedBook);
