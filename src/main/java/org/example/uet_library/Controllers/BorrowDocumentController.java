@@ -1,9 +1,12 @@
 package org.example.uet_library.Controllers;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
@@ -21,7 +24,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.uet_library.AlertHelper;
@@ -31,13 +33,21 @@ import org.example.uet_library.SessionManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.sql.SQLOutput;
+import java.util.Map;
 
 /**
  * This is a feature for users.
  */
 public class BorrowDocumentController {
 
+    @FXML
+    public TableView<Map.Entry<Book, Integer>> selectedBooksTable;
+
+    @FXML
+    public TableColumn<Map.Entry<Book, Integer>, String> detailColumn;
+
+    @FXML
+    public TableColumn<Map.Entry<Book, Integer>, Integer> quantityBorrowedColumn;
     @FXML
     private AnchorPane root;
 
@@ -70,7 +80,7 @@ public class BorrowDocumentController {
     private TableColumn<Book, Void> titleAuthorColumn;
 
     @FXML
-    private Pane slidingPane;
+    private AnchorPane slidingPane;
 
     private void setupTitleAuthorColumn() {
         titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
@@ -140,13 +150,12 @@ public class BorrowDocumentController {
         fetchFromDB();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        slidingPane = new Pane();
-        slidingPane.setPrefWidth(400);
-        slidingPane.setPrefHeight(820);
-        slidingPane.setStyle("-fx-background-color: #505050;");
-        slidingPane.setTranslateX(980);
-        slidingPane.setTranslateY(60);
-        root.getChildren().add(slidingPane);
+
+        slidingPane.setTranslateX(900);
+        slidingPane.setTranslateY(0);
+
+
+        selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private void setupSearch() {
@@ -176,7 +185,6 @@ public class BorrowDocumentController {
 
     private void setupBorrowButton() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
-
             private final Button borrowButton = new Button();
 
             {
@@ -184,19 +192,9 @@ public class BorrowDocumentController {
                 ImageView imageView = new ImageView(borrowImage);
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
-
                 borrowButton.setGraphic(imageView);
-                borrowButton.setStyle("-fx-background-color: transparent;");
-                setStyle("-fx-alignment: CENTER;");
-                borrowButton.setStyle(borrowButton.getStyle() + "; -fx-cursor: hand;");
+                borrowButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
-                borrowButton.setOnAction(event -> {
-                    Book selectedBook = getTableView().getItems().get(getIndex());
-                    showQuantityDialog(selectedBook);
-                });
-            }
-
-            {
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
                     showQuantityDialog(selectedBook);
@@ -214,6 +212,7 @@ public class BorrowDocumentController {
             }
         });
     }
+
 
     private void showQuantityDialog(Book book) {
         Dialog<Integer> dialog = new Dialog<>();
@@ -245,7 +244,7 @@ public class BorrowDocumentController {
 
         dialog.showAndWait().ifPresent(quantity -> {
             if (quantity > 0 && quantity <= book.getQuantity()) {
-                borrowBook(book, quantity);
+                selectedBooksMap.put(book, quantity);
             } else if (quantity.equals(0)) {
                 AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
                     "You came here to borrow 0 book? None? Seriously?");
@@ -262,37 +261,92 @@ public class BorrowDocumentController {
         });
     }
 
-    private void borrowBook(Book book, int quantity) {
+    private void updateSelectedBooksTable() {
+        ObservableList<Map.Entry<Book, Integer>> selectedBooksList = FXCollections.observableArrayList(selectedBooksMap.entrySet());
+
+        selectedBooksTable.setItems(selectedBooksList);
+
+        //detailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey().getTitle()));
+        detailColumn.setCellFactory(column -> new TableCell<Map.Entry<Book, Integer>, String>() {
+            private final VBox hbox = new VBox();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                hbox.getChildren().addAll(titleLabel, authorLabel);
+                hbox.setSpacing(3);
+
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || getTableRow() == null) {
+                    setGraphic(null);
+                } else {
+                    Map.Entry<Book, Integer> entry = getTableRow().getItem();
+                    Book book = entry.getKey();
+
+                    titleLabel.setText(book.getTitle());
+                    authorLabel.setText(book.getAuthor());
+                    setGraphic(hbox);
+                }
+            }
+        });
+        quantityBorrowedColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getValue()).asObject());
+    }
+
+
+    @FXML
+    private void borrowAllBooks() {
         int userID = SessionManager.getInstance().getUserId();
 
-        // Decrement quantity in the database, update the view as necessary
-        if (BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity)) {
-            fetchFromDB(); // Update the table after modifying the database
-
-            AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
-                String.format("You have borrowed %d copies of %s", quantity, book.getTitle()));
-        } else {
-            AlertHelper.showAlert(AlertType.ERROR, "Error",
-                "Database Error");
+        if (selectedBooksMap.isEmpty()) {
+            AlertHelper.showAlert(AlertType.INFORMATION, "Are you forgot to do something ?","You haven't add any book to your cart");
+            return;
         }
+
+        for (Map.Entry<Book, Integer> entry : selectedBooksMap.entrySet()) {
+            Book book = entry.getKey();
+            int quantity = entry.getValue();
+
+            if (quantity > 0 && quantity <= book.getQuantity()) {
+                if (BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity)) {
+                    fetchFromDB();
+                } else {
+                    AlertHelper.showAlert(AlertType.ERROR, "Error", "Database Error");
+                    return;
+                }
+            } else {
+                AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
+                        "Invalid quantity: " + quantity + " for book " + book.getTitle());
+                return;
+            }
+        }
+
+        AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
+                "You have successfully borrowed all selected books.");
+
+        selectedBooksMap.clear();
+        cartButtonClicked();
     }
+
 
     private boolean isPaneOpen = false;
 
     public void cartButtonClicked() {
         TranslateTransition slide = new TranslateTransition(Duration.millis(300), slidingPane);
 
-        if (isPaneOpen) {
-            slide.setFromX(580);
-            slide.setToX(980);
-            isPaneOpen = false;
-
-        } else {
-            slide.setFromX(980);
-            slide.setToX(580);
-            isPaneOpen = true;
-        }
+        slide.setFromX(isPaneOpen ? 500 : 900);
+        slide.setToX(isPaneOpen ? 900 : 500);
+        isPaneOpen = !isPaneOpen;
+        updateSelectedBooksTable();
 
         slide.play();
     }
+
+    private ObservableMap<Book, Integer> selectedBooksMap = FXCollections.observableHashMap();
 }
