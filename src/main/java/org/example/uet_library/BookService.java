@@ -1,7 +1,10 @@
 package org.example.uet_library;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import kotlin.OptIn;
+import okhttp3.Call;
 import org.json.JSONArray;
 
 import javax.print.DocFlavor;
@@ -39,7 +42,7 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database connection = new Database();
-                String queryInsert = "INSERT INTO book(ISBN, Title, Author, yearpublished, imageUrl, quantity, category, QRCODE, bookLink) values(?,?,?,?,?,?,?,?,?)";
+                String queryInsert = "INSERT INTO books(ISBN, Title, Author, year_published, image_url, quantity, category, QRCODE, book_link, description) values(?,?,?,?,?,?,?,?,?,?)";
                 byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.getInfoBookLink());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
@@ -52,6 +55,7 @@ public class BookService {
                     ps.setString(7, book.getType());
                     ps.setBytes(8, qr);
                     ps.setString(9, book.getInfoBookLink());
+                    ps.setString(10, book.getDescription());
                     ps.execute();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -65,7 +69,7 @@ public class BookService {
         return new Task<>() {
             @Override
             protected Void call() throws Exception {
-                String queryDelete = "DELETE FROM book WHERE ISBN= ?";
+                String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                 Database connection = new Database();
                 try (Connection conDB =  connection.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
@@ -80,7 +84,7 @@ public class BookService {
     }
 
     public boolean isExitsBook(String isbn) {
-        String query = "SELECT COUNT(*) FROM book WHERE ISBN = ?";
+        String query = "SELECT COUNT(*) FROM books WHERE ISBN = ?";
         Database connection = new Database();
         try (Connection conDB = connection.getConnection()){
             PreparedStatement preparedStatement = conDB.prepareStatement(query);
@@ -103,16 +107,16 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     // Use PreparedStatement for protection against SQL injection
-                    String query = "SELECT * FROM book";
+                    String query = "SELECT * FROM books";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("yearpublished"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
                         String isbn = resultSet.getString("ISBN");
-                        String imageUrl = resultSet.getString("ImageUrl");
+                        String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
@@ -139,16 +143,16 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     // Use PreparedStatement for protection against SQL injection
-                    String query = "SELECT * FROM book wheel WHERE ISBN LIKE ?";
+                    String query = "SELECT * FROM books wheel WHERE ISBN LIKE ?";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, "%" + ISBN + "%");
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("yearpublished"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
                         String isbn = resultSet.getString("ISBN");
-                        String imageUrl = resultSet.getString("ImageUrl");
+                        String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
@@ -161,7 +165,6 @@ public class BookService {
                     System.err.println("Error fetching books from database: " + e.getMessage());
                     throw new Exception("Database query failed", e); // Re-throw with cause for chaining
                 }
-
                 return bookList;
             }
         };
@@ -172,7 +175,7 @@ public class BookService {
             @Override
             protected Void call() throws Exception {
                 Database database = new Database();
-                String query = "UPDATE book SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
+                String query = "UPDATE books SET title = ?, author = ?, quantity = ?, yearpublished = ?, category = ? WHERE isbn LIKE ?";
                 try(Connection conDB = database.getConnection()) {
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, book.getTitle());
@@ -198,29 +201,115 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     // Use PreparedStatement for protection against SQL injection
-                    String query = "SELECT * FROM book ORDER BY added_date DESC LIMIT 5";
+                    String query = "SELECT * FROM books ORDER BY added_at DESC LIMIT 5";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("yearpublished"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
                         String isbn = resultSet.getString("ISBN");
-                        String imageUrl = resultSet.getString("ImageUrl");
+                        String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
+                        String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
-                        //book.setqrCode(resultSet.getBytes("QRCODE"));
+                        book.setDescription(description);
                         bookList.add(book);
                     }
-
                 } catch (SQLException e) {
-                    // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books from database: " + e.getMessage());
-                    throw new Exception("Database query failed", e); // Re-throw with cause for chaining
+                    e.printStackTrace();
                 }
+                return bookList;
+            }
+        };
+    }
 
+    public Task<Integer> fetchTotalBook() {
+        return new Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    String query = "SELECT COUNT(*) FROM books";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        return resultSet.getInt("COUNT(*)");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return -1;
+            }
+        };
+    }
+
+    public Task<ObservableList<Book>> featchBookForPage(int start, int itemsPerPage) {
+        return new Task<>() {
+        @Override
+        protected ObservableList<Book> call() throws Exception {
+            ObservableList<Book> bookList = FXCollections.observableArrayList();
+            Database connection = new Database();
+            try (Connection conDB = connection.getConnection()) {
+                // Use PreparedStatement for protection against SQL injection
+                String query = "SELECT * FROM books LIMIT ? OFFSET ?";
+                PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                preparedStatement.setInt(1, itemsPerPage);
+                preparedStatement.setInt(2, start);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String title = resultSet.getString("Title");
+                    String author = resultSet.getString("Author");
+                    int year = resultSet.getInt("year_published"); // Use alias for clarity
+                    String isbn = resultSet.getString("ISBN");
+                    String imageUrl = resultSet.getString("image_url");
+                    int quantity = resultSet.getInt("quantity");
+                    String type = resultSet.getString("category");
+                    String description = resultSet.getString("description");
+                    Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                    book.setDescription(description);
+                    bookList.add(book);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return bookList;
+        }
+    };
+ }
+
+    public Task<ObservableList<Book>> featchBookForPage(Book bookCurrent) {
+        return new Task<>() {
+            @Override
+            protected ObservableList<Book> call() throws Exception {
+                ObservableList<Book> bookList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    // Use PreparedStatement for protection against SQL injection
+                    String query = "SELECT * FROM books WHERE category = ? OR author = ? OR title LIKE ?";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                    preparedStatement.setString(1,"%"+bookCurrent.getType()+"%");
+                    preparedStatement.setString(2,"%"+bookCurrent.getAuthor()+"%");
+                    preparedStatement.setString(3,"%"+bookCurrent.getTitle()+"%");
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        String title = resultSet.getString("Title");
+                        String author = resultSet.getString("Author");
+                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        String isbn = resultSet.getString("ISBN");
+                        String imageUrl = resultSet.getString("image_url");
+                        int quantity = resultSet.getInt("quantity");
+                        String type = resultSet.getString("category");
+                        String description = resultSet.getString("description");
+                        Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setDescription(description);
+                        bookList.add(book);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return bookList;
             }
         };

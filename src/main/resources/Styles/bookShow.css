@@ -1,0 +1,24 @@
+.Back_button {
+    -fx-background-color: #A4ABEE;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 40px 15px;
+    -fx-background-radius: 40px 15px;
+    -fx-border-style: solid;
+    -fx-border-color: #333A56;
+    -fx-font-family: "Black Ops One";
+    -font-size: 14px;
+    -fx-text-alignment: right;
+}
+.button {
+    -fx-background-color: rgba(250, 250, 250, 1);
+    -fx-background-radius: 15;
+    -fx-text-fill: gray;
+}
+
+.button:hover {
+    -fx-background-color: rgba(150, 150, 150, 0.5);
+}
+
+.back_image:hover {
+    -fx-background-color: rgba(150, 150, 150, 0.5);
+}

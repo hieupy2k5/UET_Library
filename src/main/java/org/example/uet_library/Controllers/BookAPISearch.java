@@ -129,7 +129,11 @@ public class BookAPISearch {
                 if(bookJson.has("infoLink")) {
                     url = bookJson.optString("infoLink","");
                 }
-                bookList.add(new Book(title, author, isbn,imageUrl, year, type, url));
+                String description = "";
+                if(bookJson.has("description")) {
+                    description = bookJson.optString("description","");
+                }
+                bookList.add(new Book(title, author, isbn,imageUrl, year, type, url,description));
             }
         }
         tableOfBook.setItems(bookList);

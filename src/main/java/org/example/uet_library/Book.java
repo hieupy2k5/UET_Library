@@ -9,6 +9,16 @@ public class Book {
     private String type;
     private byte[] qrCode;
     private String infoBookLink;
+    private String description;
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getInfoBookLink() {
         return infoBookLink;
@@ -26,7 +36,7 @@ public class Book {
         return type;
     }
 
-    public Book(String title, String author, String isbn, String imageLink, int year, String type, String infoBookLink) {
+    public Book(String title, String author, String isbn, String imageLink, int year, String type, String infoBookLink, String description) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -36,6 +46,7 @@ public class Book {
         this.quantity = 0;
         this.qrCode = null;
         this.infoBookLink = infoBookLink;
+        this.description = description;
     }
 
     public Book(String title, String author, String isbn, String imageLink, int year, String type, int quantity) {

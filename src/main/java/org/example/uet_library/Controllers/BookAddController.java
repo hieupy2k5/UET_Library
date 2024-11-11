@@ -104,8 +104,9 @@ public class BookAddController {
             String url = newBook.getImageUrl();
             Integer quantity = Integer.parseInt(quantityAdd.getText());
             String bookLink = newBook.getInfoBookLink();
-            newBook = new Book(title, author, isbn, url,year, type, bookLink);
-            //newBook.setQuantity(quantity);
+            String description = newBook.getDescription();
+            newBook = new Book(title, author, isbn, url,year, type, bookLink,description);
+            newBook.setQuantity(quantity);
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation");
             alert.setHeaderText("Are you sure you want to save this book?");
@@ -140,6 +141,20 @@ public class BookAddController {
 
         task.setOnFailed(event -> {
             System.err.println("Failed to add book: " + task.getException().getMessage());
+        });
+
+        task.setOnRunning(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAPISearch.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            menuController = BookAPISearch.menuController;
+            if (menuController != null) {
+                menuController.setContent(root);
+            }
         });
         new Thread(task).start();
 

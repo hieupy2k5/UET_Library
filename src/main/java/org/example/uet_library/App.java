@@ -6,12 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.example.uet_library.Controllers.UserHomeController;
 
 public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/LogIn.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
+        Parent root = loader.load();
+        UserHomeController userHomeController = loader.getController();
+        userHomeController.setPrimaryStage(primaryStage);
         Font.loadFont(
             getClass().getResource("/Fonts/BlackOpsOne-Regular.ttf").toExternalForm(),
             14
