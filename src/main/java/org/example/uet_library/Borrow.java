@@ -14,19 +14,10 @@ public class Borrow {
     private String title;
     private String author;
     private String category;
-
-    public Borrow(String user_id, String book_id, int quantity, LocalDateTime borrow_date,
-        LocalDateTime return_date, String status) {
-        this.user_id = user_id;
-        this.book_id = book_id;
-        this.quantity = quantity;
-        this.borrow_date = borrow_date;
-        this.return_date = return_date;
-        this.status = status;
-    }
+    private String image_url;
 
     public Borrow(String book_id, String title, String author, String category, int quantity, LocalDateTime borrow_date,
-        LocalDateTime return_date, String status) {
+        LocalDateTime return_date, String status, String image_url) {
         this.book_id = book_id;
         this.title = title;
         this.author = author;
@@ -35,6 +26,7 @@ public class Borrow {
         this.borrow_date = borrow_date;
         this.return_date = return_date;
         this.status = status;
+        this.image_url = image_url;
     }
 
     public String getAuthor() {
@@ -56,6 +48,8 @@ public class Borrow {
     public String getIsbn() {
         return book_id;
     }
+
+    public String getImageUrl() { return image_url; }
 
     public LocalDateTime getBorrowDate() {
         return borrow_date;

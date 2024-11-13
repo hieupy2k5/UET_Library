@@ -191,7 +191,7 @@ public class BookService {
                 int userID = SessionManager.getInstance().getUserId();
                 try (Connection conDB = connection.getConnection()) {
 
-                    String query = "SELECT borrow.*, books.title, books.author, books.category " +
+                    String query = "SELECT borrow.*, books.title, books.author, books.category, books.image_url " +
                         "FROM borrow " +
                         "JOIN books ON borrow.book_id = books.ISBN " +
                         "WHERE borrow.user_id = ?";
@@ -205,6 +205,7 @@ public class BookService {
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
                         String category = resultSet.getString("category");
+                        String image = resultSet.getString("image_url");
                         Timestamp borrowTimestamp = resultSet.getTimestamp("borrow_date");
                         Timestamp returnTimestamp = resultSet.getTimestamp("return_date");
 
@@ -215,7 +216,7 @@ public class BookService {
 
                         String status = resultSet.getString("status");
                         Borrow borrow = new Borrow(isbn, title, author, category, quantity,
-                            borrow_date, return_date, status);
+                            borrow_date, return_date, status, image);
                         borrowList.add(borrow);
                     }
 

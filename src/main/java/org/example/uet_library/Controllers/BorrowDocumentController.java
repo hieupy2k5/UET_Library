@@ -111,7 +111,6 @@ public class BorrowDocumentController {
         new Thread(task).start();
     }
 
-    // Initializes the controller
     public void initialize() {
 
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -131,15 +130,22 @@ public class BorrowDocumentController {
     }
 
     private void setupTitleAuthorColumn() {
+        titleAuthorColumn.setText("Document Information");
         titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
-            private final VBox hbox = new VBox();
+            private final HBox hbox = new HBox();
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
             private final Label titleLabel = new Label();
             private final Label authorLabel = new Label();
 
             {
-                hbox.getChildren().addAll(titleLabel, authorLabel);
-                hbox.setSpacing(3);
+                vbox.getChildren().addAll(titleLabel, authorLabel);
+                vbox.setSpacing(5);
+                hbox.setSpacing(15);
+                hbox.getChildren().addAll(imageView, vbox);
 
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
                 titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                 authorLabel.setStyle("-fx-font-style: italic;");
             }
@@ -147,13 +153,28 @@ public class BorrowDocumentController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getTableRow() == null) {
                     setGraphic(null);
                 } else {
                     Book book = getTableView().getItems().get(getIndex());
+
                     titleLabel.setText(book.getTitle());
                     authorLabel.setText(book.getAuthor());
                     setGraphic(hbox);
+
+                    Task<Image> loadImageTask = new Task<>() {
+                        @Override
+                        protected Image call() {
+                            return new Image(book.getImageUrl(), true);
+                        }
+                    };
+
+                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnFailed(event -> {
+                        System.err.println("Failed to load image: " + loadImageTask.getException().getMessage());
+                    });
+
+                    new Thread(loadImageTask).start();
                 }
             }
         });
