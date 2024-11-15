@@ -5,9 +5,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -16,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
@@ -23,6 +25,7 @@ import org.example.uet_library.BookService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -32,7 +35,7 @@ public class UserHomeController implements Initializable {
     private static final int ROWS = 1;
     private ObservableList<Book> books;
 
-    private Stack<Parent> sceneStack = new Stack<>(); // Đổi sang Parent
+    private Stack<Parent> sceneStack = new Stack<>(); // Storing previous scenes
     private Stage stage;
 
     @FXML
@@ -42,7 +45,7 @@ public class UserHomeController implements Initializable {
     private HBox cardLayout;
 
     @FXML
-    Pagination pagina;
+    private Pagination pagina;
 
     @FXML
     private GridPane gridPane;
@@ -59,23 +62,113 @@ public class UserHomeController implements Initializable {
 
     private MenuController menuController;
 
+    private Popup searchPopup;
+
+    private ObservableList<Book> searchBooks;
+
+    @FXML
+    private TextField searchField;
+
     public void setMenuController(MenuController menuController) {
         this.menuController = menuController;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadAllBooks();
         loadTop5Books();
-        setUpPagionation();
+        setUpPagination();
+        setUpSearchPopup();
     }
 
-    public void setUpPagionation() {
+    public void loadAllBooks() {
+        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
+        task.setOnSucceeded(e -> {
+            this.searchBooks = task.getValue();
+        });
+        task.setOnFailed(e -> {
+            System.out.println("Failed to load books: " + task.getException());
+        });
+        new Thread(task).start();
+    }
+
+    private void setUpSearchPopup() {
+        searchPopup = new Popup();
+        searchPopup.setAutoHide(true);
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty()) {
+                searchPopup.hide();
+            } else {
+                Task<ObservableList<Book>> task = BookService.getInstance().fetchBookByTitleOrAuthor(newValue);
+                task.setOnSucceeded(e -> {
+                    this.searchBooks = task.getValue();
+                    displaySearchResults(searchBooks);
+                });
+                task.setOnFailed(e -> System.out.println("Error fetching search results: " + task.getException()));
+                new Thread(task).start();
+            }
+        });
+    }
+
+    private void displaySearchResults(ObservableList<Book> books) {
+        ListView<String> listView = new ListView<>();
+        listView.setPrefWidth(400);
+        listView.setPrefHeight(Math.min(books.size(), 3) * 60);
+
+        for (int i = 0; i < Math.min(books.size(), 3); i++) {
+            Book book = books.get(i);
+            listView.getItems().add(book.getTitle());
+        }
+
+        if (books.size() > 3) {
+            Label showAll = new Label("Show all results");
+            showAll.setOnMouseClicked(event -> {
+                openAllSearchResults(searchField.getText());
+                searchPopup.hide();
+            });
+            listView.getItems().add(showAll.getText()); // Spacer for "Show all results"
+        }
+
+        listView.setOnMouseClicked(event -> {
+            if (!listView.getSelectionModel().isEmpty()) {
+                int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+                Book selectedBook = books.get(selectedIndex);
+                try {
+                    openBookDetails(selectedBook);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        searchPopup.getContent().clear();
+        searchPopup.getContent().add(listView);
+
+        if (!searchPopup.isShowing()) {
+            double xPosition = searchField.getScene().getWindow().getX() + searchField.getLayoutX() + 210;
+            double yPosition = searchField.getScene().getWindow().getY() + searchField.getLayoutY() + searchField.getHeight() + 20;
+
+            double padding = 6;
+            yPosition += padding;
+            searchPopup.show(searchField, xPosition, yPosition);
+
+            searchPopup.setWidth(searchField.getWidth() + 500);
+        }
+
+    }
+
+    private void openAllSearchResults(String query) {
+        System.out.println("Show all search results for: " + query);
+    }
+
+    public void setUpPagination() {
         Task<Integer> countPage = BookService.getInstance().fetchTotalBook();
         countPage.setOnSucceeded(event -> {
             int totalBooks = countPage.getValue();
             int pageCount = (int) Math.ceil(totalBooks / (double) ITEMS_PER_PAGE);
             pagina.setPageCount(pageCount);
-            pagina.setPageFactory(pageIndex -> createPage(pageIndex));
+            pagina.setPageFactory(this::createPage);
             pagina.setStyle("-fx-background-color: #B1DCB8");
             progressIndicator.setVisible(false);
         });
@@ -105,6 +198,7 @@ public class UserHomeController implements Initializable {
                 }
             }
         });
+        task.setOnFailed(e -> System.out.println("Failed to load top 5 books: " + task.getException()));
         new Thread(task).start();
     }
 
@@ -118,10 +212,9 @@ public class UserHomeController implements Initializable {
         newGridPane.getChildren().clear();
         newGridPane.setHgap(10);
         newGridPane.setVgap(10);
-        newGridPane.setPadding(new Insets(10, 10, 10, 10));
+        newGridPane.setPadding(new Insets(10));
         pageBox.setPrefWidth(960);
         pageBox.setPrefHeight(460);
-        pageBox.setStyle("-fx-background-color: #B1DCB8");
         newGridPane.setStyle("-fx-background-color: #B1DCB8");
 
         int start = pageIndex * ITEMS_PER_PAGE;
@@ -130,7 +223,7 @@ public class UserHomeController implements Initializable {
         task.setOnSucceeded(event -> {
             progressIndicator.setVisible(false);
             ObservableList<Book> bookPerPage = task.getValue();
-            for (int i = 0; i < bookPerPage.size() ; i++) {
+            for (int i = 0; i < bookPerPage.size(); i++) {
                 Book book = bookPerPage.get(i);
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/BookCard.fxml"));
@@ -155,7 +248,6 @@ public class UserHomeController implements Initializable {
         new Thread(task).start();
 
         ScrollPane scrollPane = new ScrollPane(newGridPane);
-        //scrollPane.setFitToWidth(true);
         scrollPane.setPrefWidth(960);
         scrollPane.setPrefHeight(460);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -172,7 +264,6 @@ public class UserHomeController implements Initializable {
         showBookInformation.setDate(book);
         showBookInformation.setUserHomeController(this);
 
-        // Đẩy Parent hiện tại vào stack
         if (isPush) {
             sceneStack.push(menuController.getContent());
             isPush = false;

@@ -437,4 +437,48 @@ public class BookService {
             }
         };
     }
+
+    /**
+     * Use for popUp search
+     * @param keyword is bookTitle or Author.
+     * @return ObservableList result.
+     */
+    public Task<ObservableList<Book>> fetchBookByTitleOrAuthor(String keyword) {
+        return new Task<>() {
+            @Override
+            protected ObservableList<Book> call() throws Exception {
+                ObservableList<Book> bookList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    String query = "SELECT * FROM books WHERE title LIKE ? OR author LIKE ? LIMIT 3";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+
+                    preparedStatement.setString(1, "%" + keyword + "%");
+                    preparedStatement.setString(2, "%" + keyword + "%");
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+
+                    while (resultSet.next()) {
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        int year = resultSet.getInt("year_published");
+                        String isbn = resultSet.getString("ISBN");
+                        String imageUrl = resultSet.getString("image_url");
+                        int quantity = resultSet.getInt("quantity");
+                        String type = resultSet.getString("category");
+                        String description = resultSet.getString("description");
+
+                        Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setDescription(description);
+                        book.setqrCode(resultSet.getBytes("qrcode"));
+                        bookList.add(book);}
+                } catch (SQLException e) {
+                    System.err.println("Error fetching books by title or author from database: " + e.getMessage());
+                    throw new Exception("Database query failed", e);
+                }
+                return bookList;
+            }
+        };
+    }
+
 }

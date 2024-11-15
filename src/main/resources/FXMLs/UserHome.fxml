@@ -21,7 +21,7 @@
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField layoutX="57.0" layoutY="28.0" prefHeight="43.0" prefWidth="775.0" />
+                        <TextField fx:id="searchField" layoutX="57.0" layoutY="28.0" prefHeight="43.0" prefWidth="775.0" />
                      </children>
                   </AnchorPane>
                   <!-- Search Icon -->

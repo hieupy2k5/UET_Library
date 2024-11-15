@@ -116,7 +116,7 @@ public class BookManagerController {
             qrcodeImage.setImage(imageQR);
             qrcodeImage.setFitHeight(imageOfBook.getFitHeight());
             qrcodeImage.setFitWidth(imageOfBook.getFitWidth());
-            qrcodeImage.setPreserveRatio(true);
+            qrcodeImage.setPreserveRatio(true) ;
             qrcodeImage.setCache(true);
         });
 
