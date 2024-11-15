@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TableColumn?>
@@ -38,51 +37,39 @@
         </LinearGradient>
       </fill>
     </Text>
-      <TableView fx:id="tableOfBook" layoutX="17.0" layoutY="225.0" prefHeight="503.0" prefWidth="943.0" stylesheets="@../Styles/BookAPI.css">
+      <TableView fx:id="tableOfBook" layoutX="16.0" layoutY="221.0" prefHeight="544.0" prefWidth="931.0" style="-fx-background-color: #EAA08E;">
         <columns>
-          <TableColumn fx:id="title" prefWidth="212.66672325134277" style="-fx-background-color: #F89D7B;" text="Book" />
-          <TableColumn fx:id="author" prefWidth="240.66661071777344" style="-fx-background-color: #F89D7B;" text="Author" />
-            <TableColumn fx:id="year" prefWidth="66.00003051757812" style="-fx-background-color: #F89D7B;" text="Year" />
-            <TableColumn fx:id="type" prefWidth="136.66668701171875" style="-fx-background-color: #F89D7B;" text="Type" />
-            <TableColumn fx:id="ISBN" prefWidth="138.66668701171875" style="-fx-background-color: #F89D7B;" text="ISBN" />
-            <TableColumn fx:id="image" prefWidth="146.00002034505212" style="-fx-background-color: #F89D7B;" text="Image" />
+          <TableColumn fx:id="title" prefWidth="259.33327293395996" text="Book" />
+          <TableColumn fx:id="author" prefWidth="229.33340454101562" text="Author" />
+            <TableColumn fx:id="year" prefWidth="71.33334350585938" text="Year" />
+            <TableColumn fx:id="type" prefWidth="119.33331298828125" text="Type" />
+            <TableColumn fx:id="ISBN" prefWidth="137.3333740234375" text="ISBN" />
+            <TableColumn fx:id="image" prefWidth="111.333251953125" text="Image" />
         </columns>
-         <styleClass>
-            <String fx:value="list-cell" />
-            <String fx:value="table-row-cell" />
-            <String fx:value="table-view" />
-         </styleClass>
       </TableView>
-      <TextField fx:id="queryBook" layoutX="97.0" layoutY="130.0" prefHeight="25.0" prefWidth="589.0" promptText="Enter title, author, ISBN">
+      <TextField fx:id="queryBook" layoutX="96.0" layoutY="121.0" prefHeight="29.0" prefWidth="593.0">
          <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <Button layoutX="713.0" layoutY="118.0" mnemonicParsing="false" onAction="#searchBookOnAction" stylesheets="@../Styles/BookAPI.css">
+            <Font size="16.0" />
+         </font></TextField>
+      <Button layoutX="713.0" layoutY="110.0" mnemonicParsing="false" onAction="#searchBookOnAction" prefHeight="37.0" prefWidth="38.0" styleClass="searchButton" stylesheets="@../Styles/BookAPI.css">
          <graphic>
-            <ImageView fitHeight="43.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="48.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/searchIconAPI.png" />
                </image>
             </ImageView>
-         </graphic>
-         <styleClass>
-            <String fx:value="searchButton" />
-            <String fx:value="searchButton" />
-         </styleClass>
-      </Button>
-      <Button layoutX="302.0" layoutY="784.0" mnemonicParsing="false" onAction="#AddBookOnAction" prefHeight="55.0" prefWidth="403.0" styleClass="button_add" stylesheets="@../Styles/BookAPI.css" text="Add this book" textFill="WHITE">
+         </graphic></Button>
+      <Button layoutX="326.0" layoutY="791.0" mnemonicParsing="false" onAction="#AddBookOnAction" prefHeight="51.0" prefWidth="329.0" styleClass="button_add" stylesheets="@../Styles/BookAPI.css" text=" Add this book">
+         <font>
+            <Font name="Alata Regular" size="18.0" />
+         </font>
          <graphic>
-            <ImageView fitHeight="105.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="127.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/BookAddImage.png" />
                </image>
             </ImageView>
-         </graphic>
-         <font>
-            <Font name="Alata Regular" size="16.0" />
-         </font>
-      </Button>
-      <ChoiceBox fx:id="filterSearch" layoutX="798.0" layoutY="125.0" prefHeight="25.0" prefWidth="87.0" stylesheets="@../Styles/BookAPI.css" />
+         </graphic></Button>
+      <ChoiceBox fx:id="filterSearch" layoutX="809.0" layoutY="119.0" prefHeight="25.0" prefWidth="101.0" stylesheets="@../Styles/BookAPI.css" />
   </children>
 </AnchorPane>
