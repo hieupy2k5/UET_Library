@@ -57,7 +57,9 @@ public class LogInController implements Initializable {
             menuController.configureMenu(this.isAdmin);
             if (isAdmin) menuController.loadView("/FXMLs/HomeView.fxml");
             else menuController.loadViewForUserHome();
+
             Scene menuScene = new Scene(menuParent);
+
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(menuScene);
 
@@ -72,10 +74,10 @@ public class LogInController implements Initializable {
             window.show();
         } else if (userID == null) {
             AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
-                "Wrong username or password. Please try again.");
+                    "Wrong username or password. Please try again.");
         } else {
             AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
-                "An unexpected error occurred. Please try again later.");
+                    "An unexpected error occurred. Please try again later.");
         }
     }
 
@@ -89,4 +91,3 @@ public class LogInController implements Initializable {
         choiceBox.setValue(choices[0]);
     }
 }
-
