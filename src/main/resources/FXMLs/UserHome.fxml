@@ -13,53 +13,57 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserHomeController">
-   <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserHomeController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="980.0">
+         <top>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField layoutX="57.0" layoutY="28.0" prefHeight="43.0" prefWidth="775.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TextField layoutX="57.0" layoutY="28.0" prefHeight="43.0" prefWidth="775.0" />
+                     </children>
+                  </AnchorPane>
+                  <!-- Search Icon -->
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="56.0" fitWidth="52.0" layoutX="25.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Images/search.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </top>
+
+         <!-- Main section containing books -->
+         <center>
+            <AnchorPane prefHeight="699.0" prefWidth="980.0" BorderPane.alignment="CENTER">
+               <children>
+                  <!-- ScrollPane to hold book cards displayed in HBox -->
+                  <ScrollPane layoutX="35.0" layoutY="47.0" prefHeight="195.0" prefWidth="926.0">
+                     <content>
+                        <HBox fx:id="cardLayout" alignment="CENTER" prefHeight="182.0" prefWidth="940.0" spacing="20.0">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </HBox>
+                     </content>
+                  </ScrollPane>
+
+                  <!-- Title "Recently Added" -->
+                  <Text layoutX="35.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recently Added">
+                     <font>
+                        <Font name="Alata Regular" size="14.0" />
+                     </font>
+                  </Text>
+                  <Pagination fx:id="pagina" layoutX="10.0" layoutY="273.0" prefHeight="463.0" prefWidth="960.0" />
+                  <ProgressIndicator fx:id="progressIndicator" layoutX="35.0" layoutY="280.0" prefHeight="63.0" prefWidth="77.0" />
                </children>
             </AnchorPane>
-            <!-- Biểu tượng tìm kiếm -->
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <ImageView fitHeight="56.0" fitWidth="52.0" layoutX="25.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Images/search.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-         </children>
-      </HBox>
-   </top>
-
-   <!-- Phần chính chứa sách -->
-   <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <!-- ScrollPane chứa các thẻ sách hiển thị theo kiểu HBox -->
-            <ScrollPane layoutX="46.0" layoutY="45.0" prefHeight="200.0" prefWidth="1200.0">
-               <content>
-                  <HBox fx:id="cardLayout" alignment="CENTER" prefHeight="200.0" prefWidth="1188.0" spacing="20.0">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </HBox>
-               </content>
-            </ScrollPane>
-
-            <!-- Tiêu đề "Recently Added" -->
-            <Text layoutX="46.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recently Added">
-               <font>
-                  <Font name="Alata Regular" size="14.0" />
-               </font>
-            </Text>
-            <Pagination fx:id="pagina" layoutX="46.0" layoutY="286.0" prefHeight="500.0" prefWidth="1200.0" />
-            <ProgressIndicator fx:id="progressIndicator" layoutX="46.0" layoutY="286.0" prefHeight="63.0" prefWidth="77.0" />
-         </children>
-      </AnchorPane>
-   </center>
-</BorderPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

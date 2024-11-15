@@ -337,6 +337,7 @@ public class BookService {
                         String type = resultSet.getString("category");
                         String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setqrCode(resultSet.getBytes("qrcode"));
                         book.setDescription(description);
                         bookList.add(book);
                     }
@@ -389,6 +390,7 @@ public class BookService {
                         String type = resultSet.getString("category");
                         String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setqrCode(resultSet.getBytes("qrcode"));
                         book.setDescription(description);
                         bookList.add(book);
                     }
@@ -425,6 +427,7 @@ public class BookService {
                         String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
                         book.setDescription(description);
+                        book.setqrCode(resultSet.getBytes("qrcode"));
                         bookList.add(book);
                     }
                 } catch (SQLException e) {

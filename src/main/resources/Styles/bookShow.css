@@ -16,9 +16,23 @@
 }
 
 .button:hover {
-    -fx-background-color: rgba(150, 150, 150, 0.5);
+    -fx-background-color: #DCB1B8;
 }
 
 .back_image:hover {
-    -fx-background-color: rgba(150, 150, 150, 0.5);
+    -fx-background-color: #DCB1B8;
+}
+
+.ellipsis-label {
+    -fx-padding: 10;
+}
+.ellipsis-text {
+    -fx-font-size: 14px;
+    -fx-wrap-text: false;
+    -fx-text-overrun: ellipsis-word;
+}
+.responsive-image {
+    -fx-preserve-ratio: true;
+    -fx-fit-width: 100%;
+    -fx-fit-height: 100%;
 }

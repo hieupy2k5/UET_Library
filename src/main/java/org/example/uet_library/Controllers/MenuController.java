@@ -15,10 +15,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.example.uet_library.App;
 
-public class MenuController implements Initializable {
+public class MenuController {
 
-    private boolean isAdmin = false;
+    private boolean isAdmin;
+    private Stage primaryStage;
 
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
@@ -63,14 +65,9 @@ public class MenuController implements Initializable {
     @FXML
     public Button button_Home_User;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+
+    public void initialize() {
         loadClock();
-        if (this.isAdmin) {
-            this.loadHomeView();
-        } else {
-            this.loadHomeUser();
-        }
     }
 
     public void configureMenu(boolean isAdmin) {
@@ -151,7 +148,7 @@ public class MenuController implements Initializable {
     public void setWelcomeMessage(String username) {
         Random random = new Random();
         int randomIndex = random.nextInt(welcomeStrings.length);
-        //welcomeText.setText(String.format(welcomeStrings[randomIndex], username));
+
     }
 
     public void loadView(String fxmlFileName) {
@@ -160,6 +157,24 @@ public class MenuController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
                 AnchorPane newPane = loader.load();
 
+                contentPane.getChildren().clear();
+                contentPane.getChildren().add(newPane);
+            } else {
+                System.out.println("contentPane is null. Cannot load the view.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadViewForUserHome() {
+        try {
+            if (contentPane != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
+                AnchorPane newPane = loader.load();
+                UserHomeController userHomeController = loader.getController();
+                userHomeController.setStage(primaryStage);
+                userHomeController.setMenuController(this);
                 contentPane.getChildren().clear();
                 contentPane.getChildren().add(newPane);
             } else {
@@ -196,5 +211,13 @@ public class MenuController implements Initializable {
     public void setContent(Parent root) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(root);
+    }
+
+    public void setStage(Stage stage) {
+        this.primaryStage = stage;
+    }
+
+    public Parent getContent() {
+        return contentPane.getChildren().isEmpty() ? null : (Parent) contentPane.getChildren().get(0);
     }
 }

@@ -3,6 +3,8 @@ package org.example.uet_library.Controllers;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,13 +33,19 @@ public class LogInController implements Initializable {
     public ChoiceBox<String> choiceBox;
     private String[] choices = {"Admin", "User"};
     private UserController userController = new UserController();
+    private boolean isAdmin = false;
+
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void handleLogInButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         Integer userID = userController.checkLoginCredentials(username, password);
-        boolean isAdmin = (Objects.equals(choiceBox.getValue(), "Admin"));
-
+        isAdmin  = choiceBox.getSelectionModel().getSelectedItem().equals(choices[0]);
         if (userID != null && userID != -1) {
             SessionManager.getInstance().setUserId(userID);
 
@@ -45,9 +53,10 @@ public class LogInController implements Initializable {
             Parent menuParent = loader.load();
 
             MenuController menuController = loader.getController();
-            //menuController.setWelcomeMessage(username);
-            menuController.configureMenu(isAdmin);
-
+            menuController.setStage(this.stage);
+            menuController.configureMenu(this.isAdmin);
+            if (isAdmin) menuController.loadView("/FXMLs/HomeView.fxml");
+            else menuController.loadViewForUserHome();
             Scene menuScene = new Scene(menuParent);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(menuScene);

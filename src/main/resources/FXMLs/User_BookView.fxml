@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ShowBookInformation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ShowBookInformation">
    <top>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,39 +24,46 @@
       </HBox>
    </top>
    <center>
-      <ScrollPane prefHeight="573.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="573.0" prefWidth="980.0" BorderPane.alignment="CENTER">
          <content>
-            <VBox prefHeight="700.0" prefWidth="1221.0">
+            <VBox prefHeight="678.0" prefWidth="914.0">
                <children>
-                  <HBox prefHeight="500.0" prefWidth="1280.0">
+                  <HBox prefHeight="480.0" prefWidth="851.0">
                      <children>
-                        <VBox prefHeight="511.0" prefWidth="599.0">
+                        <VBox prefHeight="515.0" prefWidth="541.0">
                            <children>
-                              <Text fx:id="BookTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Book" wrappingWidth="730.1366367340088">
+                              <Text fx:id="BookTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="Book" wrappingWidth="548.1366367340088">
                                  <font>
                                     <Font name="Arial Black" size="24.0" />
                                  </font>
                               </Text>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Text fx:id="Author_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="736.1367282867432">
+                              <Text fx:id="Author_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="547.4701023101807">
                                  <font>
                                     <Font name="Alata Regular" size="24.0" />
                                  </font>
                               </Text>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Desription" wrappingWidth="753.470121383667" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="758.8034152984619">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Desription" wrappingWidth="420.1367778778076" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="248.13672828674316">
                                  <font>
                                     <Font size="24.0" />
                                  </font></Text>
-                              <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" text="This book don't have description. We will update later !" wrappingWidth="759.7279357910156" />
+                              <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" text="This book don't have description. We will update later !" wrappingWidth="542.3945617675781" />
                            </children>
                         </VBox>
-                        <AnchorPane prefHeight="523.0" prefWidth="618.0">
+                        <AnchorPane />
+                        <AnchorPane prefHeight="480.0" prefWidth="373.0">
                            <children>
-                              <ImageView fx:id="imageBook" fitHeight="515.0" fitWidth="423.0" layoutX="47.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="imageBook" fitHeight="315.0" fitWidth="344.0" layoutX="69.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Images/imageNotFound.jpg" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="qrCode" fitHeight="121.0" fitWidth="127.0" layoutX="123.0" layoutY="345.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fitHeight="125.0" fitWidth="76.0" layoutX="250.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/payment.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -68,7 +75,7 @@
                         <Font name="Bell MT" size="18.0" />
                      </font>
                   </Text>
-                  <HBox fx:id="cardLayout" prefHeight="168.0" prefWidth="1221.0" />
+                  <HBox fx:id="cardLayout" prefHeight="168.0" prefWidth="980.0" />
                </children>
             </VBox>
          </content>

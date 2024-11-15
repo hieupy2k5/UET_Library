@@ -18,6 +18,7 @@ import org.example.uet_library.Book;
 import javafx.scene.text.Text;
 import org.example.uet_library.BookService;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class ShowBookInformation {
@@ -36,20 +37,24 @@ public class ShowBookInformation {
     @FXML
     private HBox cardLayout;
 
-    private Stage previousStage;
-
-    private int pageIndex;
+    @FXML
+    private ImageView qrCode;
 
     private ObservableList<Book> recommendBooks;
 
     private Book bookCurrent;
 
+    private UserHomeController userHomeController;
+
+    public void setUserHomeController(UserHomeController userHomeController) {
+        this.userHomeController = userHomeController;
+    }
+
     @FXML
     void BackOnAction(ActionEvent event) throws IOException {
-        previousStage.show();
-
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        currentStage.close();
+        if (userHomeController != null) {
+            userHomeController.goBack();
+        }
     }
 
     public void setDate(Book book) {
@@ -60,21 +65,17 @@ public class ShowBookInformation {
         BookTitle.setText(book.getTitle());
         Image image = new Image(book.getImageUrl());
         imageBook.setImage(image);
+        byte[] qrCode = new byte[1];
+        qrCode = book.getqrCode();
+        ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
+        this.qrCode.setImage(new Image(bis));
         fetchBookForRecommendBook();
     }
 
-    public void setPreviousStage(Stage stage, int pageIndex) {
-        this.previousStage = stage;
-        this.pageIndex = pageIndex;
-    }
 
-    public void setPreviousStage(int pageIndex) {
-        this.pageIndex = pageIndex;
-    }
 
     public void fetchBookForRecommendBook() {
         Task<ObservableList<Book>> task = BookService.getInstance().featchBookForPage(this.bookCurrent);
-        // Stage stage = (Stage) .getScene().getWindow();
         task.setOnSucceeded(event -> {
             recommendBooks = task.getValue();
             for(Book book : recommendBooks) {
@@ -84,10 +85,9 @@ public class ShowBookInformation {
                     HBox cardBox = fxmlloader.load();
 
                     CardController card = fxmlloader.getController();
+                    card.setUserHomeController(this.userHomeController);
                     card.setData(book);
                     cardLayout.getChildren().add(cardBox);
-                    Stage stage = (Stage) cardLayout.getScene().getWindow();
-                    card.setPreviousStage(this.previousStage, stage, pageIndex);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -100,5 +100,6 @@ public class ShowBookInformation {
 
         new Thread(task).start();
     }
+
 
 }

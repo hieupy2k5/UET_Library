@@ -19,6 +19,9 @@ import java.io.IOException;
 
 public class CardController {
     @FXML
+    Button button;
+
+    @FXML
     private ImageView BookImage;
 
     @FXML
@@ -30,10 +33,10 @@ public class CardController {
     @FXML
     private ImageView ratingStar;
 
-    private Stage previousStage2;
+    private UserHomeController userHomeController;
 
-    public void setPreviousStage2(Stage previousStage2) {
-        this.previousStage2 = previousStage2;
+    public void setUserHomeController(UserHomeController userHomeController) {
+        this.userHomeController = userHomeController;
     }
 
     @FXML
@@ -54,36 +57,17 @@ public class CardController {
         String randomColor = colors[(int)(Math.random() * colors.length)];
         bookBox.setStyle("-fx-background-color: " + randomColor + ";"
                           + "-fx-background-radius: 20;" + "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0),10,0,0,10);");
+        button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" + "-fx-text-fill: transparent;" + "-fx-background-insets: 0;" + "-fx-padding: 0;" + "-fx-effect: null;" + "-fx-focus-color: transparent;" + "-fx-faint-focus-color: transparent;" + "-fx-hover-base: transparent;" + "-fx-border-insets: 0;" + "-fx-background-radius: 0;" + "-fx-border-radius: 0;");
 
     }
 
     public void latestBookButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
-        Parent root = loader.load();
-        ShowBookInformation showBookInformation = loader.getController();
-        showBookInformation.setDate(book);
-        showBookInformation.setPreviousStage(this.previousStage, this.pageIndex);
-
-        Scene scene = new Scene(root, 1280, 800);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        previousStage.hide();
-        if (previousStage2 != null) {
-            previousStage2.close();
+        try {
+            if (userHomeController != null && book != null) {
+                userHomeController.openBookDetails(book);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        stage.show();
     }
-
-    public void setPreviousStage(Stage previousStage, int pageIndex) {
-        this.previousStage = previousStage;
-        this.pageIndex = pageIndex;
-    }
-
-    public void setPreviousStage(Stage previousStage, Stage previousStage2, int pageIndex) {
-        this.previousStage = previousStage;
-        this.previousStage2 = previousStage2;
-        this.pageIndex = pageIndex;
-    }
-
-
 }

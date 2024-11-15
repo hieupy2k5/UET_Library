@@ -1,0 +1,36 @@
+.button_add {
+    -fx-background-color: #A4ABEE;
+    -fx-background-radius: 15 15 15 15;
+}
+
+.button_add:hover {
+    -fx-background-color: #EAA08E;
+}
+
+.searchButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.choice-box {
+    -fx-background-color: #2e8b57;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-text-fill: #ffffff;
+}
+
+.choice-box .list-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+.choice-box:hover {
+    -fx-background-color: #3cb371;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: pink; /* Thay đổi thành màu hồng mong muốn */
+}

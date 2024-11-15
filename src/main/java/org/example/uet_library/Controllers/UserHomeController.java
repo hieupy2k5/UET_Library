@@ -2,6 +2,9 @@ package org.example.uet_library.Controllers;
 
 import javafx.concurrent.Service;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
@@ -21,45 +24,66 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 public class UserHomeController implements Initializable {
+    private static final int ITEMS_PER_PAGE = 10;
+    private static final int COLUMNS = 5;
+    private static final int ROWS = 1;
+    private ObservableList<Book> books;
+
+    private Stack<Parent> sceneStack = new Stack<>(); // Đổi sang Parent
+    private Stage stage;
+
     @FXML
     private ProgressIndicator progressIndicator;
 
     @FXML
     private HBox cardLayout;
+
     @FXML
     Pagination pagina;
+
     @FXML
     private GridPane gridPane;
 
-    private static final int ITEMS_PER_PAGE = 5;
-    private static final int COLUMNS = 5;
-    private static final int ROWS = 1;
-    private ObservableList<Book> books;
+    private HashMap<Integer, VBox> pageCache = new HashMap<>();
 
-    private HashMap<Integer, VBox> demo = new HashMap<>();
-    private Stage primaryStage;
     private int currentPageIndex = 0;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    private boolean isPush = true;
+
+    private MenuController menuController;
+
+    public void setMenuController(MenuController menuController) {
+        this.menuController = menuController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTop5Books();
-        Task<Integer> countPage = BookService.getInstance().fetchTotalBook();
+        setUpPagionation();
+    }
 
+    public void setUpPagionation() {
+        Task<Integer> countPage = BookService.getInstance().fetchTotalBook();
         countPage.setOnSucceeded(event -> {
             int totalBooks = countPage.getValue();
             int pageCount = (int) Math.ceil(totalBooks / (double) ITEMS_PER_PAGE);
             pagina.setPageCount(pageCount);
-            //pagina.setCurrentPageIndex(pageCount);
-
             pagina.setPageFactory(pageIndex -> createPage(pageIndex));
+            pagina.setStyle("-fx-background-color: #B1DCB8");
             progressIndicator.setVisible(false);
         });
 
-        // Listener to track current page iNDEX
+        pagina.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            this.currentPageIndex = newValue.intValue();
+        });
 
-        pagina.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> currentPageIndex = newValue.intValue());
         new Thread(countPage).start();
     }
 
@@ -74,7 +98,7 @@ public class UserHomeController implements Initializable {
                     HBox cardBox = fxmlLoader.load();
                     CardController cardController = fxmlLoader.getController();
                     cardController.setData(book);
-                    cardController.setPreviousStage(primaryStage, this.currentPageIndex);
+                    cardController.setUserHomeController(this);
                     cardLayout.getChildren().add(cardBox);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -85,19 +109,22 @@ public class UserHomeController implements Initializable {
     }
 
     private VBox createPage(int pageIndex) {
-        if (demo.containsKey(pageIndex)) {
-            return demo.get(pageIndex);
+        if (pageCache.containsKey(pageIndex)) {
+            return pageCache.get(pageIndex);
         }
 
         VBox pageBox = new VBox();
-        GridPane newGridPane = new GridPane(); // Tạo GridPane mới cho mỗi trang
+        GridPane newGridPane = new GridPane();
         newGridPane.getChildren().clear();
         newGridPane.setHgap(10);
         newGridPane.setVgap(10);
-        newGridPane.setPadding(new Insets(10, 10, 10, 10)); // Thiết lập padding cho GridPane
+        newGridPane.setPadding(new Insets(10, 10, 10, 10));
+        pageBox.setPrefWidth(960);
+        pageBox.setPrefHeight(460);
+        pageBox.setStyle("-fx-background-color: #B1DCB8");
+        newGridPane.setStyle("-fx-background-color: #B1DCB8");
 
         int start = pageIndex * ITEMS_PER_PAGE;
-        //int end = Math.min(start + ITEMS_PER_PAGE, books.size());
 
         Task<ObservableList<Book>> task = BookService.getInstance().featchBookForPage(start, ITEMS_PER_PAGE);
         task.setOnSucceeded(event -> {
@@ -110,13 +137,11 @@ public class UserHomeController implements Initializable {
                     VBox cardBox = fxmlLoader.load();
                     BookCardController bookCardController = fxmlLoader.getController();
                     bookCardController.setData(book);
-                    //bookCardController.setPreviousStage((Stage) cardBox.getScene().getWindow());
-                    bookCardController.setPreviousStage(primaryStage, currentPageIndex);
+                    bookCardController.setUserHomeController(this);
                     int column = i % COLUMNS;
                     int row = i / COLUMNS;
                     newGridPane.add(cardBox, column, row);
                     GridPane.setMargin(cardBox, new Insets(10));
-                    //bookCardController.setPreviousStage((Stage) cardLayout.getScene().getWindow());
                 } catch (IOException e) {
                     System.err.println("Failed to load book card: " + e.getMessage());
                     e.printStackTrace();
@@ -130,21 +155,35 @@ public class UserHomeController implements Initializable {
         new Thread(task).start();
 
         ScrollPane scrollPane = new ScrollPane(newGridPane);
-        scrollPane.setFitToWidth(true);
+        //scrollPane.setFitToWidth(true);
+        scrollPane.setPrefWidth(960);
+        scrollPane.setPrefHeight(460);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         pageBox.getChildren().add(scrollPane);
-        demo.put(pageIndex, pageBox);
+        pageCache.put(pageIndex, pageBox);
         return pageBox;
     }
 
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        primaryStage.setUserData(this);
+    public void openBookDetails(Book book) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
+        Parent root = fxmlLoader.load();
+
+        ShowBookInformation showBookInformation = fxmlLoader.getController();
+        showBookInformation.setDate(book);
+        showBookInformation.setUserHomeController(this);
+
+        // Đẩy Parent hiện tại vào stack
+        if (isPush) {
+            sceneStack.push(menuController.getContent());
+            isPush = false;
+        }
+        this.menuController.setContent(root);
     }
 
-    public void setCurrentPage (int pageIndex) {
-        pagina.setCurrentPageIndex(pageIndex);
+    public void goBack() throws IOException {
+        if (!sceneStack.isEmpty()) {
+            this.menuController.setContent(sceneStack.pop());
+            isPush = true;
+        }
     }
-
 }
-

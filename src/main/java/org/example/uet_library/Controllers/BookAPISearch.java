@@ -27,14 +27,13 @@ import org.json.JSONObject;
 public class BookAPISearch {
 
     public static MenuController menuController;
+
     private Book selectedBook;
 
     public void setMenuController(MenuController menuController) {
         this.menuController = menuController;
     }
 
-    @FXML
-    private Button AddBookOnAction;
 
     @FXML
     private TableColumn<Book, String> ISBN;
@@ -52,7 +51,7 @@ public class BookAPISearch {
     private TableView<Book> tableOfBook;
 
     @FXML
-    private TableColumn<Book, String> tittle;
+    private TableColumn<Book, String> title;
 
     @FXML
     private TableColumn<Book, String> type;
@@ -137,13 +136,11 @@ public class BookAPISearch {
 
     @FXML
     public void initialize() {
-
         if (filterSearch != null) {
-            filterSearch.getItems().addAll("title", "author", "ISBN");
-            System.out.println(filterSearch.getItems());
+            filterSearch.getItems().addAll("Title", "Author", "ISBN");
         }
 
-        tittle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        title.setCellValueFactory(new PropertyValueFactory<>("title"));
         author.setCellValueFactory(new PropertyValueFactory<>("author"));
         ISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         year.setCellValueFactory(new PropertyValueFactory<>("year"));
