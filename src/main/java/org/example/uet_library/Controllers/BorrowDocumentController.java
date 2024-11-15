@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.uet_library.AlertHelper;
@@ -82,35 +83,6 @@ public class BorrowDocumentController {
     @FXML
     private AnchorPane slidingPane;
 
-    private void setupTitleAuthorColumn() {
-        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
-            private final VBox hbox = new VBox();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                hbox.getChildren().addAll(titleLabel, authorLabel);
-                hbox.setSpacing(3);
-
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    Book book = getTableView().getItems().get(getIndex());
-                    titleLabel.setText(book.getTitle());
-                    authorLabel.setText(book.getAuthor());
-                    setGraphic(hbox);
-                }
-            }
-        });
-    }
-
     public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
@@ -126,6 +98,7 @@ public class BorrowDocumentController {
             waitProgress.setVisible(false);
             setupSearch();
             setupBorrowButton();
+            setupTitleAuthorColumn();
         }));
 
         task.setOnFailed(event -> Platform.runLater(() -> {
@@ -138,7 +111,6 @@ public class BorrowDocumentController {
         new Thread(task).start();
     }
 
-    // Initializes the controller
     public void initialize() {
 
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -146,7 +118,6 @@ public class BorrowDocumentController {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         waitProgress.setVisible(true);
 
-        setupTitleAuthorColumn();
         fetchFromDB();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -156,6 +127,57 @@ public class BorrowDocumentController {
 
 
         selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    private void setupTitleAuthorColumn() {
+        titleAuthorColumn.setText("Document Information");
+        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
+            private final HBox hbox = new HBox();
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                vbox.getChildren().addAll(titleLabel, authorLabel);
+                vbox.setSpacing(5);
+                hbox.setSpacing(15);
+                hbox.getChildren().addAll(imageView, vbox);
+
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null) {
+                    setGraphic(null);
+                } else {
+                    Book book = getTableView().getItems().get(getIndex());
+
+                    titleLabel.setText(book.getTitle());
+                    authorLabel.setText(book.getAuthor());
+                    setGraphic(hbox);
+
+                    Task<Image> loadImageTask = new Task<>() {
+                        @Override
+                        protected Image call() {
+                            return new Image(book.getImageUrl(), true);
+                        }
+                    };
+
+                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnFailed(event -> {
+                        System.err.println("Failed to load image: " + loadImageTask.getException().getMessage());
+                    });
+
+                    new Thread(loadImageTask).start();
+                }
+            }
+        });
     }
 
     private void setupSearch() {
@@ -193,80 +215,40 @@ public class BorrowDocumentController {
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
                 borrowButton.setGraphic(imageView);
-                borrowButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                borrowButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; ");
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
-                    showQuantityDialog(selectedBook);
+                    addToCart(selectedBook);
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(borrowButton);
-                }
+                HBox hbox = new HBox(borrowButton);
+                hbox.setStyle("-fx-alignment: center;");
+                setGraphic(empty ? null : hbox);
             }
         });
     }
 
-
-    private void showQuantityDialog(Book book) {
-        Dialog<Integer> dialog = new Dialog<>();
-        dialog.setTitle("Borrow Quantity");
-        dialog.setHeaderText("Specify the quantity to borrow for " + book.getTitle());
-
-        VBox dialogVBox = new VBox();
-        TextField quantityField = new TextField();
-        quantityField.setPromptText("Quantity");
-
-        dialogVBox.getChildren().add(quantityField);
-        dialog.getDialogPane().setContent(dialogVBox);
-
-        ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
-
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == confirmButtonType) {
-                try {
-                    return Integer.parseInt(quantityField.getText());
-                } catch (NumberFormatException e) {
-                    AlertHelper.showAlert(AlertType.ERROR, "Invalid input",
-                        "Please enter a positive integer.");
-                    return null;
-                }
-            }
-            return null;
-        });
-
-        dialog.showAndWait().ifPresent(quantity -> {
-            if (quantity > 0 && quantity <= book.getQuantity()) {
-                selectedBooksMap.put(book, quantity);
-            } else if (quantity.equals(0)) {
-                AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
-                    "You came here to borrow 0 book? None? Seriously?");
-            } else if (book.getQuantity() == 0) {
-                AlertHelper.showAlert(AlertType.ERROR, "Out of stock",
-                    "Sorry, we ran out of that book in stock today.");
-            } else if (quantity < 0) {
-                AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
-                    "How on earth are you going to borrow a NEGATIVE number of books???");
-            } else if (quantity > book.getQuantity()) {
-                AlertHelper.showAlert(AlertType.ERROR, "Insufficient number of available books",
-                    "Sorry, we do not have that many books.");
-            }
-        });
+    private void addToCart(Book book) {
+        if (!selectedBooksMap.containsKey(book)) {
+            selectedBooksMap.put(book, 1);
+            updateSelectedBooksTable();
+            AlertHelper.showAlert(AlertType.INFORMATION, "Book added to cart successfully",
+                    String.format("You have added %s to your cart.", book.getTitle()));
+        } else {
+            AlertHelper.showAlert(AlertType.WARNING, "Book already in cart",
+                    "The selected book is already in your cart.");
+        }
     }
 
     private void updateSelectedBooksTable() {
         ObservableList<Map.Entry<Book, Integer>> selectedBooksList = FXCollections.observableArrayList(selectedBooksMap.entrySet());
-
         selectedBooksTable.setItems(selectedBooksList);
 
-        //detailColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey().getTitle()));
         detailColumn.setCellFactory(column -> new TableCell<Map.Entry<Book, Integer>, String>() {
             private final VBox hbox = new VBox();
             private final Label titleLabel = new Label();
@@ -275,7 +257,6 @@ public class BorrowDocumentController {
             {
                 hbox.getChildren().addAll(titleLabel, authorLabel);
                 hbox.setSpacing(3);
-
                 titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                 authorLabel.setStyle("-fx-font-style: italic;");
             }
@@ -283,20 +264,48 @@ public class BorrowDocumentController {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
                 if (empty || getTableRow() == null) {
                     setGraphic(null);
                 } else {
                     Map.Entry<Book, Integer> entry = getTableRow().getItem();
                     Book book = entry.getKey();
-
                     titleLabel.setText(book.getTitle());
                     authorLabel.setText(book.getAuthor());
                     setGraphic(hbox);
                 }
             }
         });
-        quantityBorrowedColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getValue()).asObject());
+
+        TableColumn<Map.Entry<Book, Integer>, Void> optionColumn = new TableColumn<>("Option");
+        optionColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button removeButton = new Button();
+
+            {
+                Image removeImage = new Image(getClass().getResource("/Images/bin.png").toExternalForm());
+                ImageView imageView = new ImageView(removeImage);
+                imageView.setFitWidth(16);
+                imageView.setFitHeight(16);
+                removeButton.setGraphic(imageView);
+                removeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+                removeButton.setOnAction(event -> {
+                    Map.Entry<Book, Integer> entry = getTableView().getItems().get(getIndex());
+                    selectedBooksMap.remove(entry.getKey());
+                    updateSelectedBooksTable();
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+//                setGraphic(empty ? null : removeButton);
+                HBox hbox = new HBox(removeButton);
+                hbox.setStyle("-fx-alignment: center;");
+                setGraphic(empty ? null : hbox);
+            }
+        });
+
+        selectedBooksTable.getColumns().setAll(detailColumn, optionColumn);
     }
 
 

@@ -12,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.uet_library.*;
 
@@ -36,15 +37,22 @@ public class ReturnDocumentController {
     private TableColumn<Borrow, Void> titleAuthorColumn;
 
     private void setupTitleAuthorColumn() {
+        titleAuthorColumn.setText("Document Information");
         titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
-            private final VBox hbox = new VBox();
+            private final HBox hbox = new HBox();
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
             private final Label titleLabel = new Label();
             private final Label authorLabel = new Label();
 
             {
-                hbox.getChildren().addAll(titleLabel, authorLabel);
-                hbox.setSpacing(3);
+                vbox.getChildren().addAll(titleLabel, authorLabel);
+                vbox.setSpacing(5);
+                hbox.setSpacing(15);
+                hbox.getChildren().addAll(imageView, vbox);
 
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
                 titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                 authorLabel.setStyle("-fx-font-style: italic;");
             }
@@ -52,13 +60,28 @@ public class ReturnDocumentController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getTableRow() == null) {
                     setGraphic(null);
                 } else {
                     Borrow borrow = getTableView().getItems().get(getIndex());
+
                     titleLabel.setText(borrow.getTitle());
                     authorLabel.setText(borrow.getAuthor());
                     setGraphic(hbox);
+
+                    Task<Image> loadImageTask = new Task<>() {
+                        @Override
+                        protected Image call() {
+                            return new Image(borrow.getImageUrl(), true);
+                        }
+                    };
+
+                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnFailed(event -> {
+                        System.err.println("Failed to load image: " + loadImageTask.getException().getMessage());
+                    });
+
+                    new Thread(loadImageTask).start();
                 }
             }
         });
@@ -103,8 +126,6 @@ public class ReturnDocumentController {
     }
 
     public void initialize() {
-//        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-//        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
@@ -179,9 +200,6 @@ public class ReturnDocumentController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    Borrow selectedBook = getTableView().getItems().get(getIndex());
-//                    returnButton.setDisable(selectedBook != null);
-
                     setGraphic(returnButton);
                 }
             }
