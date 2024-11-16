@@ -60,7 +60,8 @@ public class UserHomeController implements Initializable {
 
     private boolean isPush = true;
 
-    private MenuController menuController;
+    @FXML
+    private MenuController menuController = new MenuController();
 
     private Popup searchPopup;
 

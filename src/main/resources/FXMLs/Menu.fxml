@@ -53,7 +53,7 @@
                               <Insets left="5.0" />
                            </VBox.margin>
                 </Button>
-                        <Button fx:id="button_Home_User" alignment="BASELINE_LEFT" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadHomeUser" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
+                        <Button fx:id="button_Home_User" alignment="BASELINE_LEFT" layoutX="15.0" mnemonicParsing="false" onAction="#loadHomeUser" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Home" textAlignment="CENTER" textFill="WHITE">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
@@ -67,6 +67,9 @@
                            <font>
                               <Font size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
                         </Button>
                 <Button fx:id="button_AddBook" alignment="BASELINE_LEFT" layoutX="5.0" mnemonicParsing="false" onAction="#loadBookAPISearchView" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="Add Book" textAlignment="RIGHT" textFill="WHITE">
                   <cursor>

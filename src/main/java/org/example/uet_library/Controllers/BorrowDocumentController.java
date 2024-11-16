@@ -27,10 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
-import org.example.uet_library.SessionManager;
+import org.example.uet_library.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -85,6 +82,8 @@ public class BorrowDocumentController {
     @FXML
     private AnchorPane slidingPane;
 
+    private ObservableMap<Book, Integer> selectedBooksMap = SharedData.getInstance().getSelectedBooksMap();
+
     public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
@@ -125,7 +124,7 @@ public class BorrowDocumentController {
 
 
         slidingPane.setTranslateX(900);
-        slidingPane.setTranslateY(0);
+        slidingPane.setTranslateY(60);
 
 
         selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -221,7 +220,7 @@ public class BorrowDocumentController {
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
-                    addToCart(selectedBook);
+                    SharedData.getInstance().addToCart(selectedBook);
                 });
             }
 
@@ -233,18 +232,6 @@ public class BorrowDocumentController {
                 setGraphic(empty ? null : hbox);
             }
         });
-    }
-
-    private void addToCart(Book book) {
-        if (!selectedBooksMap.containsKey(book)) {
-            selectedBooksMap.put(book, 1);
-            updateSelectedBooksTable();
-            AlertHelper.showAlert(AlertType.INFORMATION, "Book added to cart successfully",
-                    String.format("You have added %s to your cart.", book.getTitle()));
-        } else {
-            AlertHelper.showAlert(AlertType.WARNING, "Book already in cart",
-                    "The selected book is already in your cart.");
-        }
     }
 
     private void updateSelectedBooksTable() {
@@ -331,10 +318,6 @@ public class BorrowDocumentController {
                     AlertHelper.showAlert(AlertType.ERROR, "Error", "Database Error");
                     return;
                 }
-            } else {
-                AlertHelper.showAlert(AlertType.ERROR, "Invalid number of books entered",
-                        "Invalid quantity: " + quantity + " for book " + book.getTitle());
-                return;
             }
         }
 
@@ -359,5 +342,4 @@ public class BorrowDocumentController {
         slide.play();
     }
 
-    private ObservableMap<Book, Integer> selectedBooksMap = FXCollections.observableHashMap();
 }

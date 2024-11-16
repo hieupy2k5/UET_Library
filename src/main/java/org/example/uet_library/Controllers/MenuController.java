@@ -116,12 +116,6 @@ public class MenuController {
     }
 
     @FXML
-    public void loadHomeUser() {
-        loadView("/FXMLs/UserHome.fxml");
-    }
-
-
-    @FXML
     public void loadManagerBookView() {
         loadView("/FXMLs/BookManager.fxml");
     }
@@ -167,7 +161,7 @@ public class MenuController {
         }
     }
 
-    public void loadViewForUserHome() {
+    public void loadHomeUser() {
         try {
             if (contentPane != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));

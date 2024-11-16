@@ -14,7 +14,7 @@
    <children>
       <Button fx:id="button" mnemonicParsing="false" onAction="#latestBookButtonOnAction" prefHeight="175.0" prefWidth="325.0" styleClass="transparent-button" stylesheets="@../Styles/card.css" text="Button">
          <graphic>
-            <HBox fx:id="bookBox" prefHeight="175.0" prefWidth="325.0">
+            <HBox prefHeight="175.0" prefWidth="325.0">
                <children>
                   <AnchorPane prefHeight="175.0" prefWidth="153.0">
                      <children>
