@@ -8,15 +8,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
 import javafx.scene.text.Text;
 import org.example.uet_library.BookService;
+import org.example.uet_library.SharedData;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -101,5 +105,9 @@ public class ShowBookInformation {
         new Thread(task).start();
     }
 
+    @FXML
+    public void handleButtonAdd() {
+        SharedData.getInstance().addToCart(bookCurrent);
+    }
 
 }
