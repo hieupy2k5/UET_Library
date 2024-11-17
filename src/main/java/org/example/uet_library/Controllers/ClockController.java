@@ -49,15 +49,12 @@ public class ClockController {
                 )
         );
 
-        final Timeline secondTime = new Timeline();
-        for (int i = 0; i < 60; i++) {
-            secondTime.getKeyFrames().add(new KeyFrame(
-                    Duration.seconds(i),
-                    new KeyValue(secondRotate.angleProperty(), 360 * (i / 60.0) + seedSecondDegrees, Interpolator.LINEAR)
-            ));
-        }
-        secondTime.getKeyFrames().add(new KeyFrame(Duration.seconds(60),
-                new KeyValue(secondRotate.angleProperty(), 0, Interpolator.LINEAR)));
+        final Timeline secondTime = new Timeline(
+                new KeyFrame(
+                        Duration.seconds(60),
+                        new KeyValue(secondRotate.angleProperty(), 360 + seedSecondDegrees, Interpolator.LINEAR)
+                )
+        );
 
         hourTime.setCycleCount(Animation.INDEFINITE);
         minuteTime.setCycleCount(Animation.INDEFINITE);

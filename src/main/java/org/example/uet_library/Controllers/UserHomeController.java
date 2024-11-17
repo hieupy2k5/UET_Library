@@ -47,8 +47,6 @@ public class UserHomeController implements Initializable {
     @FXML
     private Pagination pagina;
 
-    @FXML
-    private GridPane gridPane;
 
     private HashMap<Integer, VBox> pageCache = new HashMap<>();
 

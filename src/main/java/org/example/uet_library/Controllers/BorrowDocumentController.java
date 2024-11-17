@@ -303,31 +303,50 @@ public class BorrowDocumentController {
         int userID = SessionManager.getInstance().getUserId();
 
         if (selectedBooksMap.isEmpty()) {
-            AlertHelper.showAlert(AlertType.INFORMATION, "Are you forgot to do something ?","You haven't add any book to your cart");
+            AlertHelper.showAlert(AlertType.INFORMATION, "Are you forgot to do something ?",
+                    "You haven't added any book to your cart");
             return;
         }
 
-        for (Map.Entry<Book, Integer> entry : selectedBooksMap.entrySet()) {
-            Book book = entry.getKey();
-            int quantity = entry.getValue();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                for (Map.Entry<Book, Integer> entry : selectedBooksMap.entrySet()) {
+                    Book book = entry.getKey();
+                    int quantity = entry.getValue();
 
-            if (quantity > 0 && quantity <= book.getQuantity()) {
-                if (BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity)) {
-                    fetchFromDB();
-                } else {
-                    AlertHelper.showAlert(AlertType.ERROR, "Error", "Database Error");
-                    return;
+                    if (quantity > 0 && quantity <= book.getQuantity()) {
+                        boolean success = BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity);
+
+                        if (!success) {
+                            throw new RuntimeException("Database Error while borrowing book: " + book.getTitle());
+                        }
+                    }
                 }
+
+                selectedBooksMap.clear();
+                fetchFromDB();
+                return null;
             }
-        }
 
-        AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
-                "You have successfully borrowed all selected books.");
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
+                        "You have successfully borrowed all selected books.");
+                cartButtonClicked();
+            }
 
-        selectedBooksMap.clear();
-        cartButtonClicked();
+            @Override
+            protected void failed() {
+                super.failed();
+                Throwable exception = getException();
+                AlertHelper.showAlert(AlertType.ERROR, "Error", exception.getMessage());
+            }
+        };
+
+        new Thread(task).start();
     }
-
 
     private boolean isPaneOpen = false;
 

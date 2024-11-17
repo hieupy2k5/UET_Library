@@ -186,8 +186,7 @@ public class ReturnDocumentController {
 
                     if (selectedBook.getReturnDate() != null) {
                         AlertHelper.showAlert(AlertType.WARNING, "Already returned",
-                            String.format("You have already returned %s",
-                                q.equals(1) ? "it" : "them"));
+                            String.format("You have already returned it"));
                     } else {
                         showQuantityDialog(selectedBook);
                     }
@@ -207,39 +206,57 @@ public class ReturnDocumentController {
     }
 
     private void showQuantityDialog(Borrow borrowBook) {
-        Dialog<Integer> dialog = new Dialog<>();
-        dialog.setTitle("Confirmation");
-        Integer q = borrowBook.getQuantity();
-        dialog.setHeaderText(String.format("Are you sure you want to return %d %s of %s?", q,
-            q.equals(1) ? "copy" : "copies", borrowBook.getTitle()));
+        Platform.runLater(() -> {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Confirmation");
+            dialog.setHeaderText(String.format("Are you sure you want to return %s?", borrowBook.getTitle()));
 
-        ButtonType confirmButtonType = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
+            ButtonType confirmButtonType = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
 
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == confirmButtonType) {
-                returnBook(borrowBook, q);
-            }
-            return null;
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == confirmButtonType) {
+                    returnBook(borrowBook);
+                }
+                return null;
+            });
+
+            dialog.showAndWait();
         });
-
-        dialog.showAndWait();
     }
 
-    private void returnBook(Borrow borrowedBook, int quantity) {
+    private void returnBook(Borrow borrowedBook) {
         int userID = SessionManager.getInstance().getUserId();
         LocalDateTime borrowDate = borrowedBook.getBorrowDate();
 
-        if (BookService.getInstance()
-            .returnBook(userID, borrowedBook.getIsbn(), borrowDate)) {
-            fetchFromDB(); // Update the table after modifying the database
+        Task<Boolean> returnTask = new Task<>() {
+            @Override
+            protected Boolean call() {
+                return BookService.getInstance()
+                        .returnBook(userID, borrowedBook.getIsbn(), borrowDate);
+            }
+        };
 
-            AlertHelper.showAlert(AlertType.INFORMATION, "Return successfully",
-                String.format("You have returned %d copies of %s", quantity,
-                    borrowedBook.getTitle()));
-        } else {
+        returnTask.setOnSucceeded(event -> {
+            if (returnTask.getValue()) {
+                Platform.runLater(() -> {
+                    fetchFromDB(); // Đảm bảo fetch chạy trên luồng nền
+                    AlertHelper.showAlert(AlertType.INFORMATION, "Return successfully",
+                            String.format("You have returned %s", borrowedBook.getTitle()));
+                });
+            } else {
+                Platform.runLater(() -> AlertHelper.showAlert(AlertType.ERROR, "Error",
+                        "Database Error"));
+            }
+        });
+
+        returnTask.setOnFailed(event -> Platform.runLater(() -> {
             AlertHelper.showAlert(AlertType.ERROR, "Error",
-                "Database Error");
-        }
+                    "Failed to connect to the database.");
+        }));
+
+        new Thread(returnTask).start();
     }
+
+
 }
