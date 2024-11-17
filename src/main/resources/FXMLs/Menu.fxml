@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <BorderPane prefHeight="850.0"
   prefWidth="1180.0"
-  xmlns="http://javafx.com/javafx/23"
+  xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>

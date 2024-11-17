@@ -1,16 +1,12 @@
 package org.example.uet_library.Controllers;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import org.example.uet_library.AlertHelper;
 
 public class SignUpController {
 
@@ -23,7 +19,6 @@ public class SignUpController {
     public Button registerBtn;
     public Text loginBtn;
     UserController userController = new UserController();
-    public Label messageLbl;
 
     public void handleSignUpButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
@@ -33,15 +28,51 @@ public class SignUpController {
         String lastName = lastNameFld.getText();
         String email = emailFld.getText();
 
+        if (username.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty username",
+                "You cannot leave your username empty!");
+            return;
+        } else if (password.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty password",
+                "You cannot leave your password empty!");
+            return;
+        } else if (password.length() < 8) {
+            AlertHelper.showAlert(AlertType.WARNING, "Your password is too short",
+                "Your password must be at least 8 characters");
+            return;
+        } else if (password.length() >= 30) {
+            AlertHelper.showAlert(AlertType.WARNING, "Your password is too long",
+                "Are you gonna remember all this? Your password should be less than 30 characters");
+            return;
+        } else if (confirmPassword.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty password confirmation",
+                "You haven't confirm your password yet!");
+            return;
+        }
         if (!password.equals(confirmPassword)) {
-            messageLbl.setText("Passwords do not match");
+            AlertHelper.showAlert(AlertType.WARNING, "Passwords do not match",
+                "Please confirm your password again");
+            return;
+        } else if (firstName.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty first name",
+                "Don't you have a first name?");
+            return;
+        } else if (lastName.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty last name",
+                "Don't you have a last name?");
+            return;
+        } else if (email.equals("")) {
+            AlertHelper.showAlert(AlertType.WARNING, "Empty email",
+                "Please provide a valid email address!");
             return;
         }
 
         if (userController.signUpUser(username, password, firstName, lastName, email)) {
-            messageLbl.setText("Successfully create a new account");
+            AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new account",
+                "You can log in using your new account now!");
         } else {
-            messageLbl.setText("Username already exists");
+            AlertHelper.showAlert(AlertType.WARNING, "Username already exists",
+                "Please choose another username");
         }
     }
 
