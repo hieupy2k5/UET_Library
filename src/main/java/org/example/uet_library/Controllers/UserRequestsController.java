@@ -102,7 +102,6 @@ public class UserRequestsController {
             private final Button declineButton = new Button();
 
             {
-                // Configure the Borrow button
                 Image borrowImage = new Image(
                     getClass().getResource("/Images/yes.png").toExternalForm());
                 ImageView borrowImageView = new ImageView(borrowImage);
@@ -122,7 +121,6 @@ public class UserRequestsController {
                             selectedRequest.getTitle()));
                 });
 
-                // Configure the Return button
                 Image returnImage = new Image(
                     getClass().getResource("/Images/no.png").toExternalForm());
                 ImageView returnImageView = new ImageView(returnImage);

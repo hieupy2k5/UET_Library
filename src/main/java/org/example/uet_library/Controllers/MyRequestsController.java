@@ -5,14 +5,20 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import org.example.uet_library.AlertHelper;
 import org.example.uet_library.BookService;
 import org.example.uet_library.Request;
-import org.example.uet_library.User;
 
 public class MyRequestsController {
 
@@ -48,6 +54,7 @@ public class MyRequestsController {
             tableView.setItems(myRequestsList);
             waitProgress.setVisible(false);
             setupSearch();
+            setUpActionButton();
         }));
 
         task.setOnFailed(event -> Platform.runLater(() -> {
@@ -84,4 +91,64 @@ public class MyRequestsController {
         sortedData.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(sortedData);
     }
+
+    private void setUpActionButton() {
+        actionColumn.setCellFactory(col -> new TableCell<>() {
+            private final Button actionButton = new Button();
+
+            {
+                // Configure the button
+                ImageView buttonImageView = new ImageView();
+                buttonImageView.setFitWidth(32);
+                buttonImageView.setFitHeight(32);
+                actionButton.setGraphic(buttonImageView);
+                actionButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+
+                actionButton.setOnAction(event -> {
+                    Request selectedRequest = getTableView().getItems().get(getIndex());
+                    if ("accepted".equals(selectedRequest.getStatus())) {
+                        BookService.getInstance().userBorrowBook(selectedRequest.getBook_id());
+                        fetchFromDB();
+                        AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Successful",
+                            String.format("You have successfully borrowed the book %s",
+                                selectedRequest.getTitle()));
+                    } else if ("declined".equals(selectedRequest.getStatus())) {
+                        fetchFromDB();
+                        AlertHelper.showAlert(AlertType.ERROR, "Borrow Failed",
+                            String.format("Please try again for the book %s",
+                                selectedRequest.getTitle()));
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Request currentRequest = getTableView().getItems().get(getIndex());
+
+                    if ("pending".equals(currentRequest.getStatus())) {
+                        actionButton.setVisible(false);
+                    } else {
+                        actionButton.setVisible(true);
+                        Image buttonImage;
+                        if ("accepted".equalsIgnoreCase(currentRequest.getStatus())) {
+                            buttonImage = new Image(
+                                getClass().getResource("/Images/borrow.png").toExternalForm());
+                        } else {
+                            buttonImage = new Image(
+                                getClass().getResource("/Images/try-again.png").toExternalForm());
+                        }
+                        ((ImageView) actionButton.getGraphic()).setImage(buttonImage);
+                    }
+                    HBox hbox = new HBox(actionButton);
+                    hbox.setStyle("-fx-alignment: center;");
+                    setGraphic(hbox);
+                }
+            }
+        });
+    }
+
 }
