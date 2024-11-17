@@ -144,9 +144,10 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
 
-                    String query = "SELECT * FROM books WHERE ISBN LIKE ?";
+                    String query = "SELECT * FROM books WHERE ISBN LIKE ? OR Title LIKE ?";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setString(1, "%" + ISBN + "%");
+                    preparedStatement.setString(2, "%" + ISBN + "%");
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");

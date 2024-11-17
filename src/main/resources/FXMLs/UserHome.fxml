@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserHomeController">
+<AnchorPane prefHeight="860.0" prefWidth="980.0" style="-fx-background-color: F3CEC6;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserHomeController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="980.0">
          <top>
@@ -21,13 +21,13 @@
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="searchField" layoutX="57.0" layoutY="28.0" prefHeight="43.0" prefWidth="775.0" />
+                        <TextField fx:id="searchField" layoutX="57.0" layoutY="22.0" prefHeight="43.0" prefWidth="775.0" />
                      </children>
                   </AnchorPane>
                   <!-- Search Icon -->
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="56.0" fitWidth="52.0" layoutX="25.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="56.0" fitWidth="52.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/search.png" />
                            </image>
@@ -53,13 +53,13 @@
                      </content>
                   </ScrollPane>
 
-                  <!-- Title "Recently Added" -->
-                  <Text layoutX="35.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recently Added">
+                              <!-- Title "Recently Added" -->
+                  <Text layoutX="37.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recently Added">
                      <font>
                         <Font name="Alata Regular" size="14.0" />
                      </font>
                   </Text>
-                  <Pagination fx:id="pagina" layoutX="10.0" layoutY="273.0" prefHeight="463.0" prefWidth="960.0" />
+                  <Pagination fx:id="pagina" layoutX="35.0" layoutY="288.0" prefHeight="511.0" prefWidth="925.0" />
                   <ProgressIndicator fx:id="progressIndicator" layoutX="35.0" layoutY="280.0" prefHeight="63.0" prefWidth="77.0" />
                </children>
             </AnchorPane>

@@ -30,8 +30,8 @@ import java.util.ResourceBundle;
 import java.util.Stack;
 
 public class UserHomeController implements Initializable {
-    private static final int ITEMS_PER_PAGE = 10;
-    private static final int COLUMNS = 5;
+    private static final int ITEMS_PER_PAGE = 12;
+    private static final int COLUMNS = 4;
     private static final int ROWS = 1;
     private ObservableList<Book> books;
 
@@ -80,6 +80,7 @@ public class UserHomeController implements Initializable {
         loadTop5Books();
         setUpPagination();
         setUpSearchPopup();
+        cardLayout.setStyle("-fx-background-color: #F3CEC6");
     }
 
     public void loadAllBooks() {
@@ -152,6 +153,7 @@ public class UserHomeController implements Initializable {
 
             double padding = 6;
             yPosition += padding;
+
             searchPopup.show(searchField, xPosition, yPosition);
 
             searchPopup.setWidth(searchField.getWidth() + 500);
@@ -170,7 +172,7 @@ public class UserHomeController implements Initializable {
             int pageCount = (int) Math.ceil(totalBooks / (double) ITEMS_PER_PAGE);
             pagina.setPageCount(pageCount);
             pagina.setPageFactory(this::createPage);
-            pagina.setStyle("-fx-background-color: #B1DCB8");
+            pagina.setStyle("-fx-background-color: #F3CEC6");
             progressIndicator.setVisible(false);
         });
 
@@ -209,14 +211,15 @@ public class UserHomeController implements Initializable {
         }
 
         VBox pageBox = new VBox();
+        pageBox.setStyle("-fx-background-color: #F3CEC6");
         GridPane newGridPane = new GridPane();
         newGridPane.getChildren().clear();
-        newGridPane.setHgap(10);
-        newGridPane.setVgap(10);
+        newGridPane.setHgap(25);
+        newGridPane.setVgap(15);
         newGridPane.setPadding(new Insets(10));
-        pageBox.setPrefWidth(960);
-        pageBox.setPrefHeight(460);
-        newGridPane.setStyle("-fx-background-color: #B1DCB8");
+        pageBox.setPrefWidth(925);
+        pageBox.setPrefHeight(473);
+        newGridPane.setStyle("-fx-background-color: #F3CEC6 ");
 
         int start = pageIndex * ITEMS_PER_PAGE;
 
@@ -229,6 +232,7 @@ public class UserHomeController implements Initializable {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/BookCard.fxml"));
                     VBox cardBox = fxmlLoader.load();
+                    cardBox.setStyle("-fx-border-radius: 20px 20px 20px 20px");
                     BookCardController bookCardController = fxmlLoader.getController();
                     bookCardController.setData(book);
                     bookCardController.setUserHomeController(this);
@@ -251,6 +255,7 @@ public class UserHomeController implements Initializable {
         ScrollPane scrollPane = new ScrollPane(newGridPane);
         scrollPane.setPrefWidth(960);
         scrollPane.setPrefHeight(460);
+        scrollPane.setStyle("-fx-background-color: #F3CEC6");
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         pageBox.getChildren().add(scrollPane);
         pageCache.put(pageIndex, pageBox);

@@ -4,16 +4,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookManagerController">
+<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: #F3CEC6;" stylesheets="@../Styles/bookManager.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookManagerController">
     <children>
-        <GridPane hgap="16" layoutX="63.0" layoutY="121.0" prefHeight="300.0" prefWidth="500.0" vgap="16">
+        <GridPane hgap="16" layoutX="45.0" layoutY="422.0" prefHeight="300.0" prefWidth="500.0" vgap="16">
             <columnConstraints>
                 <ColumnConstraints percentWidth="19.0" />
                 <ColumnConstraints percentWidth="81.0" />
@@ -27,18 +29,54 @@
             <RowConstraints />
             </rowConstraints>
             <children>
-                <Text text="BOOK TITLE" />
-                <TextField fx:id="titleEdit" prefHeight="30.0" GridPane.columnIndex="1" />
-                <Text text="ISBN" GridPane.rowIndex="1" />
-                <TextField fx:id="ISBNEdit" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Text text="AUTHOR" GridPane.rowIndex="2" />
-                <TextField fx:id="AuthorEdit" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Text text="QUANTITY" GridPane.rowIndex="3" />
-                <TextField fx:id="QuantityEdit" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YEAR " GridPane.rowIndex="4" />
-            <TextField fx:id="yearOfPublication" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CATEGORY" GridPane.rowIndex="5" />
-            <TextField fx:id="categoryBook" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Text text="BOOK TITLE">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+                <TextField fx:id="titleEdit" prefHeight="30.0" styleClass="text_field" stylesheets="@../Styles/AdminBookShow.css" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
+                <Text text="ISBN" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+                <TextField fx:id="ISBNEdit" prefHeight="30.0" stylesheets="@../Styles/bookManager.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
+                <Text text="AUTHOR" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+                <TextField fx:id="AuthorEdit" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
+                <Text text="QUANTITY" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+                <TextField fx:id="QuantityEdit" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YEAR " GridPane.rowIndex="4">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+            <TextField fx:id="yearOfPublication" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CATEGORY" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></Text>
+            <TextField fx:id="categoryBook" prefHeight="30.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <font>
+                  <Font name="Alata Regular" size="14.0" />
+               </font></TextField>
             </children>
         </GridPane>
 
@@ -48,31 +86,61 @@
             </image>
         </ImageView>
 
-        <Button fx:id="editButton" layoutX="141.0" layoutY="691.0" mnemonicParsing="false" onAction="#handleEdit" prefHeight="25.0" prefWidth="97.0" text="Edit">
+        <Button fx:id="editButton" layoutX="124.0" layoutY="796.0" mnemonicParsing="false" onAction="#handleEdit" prefHeight="25.0" prefWidth="97.0" stylesheets="@../Styles/bookManager.css" text="Edit">
             <styleClass>
                 <String fx:value="button" />
                 <String fx:value="button-edit" />
             </styleClass>
+         <font>
+            <Font name="Black Ops One Regular" size="14.0" />
+         </font>
         </Button>
 
-        <Button fx:id="removeBut" layoutX="671.0" layoutY="691.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="25.0" prefWidth="90.0" text="Remove">
+        <Button fx:id="removeBut" layoutX="723.0" layoutY="796.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="39.0" prefWidth="116.0" stylesheets="@../Styles/bookManager.css" text="Remove">
             <styleClass>
                 <String fx:value="button" />
                 <String fx:value="button-remove" />
             </styleClass>
         </Button>
 
-        <TextField fx:id="ISBNSearch" layoutX="623.0" layoutY="145.0" prefHeight="30.0" prefWidth="310.0" promptText="Enter ISBN" />
-        <ListView fx:id="listViewTable" layoutX="623.0" layoutY="201.0" prefHeight="340.0" prefWidth="310.0" />
+        <TextField fx:id="ISBNSearch" layoutX="585.0" layoutY="309.0" prefHeight="30.0" prefWidth="310.0" promptText="Enter ISBN" styleClass="list-cell" stylesheets="@../Styles/bookManager.css">
+         <font>
+            <Font name="Alata Regular" size="16.0" />
+         </font></TextField>
+        <ListView fx:id="listViewTable" layoutX="573.0" layoutY="374.0" prefHeight="332.0" prefWidth="364.0" styleClass="list-cell" stylesheets="@../Styles/bookManager.css" />
 
-        <Button fx:id="SaveButton" layoutX="422.0" layoutY="691.0" mnemonicParsing="false" onAction="#SaveBookOnAction" prefHeight="25.0" prefWidth="82.0" text="Save">
+        <Button fx:id="SaveButton" layoutX="434.0" layoutY="796.0" mnemonicParsing="false" onAction="#SaveBookOnAction" prefHeight="25.0" prefWidth="82.0" stylesheets="@../Styles/bookManager.css" text="Save">
             <styleClass>
                 <String fx:value="button" />
                 <String fx:value="button-save" />
             </styleClass>
         </Button>
-        <ImageView fx:id="imageOfBook" fitHeight="227.0" fitWidth="219.0" layoutX="371.0" layoutY="421.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="qrcodeImage" fitHeight="180.0" fitWidth="191.0" layoutX="39.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="imageOfBook" fitHeight="227.0" fitWidth="219.0" layoutX="231.0" layoutY="171.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="41.0" fitWidth="43.0" layoutX="906.0" layoutY="306.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/search_icon_ad.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="115.0" fitWidth="116.0" layoutX="258.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/MangeBook.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="391.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-: #D4E1F4;" text="Manage Book">
+         <font>
+            <Font name="Bauhaus 93" size="36.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="171.0" fitWidth="200.0" layoutX="802.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/naruto-fotor-bg-remover-2024111715311.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="171.0" fitWidth="191.0" layoutX="60.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/cutena.png" />
+         </image>
+      </ImageView>
     </children>
 
 </AnchorPane>

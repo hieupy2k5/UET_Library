@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -10,17 +11,21 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="300.0" maxWidth="180.0" minHeight="-Infinity" prefHeight="300.0" prefWidth="180.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookCardController">
+<VBox maxHeight="300.0" maxWidth="180.0" minHeight="291.0" minWidth="180.0" prefHeight="291.0" prefWidth="163.0" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookCardController">
    <children>
-      <Button mnemonicParsing="false" onAction="#bookButtonClicked" prefHeight="261.0" prefWidth="165.0" styleClass="back_image" stylesheets="@../Styles/bookShow.css">
+      <Button mnemonicParsing="false" onAction="#bookButtonClicked" prefHeight="261.0" prefWidth="165.0" stylesheets="@../Styles/card.css">
          <graphic>
             <VBox prefHeight="220.0" prefWidth="134.0">
                <children>
-                  <ImageView fx:id="ImageBook" fitHeight="225.0" fitWidth="190.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" styleClass="Back_button">
-                     <image>
-                        <Image url="@../Images/imageNotFound.jpg" />
-                     </image>
-                  </ImageView>
+                  <AnchorPane maxHeight="200.0" maxWidth="200.0" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="ImageBook" fitHeight="225.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true" styleClass="Back_button">
+                           <image>
+                              <Image url="@../Images/imageNotFound.jpg" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
                   <Label fx:id="bookTitle" prefHeight="21.0" prefWidth="168.0" stylesheets="@../Styles/bookShow.css" text="Label">
                      <font>
                         <Font size="14.0" />
@@ -28,7 +33,7 @@
                   </Label>
                   <AnchorPane prefHeight="9.0" prefWidth="180.0">
                      <children>
-                        <ImageView fx:id="rating_star" fitHeight="33.0" fitWidth="45.0" layoutX="74.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="rating_star" fitHeight="33.0" fitWidth="45.0" layoutX="66.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Images/star_rating.png" />
                            </image>
@@ -38,6 +43,10 @@
                </children>
             </VBox>
          </graphic>
+         <styleClass>
+            <String fx:value="transparent-button" />
+            <String fx:value="boroborder_radius" />
+         </styleClass>
       </Button>
    </children>
    <effect>
@@ -47,4 +56,8 @@
          </color>
       </DropShadow>
    </effect>
+   <styleClass>
+      <String fx:value="bookCard" />
+      <String fx:value="boroborder_radius" />
+   </styleClass>
 </VBox>

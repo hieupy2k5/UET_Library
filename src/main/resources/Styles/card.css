@@ -1,8 +1,33 @@
 .transparent-button {
+    -fx-border-radius: 15px 15px 15px 15px;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-text-fill: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-effect: null;
+}
+.boroborder_radius {
+    -fx-border-radius: 15px 15px 15px 15px;
+}
+.bookCard {
+    -fx-alignment: center;
+    -fx-border-radius: 15px;
+    -fx-padding: 10;
+    -fx-border-color: #2A2A2A;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0, 5);
+
+}
+
+.back_image ImageView {
+    -fx-background-size: cover;
+}
+
+.bookCard:hover {
+    -fx-background-color: #F89D7B;
+    -fx-border-radius: 15px 15px 15px 15px;
+    -fx-background-radius: 15px;
+}
+
+.card:hover {
+    -fx-background-color: #4A4E71;
 }

@@ -55,11 +55,18 @@ public class CardController {
         BookTitle.setText(book.getTitle());
         authorBook.setText(book.getAuthor());
         String randomColor = colors[(int)(Math.random() * colors.length)];
-        bookBox.setStyle("-fx-background-color: " + randomColor + ";"
-                          + "-fx-background-radius: 20;" + "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0),10,0,0,10);");
-        button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" + "-fx-text-fill: transparent;" + "-fx-background-insets: 0;" + "-fx-padding: 0;" + "-fx-effect: null;" + "-fx-focus-color: transparent;" + "-fx-faint-focus-color: transparent;" + "-fx-hover-base: transparent;" + "-fx-border-insets: 0;" + "-fx-background-radius: 0;" + "-fx-border-radius: 0;");
+        String base_Style = "-fx-background-color: " + randomColor + ";"
+                + "-fx-background-radius: 20;" + "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0),10,0,0,10);";
+        bookBox.setStyle(base_Style);
+        button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" + "-fx-text-fill: transparent;" + "-fx-background-insets: 0;" + "-fx-padding: 0;" + "-fx-effect: null;" + "-fx-focus-color: transparent;" + "-fx-faint-focus-color: transparent;" + "-fx-hover-base: transparent;" + "-fx-border-insets: 0;" + "-fx-background-radius: 20;" + "-fx-border-radius: 20;");
 
+        String hoverStyle = "-fx-background-color: " + "#F89D7B" + ";"
+                + "-fx-text-fill: white; -fx-border-radius: 20px;" + "-fx-background-radius: 20px;";
+
+        bookBox.setOnMouseEntered(event -> button.setStyle(hoverStyle));
+        bookBox.setOnMouseExited(event -> button.setStyle(base_Style));
     }
+
 
     public void latestBookButtonOnAction(ActionEvent event) throws IOException {
         try {

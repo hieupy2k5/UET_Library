@@ -90,6 +90,9 @@ public class MenuController {
 
             button_Home_Ad.setVisible(false);
             button_Home_Ad.setManaged(false);
+
+            button_BookShow.setVisible(false);
+            button_BookShow.setManaged(false);
             this.setAdmin(isAdmin);
         }
     }

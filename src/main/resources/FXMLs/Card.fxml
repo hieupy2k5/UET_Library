@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -10,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="bookBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="325.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.CardController">
+<HBox fx:id="bookBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="325.0" styleClass="card" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.CardController">
    <children>
-      <Button fx:id="button" mnemonicParsing="false" onAction="#latestBookButtonOnAction" prefHeight="175.0" prefWidth="325.0" styleClass="transparent-button" stylesheets="@../Styles/card.css" text="Button">
+      <Button fx:id="button" mnemonicParsing="false" onAction="#latestBookButtonOnAction" prefHeight="175.0" prefWidth="325.0" stylesheets="@../Styles/card.css" text="Button">
          <graphic>
             <HBox prefHeight="175.0" prefWidth="325.0">
                <children>
@@ -51,6 +52,10 @@
                </children>
             </HBox>
          </graphic>
+         <styleClass>
+            <String fx:value="transparent-button" />
+            <String fx:value="card" />
+         </styleClass>
       </Button>
    </children>
    <effect>

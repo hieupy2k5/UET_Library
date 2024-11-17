@@ -60,9 +60,6 @@ public class BookManagerController {
     @FXML
     private ImageView imageOfBook;
 
-    @FXML
-    private ImageView qrcodeImage;
-
     public void initialize() {
         this.resetImage();
         listViewTable.setCellFactory(new Callback<ListView<Book>, ListCell<Book>>() {
@@ -109,15 +106,6 @@ public class BookManagerController {
             imageOfBook.setPreserveRatio(true);
             imageOfBook.setSmooth(true);
             imageOfBook.setCache(true);
-            byte[] qrCode = new byte[1];
-            qrCode = bookSelected.getqrCode();
-            ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
-            Image imageQR = new Image(bis);
-            qrcodeImage.setImage(imageQR);
-            qrcodeImage.setFitHeight(imageOfBook.getFitHeight());
-            qrcodeImage.setFitWidth(imageOfBook.getFitWidth());
-            qrcodeImage.setPreserveRatio(true) ;
-            qrcodeImage.setCache(true);
         });
 
         if(listViewTable.getSelectionModel().getSelectedItem() == null || bookSelected == null) {
@@ -253,6 +241,5 @@ public class BookManagerController {
         URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
         Image image = new Image(imageUrl.toExternalForm());
         imageOfBook.setImage(image);
-        qrcodeImage.setImage(image);
     }
 }

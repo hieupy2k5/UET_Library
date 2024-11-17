@@ -18,12 +18,19 @@
          <children>
             <AnchorPane prefHeight="100.0" prefWidth="353.0">
                <children>
-                  <Button layoutX="23.0" layoutY="18.0" mnemonicParsing="false" onAction="#BackOnAction" prefHeight="60.0" prefWidth="177.0" styleClass="Back_button" stylesheets="@../Styles/bookShow.css" text="Back" />
+                  <Button layoutX="-18.0" layoutY="20.0" mnemonicParsing="false" onAction="#BackOnAction" prefHeight="60.0" prefWidth="110.0" style="-fx-background-color: transparent;" stylesheets="@../Styles/AdminBookShow.css">
+                     <graphic>
+                        <ImageView fitHeight="59.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" styleClass="image_view">
+                           <image>
+                              <Image url="@../Images/back.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
             </AnchorPane>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="635.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#handleButtonAdd" prefHeight="60.0" prefWidth="150.0" styleClass="OtherButton" stylesheets="@../Styles/bookShow.css" text="Add to cart">
+                  <Button mnemonicParsing="false" onAction="#handleButtonAdd" prefHeight="60.0" prefWidth="180.0" styleClass="OtherButton" stylesheets="@../Styles/bookShow.css" text="Add to cart">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -31,9 +38,9 @@
                         <Insets right="50.0" />
                      </HBox.margin>
                      <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="41.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Images/insertToCart.png" />
+                              <Image url="@../Images/bookshelf.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -95,7 +102,7 @@
                         <Font name="Bell MT" size="18.0" />
                      </font>
                   </Text>
-                  <HBox fx:id="cardLayout" prefHeight="168.0" prefWidth="980.0" />
+                  <HBox fx:id="cardLayout" prefHeight="168.0" prefWidth="980.0" spacing="20.0" />
                </children>
             </VBox>
          </content>
