@@ -1,6 +1,7 @@
 package org.example.uet_library.Controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.mysql.cj.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ public class SettingsController {
     private TextField firstNameField, lastNameField, emailField, userNameField, passwordField;
 
     public int userID = SessionManager.getInstance().getUserId();;
+    public boolean isAdmin = SessionManager.getInstance().isAdmin();
 
     public void initialize() {
         loadUserInfo();
@@ -32,7 +34,8 @@ public class SettingsController {
 
     private void loadUserInfo() {
         Database connection = new Database();
-        String query = "SELECT username, password, first_name, last_name, email FROM users WHERE id = ?";
+        String tableName = isAdmin ? "admins" : "users";
+        String query = "SELECT username, password, first_name, last_name, email FROM " + tableName + " WHERE id = ?";
         try (Connection conDB = connection.getConnection()) {
             PreparedStatement statement = conDB.prepareStatement(query);
             statement.setInt(1, userID);
@@ -50,7 +53,7 @@ public class SettingsController {
                 lastNameField.setText(lastName);
                 emailField.setText(email);
             } else {
-                System.out.println("No user found with ID: " + userID);
+                System.out.println("No account found with ID: " + userID);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,12 +119,13 @@ public class SettingsController {
 
     private boolean checkPassword(String enteredPassword) {
         Database connection = new Database();
-        String query = "SELECT password FROM users WHERE id = ?";
+        String tableName = isAdmin ? "admins" : "users";
+        String query = "SELECT password FROM " + tableName + " WHERE id = ?";
         try (Connection conDB = connection.getConnection()) {
             PreparedStatement statement = conDB.prepareStatement(query);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
-            Integer userID = userController.checkLoginCredentials(username, enteredPassword);
+            Integer userID = userController.checkLoginCredentials(username, enteredPassword).getKey();
 
             if (resultSet.next()) {
                 System.out.println(userID);
@@ -140,7 +144,8 @@ public class SettingsController {
 
     @FXML
     private void saveChanges() {
-        String updateQuery = "UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
+        String tableName = isAdmin ? "admins" : "users";
+        String updateQuery = "UPDATE " + tableName + " SET username = ?, first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         Database connection = new Database();
         try (Connection conDB = connection.getConnection()) {
             PreparedStatement statement = conDB.prepareStatement(updateQuery);
@@ -161,7 +166,7 @@ public class SettingsController {
             statement.executeUpdate();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("User information updated successfully!");
+            alert.setContentText("Account information updated successfully!");
             alert.show();
         } catch (SQLException e) {
             e.printStackTrace();

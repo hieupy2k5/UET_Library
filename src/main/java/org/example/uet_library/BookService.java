@@ -170,6 +170,10 @@ public class BookService {
         };
     }
 
+    /**
+     * Fetch borrow records from database
+     * @return a list of borrow records
+     */
     public Task<ObservableList<Borrow>> fetchBorrowFromDB() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -281,7 +285,11 @@ public class BookService {
     }
 
     /**
-     * Return true => Borrow successfully, else => Something has gone wrong (not our faults ;) )
+     * For borrowing books.
+     * @param userId is the id of the borrower.
+     * @param bookId is the book they want to borrow.
+     * @param borrowedQuantity the quantity of books they want to borrow.
+     * @return whether the book is borrowed successfully.
      */
     public boolean borrowBook(int userId, String bookId, int borrowedQuantity) {
         Database dbConnection = new Database();
@@ -320,7 +328,11 @@ public class BookService {
     }
 
     /**
-     * Return books (For responsible readers who do not steal books)
+     * For returning books.
+     * @param userId is the id of the current user.
+     * @param bookId is the book that the user wants to return.
+     * @param borrowDate is the borrow date of that book.
+     * @return whether the book is successfully returned.
      */
     public boolean returnBook(int userId, String bookId, LocalDateTime borrowDate) {
         Database dbConnection = new Database();
