@@ -5,15 +5,10 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import org.example.uet_library.Book;
 import javafx.scene.text.Text;
 import org.example.uet_library.BookService;
@@ -75,7 +70,7 @@ public class ShowBookInformation {
 
 
     public void fetchBookForRecommendBook() {
-        Task<ObservableList<Book>> task = BookService.getInstance().featchBookForPage(this.bookCurrent);
+        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookForPage(this.bookCurrent);
         task.setOnSucceeded(event -> {
             recommendBooks = task.getValue();
             for(Book book : recommendBooks) {

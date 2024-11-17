@@ -19,6 +19,8 @@ import org.example.uet_library.App;
 
 public class MenuController {
 
+    @FXML
+    public Button button_UserManage;
     private boolean isAdmin;
     private Stage primaryStage;
 
@@ -80,7 +82,6 @@ public class MenuController {
 
             button_Home_User.setVisible(false);
             button_Home_User.setManaged(false);
-            this.setAdmin(isAdmin);
         } else {
             button_AddBook.setVisible(false);
             button_AddBook.setManaged(false);
@@ -90,8 +91,12 @@ public class MenuController {
 
             button_Home_Ad.setVisible(false);
             button_Home_Ad.setManaged(false);
-            this.setAdmin(isAdmin);
+
+            button_UserManage.setVisible(false);
+            button_UserManage.setManaged(false);
         }
+
+        this.setAdmin(isAdmin);
     }
 
     public void loadClock() {
@@ -124,6 +129,11 @@ public class MenuController {
     @FXML
     public void loadManagerBookView() {
         loadView("/FXMLs/BookManager.fxml");
+    }
+
+    @FXML
+    public void loadUserManagerView(ActionEvent actionEvent) {
+        loadView("/FXMLs/UserManager.fxml");
     }
 
     @FXML
@@ -220,4 +230,5 @@ public class MenuController {
     public Parent getContent() {
         return contentPane.getChildren().isEmpty() ? null : (Parent) contentPane.getChildren().get(0);
     }
+
 }
