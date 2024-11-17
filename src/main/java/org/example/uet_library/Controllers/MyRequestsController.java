@@ -62,7 +62,7 @@ public class MyRequestsController {
 
     private void setupSearch() {
         if (myRequestsList == null || myRequestsList.isEmpty()) {
-            System.err.println("User list is empty");
+            System.err.println("List is empty");
             return;
         }
         FilteredList<Request> filteredData = new FilteredList<>(myRequestsList, b -> true);
