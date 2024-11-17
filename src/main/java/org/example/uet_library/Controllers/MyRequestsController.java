@@ -10,36 +10,32 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
-import org.example.uet_library.Borrow;
+import org.example.uet_library.Request;
 import org.example.uet_library.User;
 
-public class UserManagerController {
+public class MyRequestsController {
 
-    public TableView<User> tableView;
-    public TableColumn<User, String> usernameColumn;
-    public TableColumn<User, String> firstNameColumn;
-    public TableColumn<User, String> lastNameColumn;
-    public TableColumn<User, String> emailColumn;
-    public TableColumn<User, Void> actionColumn;
+    public TableView<Request> tableView;
+    public TableColumn<Request, String> titleColumn;
+    public TableColumn<Request, String> authorColumn;
+    public TableColumn<Request, String> statusColumn;
+    public TableColumn<Request, Void> actionColumn;
     public ProgressIndicator waitProgress;
     public TextField searchField;
-    private ObservableList<User> userObservableList;
-
+    private ObservableList<Request> myRequestsList;
 
     public void initialize() {
-        usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("first_name"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("last_name"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
 
-            fetchFromDB();
+        fetchFromDB();
     }
 
-    public void fetchFromDB() {
-        Task<ObservableList<User>> task = BookService.getInstance().fetchUserFromDB();
+    private void fetchFromDB() {
+        Task<ObservableList<Request>> task = BookService.getInstance().fetchMyRequestFromDB();
 
         // Bind progress indicator to task status
         task.setOnRunning(event -> Platform.runLater(() -> {
@@ -48,8 +44,8 @@ public class UserManagerController {
         }));
 
         task.setOnSucceeded(event -> Platform.runLater(() -> {
-            userObservableList = task.getValue();
-            tableView.setItems(userObservableList);
+            myRequestsList = task.getValue();
+            tableView.setItems(myRequestsList);
             waitProgress.setVisible(false);
             setupSearch();
         }));
@@ -65,27 +61,26 @@ public class UserManagerController {
     }
 
     private void setupSearch() {
-        if (userObservableList == null || userObservableList.isEmpty()) {
+        if (myRequestsList == null || myRequestsList.isEmpty()) {
             System.err.println("User list is empty");
             return;
         }
-        FilteredList<User> filteredData = new FilteredList<>(userObservableList, b -> true);
+        FilteredList<Request> filteredData = new FilteredList<>(myRequestsList, b -> true);
 
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(user -> {
+            filteredData.setPredicate(request -> {
                 if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
-                return user.getUsername().toLowerCase().contains(lowerCaseFilter)
-                    || user.getFirst_name().toLowerCase().contains(lowerCaseFilter)
-                    || user.getLast_name().toLowerCase().contains(lowerCaseFilter)
-                    || user.getEmail().toLowerCase().contains(lowerCaseFilter);
+                return request.getTitle().toLowerCase().contains(lowerCaseFilter)
+                    || request.getAuthor().toLowerCase().contains(lowerCaseFilter)
+                    || request.getStatus().toLowerCase().contains(lowerCaseFilter);
             });
         });
 
-        SortedList<User> sortedData = new SortedList<>(filteredData);
+        SortedList<Request> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tableView.comparatorProperty());
         tableView.setItems(sortedData);
     }
