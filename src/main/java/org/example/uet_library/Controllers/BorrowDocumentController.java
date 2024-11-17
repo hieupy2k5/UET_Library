@@ -316,7 +316,7 @@ public class BorrowDocumentController {
         int userID = SessionManager.getInstance().getUserId();
 
         if (selectedBooksMap.isEmpty()) {
-            AlertHelper.showAlert(AlertType.INFORMATION, "Are you forgot to do something ?","You haven't add any book to your cart");
+            AlertHelper.showAlert(AlertType.INFORMATION, "Did you forget to do something ?","You haven't add any book to your cart");
             return;
         }
 
