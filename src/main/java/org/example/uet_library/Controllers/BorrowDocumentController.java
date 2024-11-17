@@ -1,9 +1,8 @@
 package org.example.uet_library.Controllers;
 
+import java.util.Map;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -13,9 +12,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
@@ -23,15 +19,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import org.example.uet_library.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.Map;
+import org.example.uet_library.AlertHelper;
+import org.example.uet_library.Book;
+import org.example.uet_library.BookService;
+import org.example.uet_library.SessionManager;
+import org.example.uet_library.SharedData;
 
 /**
  * This is a feature for users.
@@ -48,7 +46,6 @@ public class BorrowDocumentController {
     public TableColumn<Map.Entry<Book, Integer>, Integer> quantityBorrowedColumn;
     @FXML
     private AnchorPane root;
-
 
 
     @FXML
@@ -82,7 +79,8 @@ public class BorrowDocumentController {
     @FXML
     private AnchorPane slidingPane;
 
-    private ObservableMap<Book, Integer> selectedBooksMap = SharedData.getInstance().getSelectedBooksMap();
+    private ObservableMap<Book, Integer> selectedBooksMap = SharedData.getInstance()
+        .getSelectedBooksMap();
 
     public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
@@ -122,10 +120,8 @@ public class BorrowDocumentController {
         fetchFromDB();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-
         slidingPane.setTranslateX(900);
         slidingPane.setTranslateY(60);
-
 
         selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
@@ -170,9 +166,11 @@ public class BorrowDocumentController {
                         }
                     };
 
-                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnSucceeded(
+                        event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println("Failed to load image: " + loadImageTask.getException().getMessage());
+                        System.err.println(
+                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -211,7 +209,8 @@ public class BorrowDocumentController {
             private final Button borrowButton = new Button();
 
             {
-                Image borrowImage = new Image(getClass().getResource("/Images/insertToCart.png").toExternalForm());
+                Image borrowImage = new Image(
+                    getClass().getResource("/Images/insertToCart.png").toExternalForm());
                 ImageView imageView = new ImageView(borrowImage);
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
@@ -235,7 +234,8 @@ public class BorrowDocumentController {
     }
 
     private void updateSelectedBooksTable() {
-        ObservableList<Map.Entry<Book, Integer>> selectedBooksList = FXCollections.observableArrayList(selectedBooksMap.entrySet());
+        ObservableList<Map.Entry<Book, Integer>> selectedBooksList = FXCollections.observableArrayList(
+            selectedBooksMap.entrySet());
         selectedBooksTable.setItems(selectedBooksList);
 
         detailColumn.setCellFactory(column -> new TableCell<Map.Entry<Book, Integer>, String>() {
@@ -270,7 +270,8 @@ public class BorrowDocumentController {
             private final Button removeButton = new Button();
 
             {
-                Image removeImage = new Image(getClass().getResource("/Images/bin.png").toExternalForm());
+                Image removeImage = new Image(
+                    getClass().getResource("/Images/bin.png").toExternalForm());
                 ImageView imageView = new ImageView(removeImage);
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
@@ -303,8 +304,8 @@ public class BorrowDocumentController {
         int userID = SessionManager.getInstance().getUserId();
 
         if (selectedBooksMap.isEmpty()) {
-            AlertHelper.showAlert(AlertType.INFORMATION, "Are you forgot to do something ?",
-                    "You haven't added any book to your cart");
+            AlertHelper.showAlert(AlertType.INFORMATION, "Did you forget to do something ?",
+                "You haven't added any book to your cart");
             return;
         }
 

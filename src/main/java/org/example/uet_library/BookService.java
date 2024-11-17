@@ -4,7 +4,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.json.JSONArray;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import org.example.uet_library.Book;
 
 
 public class BookService {
@@ -173,6 +171,10 @@ public class BookService {
         };
     }
 
+    /**
+     * Fetch borrow records from database
+     * @return a list of borrow records
+     */
     public Task<ObservableList<Borrow>> fetchBorrowFromDB() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -224,6 +226,42 @@ public class BookService {
         };
     }
 
+    public Task<ObservableList<User>> fetchUserFromDB() {
+        return new Task<>() {
+            @Override
+            protected ObservableList<User> call() throws Exception {
+                ObservableList<User> userList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    String query = "SELECT * FROM users";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        int userID = resultSet.getInt("id");
+                        String username = resultSet.getString("username");
+                        String email = resultSet.getString("email");
+                        String firstName = resultSet.getString("first_name");
+                        String lastName = resultSet.getString("last_name");
+                        String fullName = firstName + " " + lastName;
+
+
+                        User user = new User(username, firstName, lastName, email);
+                        userList.add(user);
+                    }
+
+                } catch (SQLException e) {
+
+                    System.err.println("Error fetching borrow from database: " + e.getMessage());
+                    throw new Exception("Database query failed",
+                        e); // Re-throw with cause for chaining
+                }
+
+                return userList;
+            }
+        };
+    }
+
     public Task<Void> editBook(Book book) {
         return new Task<>() {
             @Override
@@ -248,7 +286,11 @@ public class BookService {
     }
 
     /**
-     * Return true => Borrow successfully, else => Something has gone wrong (not our faults ;) )
+     * For borrowing books.
+     * @param userId is the id of the borrower.
+     * @param bookId is the book they want to borrow.
+     * @param borrowedQuantity the quantity of books they want to borrow.
+     * @return whether the book is borrowed successfully.
      */
     public boolean borrowBook(int userId, String bookId, int borrowedQuantity) {
         Database dbConnection = new Database();
@@ -287,7 +329,11 @@ public class BookService {
     }
 
     /**
-     * Return books (For responsible readers who do not steal books)
+     * For returning books.
+     * @param userId is the id of the current user.
+     * @param bookId is the book that the user wants to return.
+     * @param borrowDate is the borrow date of that book.
+     * @return whether the book is successfully returned.
      */
     public boolean returnBook(int userId, String bookId, LocalDateTime borrowDate) {
         Database dbConnection = new Database();
@@ -368,7 +414,7 @@ public class BookService {
             }
         };
     }
-    public Task<ObservableList<Book>> featchBookForPage(int start, int itemsPerPage) {
+    public Task<ObservableList<Book>> fetchBookForPage(int start, int itemsPerPage) {
         return new Task<>() {
             @Override
             protected ObservableList<Book> call() throws Exception {
@@ -403,7 +449,7 @@ public class BookService {
         };
     }
 
-    public Task<ObservableList<Book>> featchBookForPage(Book bookCurrent) {
+    public Task<ObservableList<Book>> fetchBookForPage(Book bookCurrent) {
         return new Task<>() {
             @Override
             public ObservableList<Book> call() throws Exception {

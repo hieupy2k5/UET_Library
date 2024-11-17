@@ -1,13 +1,8 @@
 package org.example.uet_library.Controllers;
 
-import javafx.concurrent.Service;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -16,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import org.example.uet_library.Book;
@@ -25,7 +19,6 @@ import org.example.uet_library.BookService;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -221,7 +214,7 @@ public class UserHomeController implements Initializable {
 
         int start = pageIndex * ITEMS_PER_PAGE;
 
-        Task<ObservableList<Book>> task = BookService.getInstance().featchBookForPage(start, ITEMS_PER_PAGE);
+        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookForPage(start, ITEMS_PER_PAGE);
         task.setOnSucceeded(event -> {
             progressIndicator.setVisible(false);
             ObservableList<Book> bookPerPage = task.getValue();

@@ -13,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.example.uet_library.AlertHelper;
@@ -79,7 +78,7 @@ public class ShowBookInformation {
 
 
     public void fetchBookForRecommendBook() {
-        Task<ObservableList<Book>> task = BookService.getInstance().featchBookForPage(this.bookCurrent);
+        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookForPage(this.bookCurrent);
         task.setOnSucceeded(event -> {
             recommendBooks = task.getValue();
             for(Book book : recommendBooks) {

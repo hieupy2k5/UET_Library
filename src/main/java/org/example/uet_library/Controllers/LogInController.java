@@ -1,10 +1,7 @@
 package org.example.uet_library.Controllers;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
-
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -30,10 +26,7 @@ public class LogInController implements Initializable {
     public Text registerBtn;
     public PasswordField passwordFld;
     public Button loginBtn;
-    public ChoiceBox<String> choiceBox;
-    private String[] choices = {"Admin", "User"};
     private UserController userController = new UserController();
-    private boolean isAdmin = false;
 
     private Stage stage;
 
@@ -44,19 +37,23 @@ public class LogInController implements Initializable {
     public void handleLogInButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
-        Integer userID = userController.checkLoginCredentials(username, password);
-        isAdmin  = choiceBox.getSelectionModel().getSelectedItem().equals(choices[0]);
+        Integer userID = userController.checkLoginCredentials(username, password).getKey();
+        Boolean isAdmin = userController.checkLoginCredentials(username, password).getValue();
         if (userID != null && userID != -1) {
             SessionManager.getInstance().setUserId(userID);
+            SessionManager.getInstance().setAdmin(isAdmin);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Menu.fxml"));
             Parent menuParent = loader.load();
 
             MenuController menuController = loader.getController();
             menuController.setStage(this.stage);
-            menuController.configureMenu(this.isAdmin);
-            if (isAdmin) menuController.loadView("/FXMLs/HomeView.fxml");
-            else menuController.loadHomeUser();
+            menuController.configureMenu(isAdmin);
+            if (isAdmin) {
+                menuController.loadView("/FXMLs/HomeView.fxml");
+            } else {
+                menuController.loadHomeUser();
+            }
 
             Scene menuScene = new Scene(menuParent);
 
@@ -74,10 +71,10 @@ public class LogInController implements Initializable {
             window.show();
         } else if (userID == null) {
             AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
-                    "Wrong username or password. Please try again.");
+                "Wrong username or password. Please try again.");
         } else {
             AlertHelper.showAlert(AlertType.ERROR, "Log in unsuccessfully",
-                    "An unexpected error occurred. Please try again later.");
+                "An unexpected error occurred. Please try again later.");
         }
     }
 
@@ -87,7 +84,5 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceBox.getItems().addAll(choices);
-        choiceBox.setValue(choices[0]);
     }
 }

@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Connect to Aiven
+ */
 public class Database {
 
     public Connection connection;
