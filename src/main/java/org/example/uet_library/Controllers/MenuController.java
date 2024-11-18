@@ -196,14 +196,13 @@ public class MenuController {
     public void loadHomeUser() {
         try {
             if (contentPane != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/temporary.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
                 AnchorPane newPane = loader.load();
-                // Uncomment the lines + change the temporary fxml to see User Home View
-//                UserHomeController userHomeController = loader.getController();
-//                userHomeController.setStage(primaryStage);
-//                userHomeController.setMenuController(this);
-//                contentPane.getChildren().clear();
-//                contentPane.getChildren().add(newPane);
+                UserHomeController userHomeController = loader.getController();
+                userHomeController.setStage(primaryStage);
+                userHomeController.setMenuController(this);
+                contentPane.getChildren().clear();
+                contentPane.getChildren().add(newPane);
             } else {
                 System.out.println("contentPane is null. Cannot load the view.");
             }
