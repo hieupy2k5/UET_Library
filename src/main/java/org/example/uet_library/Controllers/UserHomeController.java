@@ -74,22 +74,24 @@ public class UserHomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> {
             loadAllBooks();
-            loadTop5Books();
-            setUpPagination();
             setUpSearchPopup();
         });
-        cardLayout.setStyle("-fx-background-color: #F3CEC6");
+        cardLayout.setStyle("-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
     }
 
     public void loadAllBooks() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
-        task.setOnSucceeded(e -> Platform.runLater(() -> this.searchBooks = task.getValue()));
+        task.setOnSucceeded(e -> Platform.runLater(() -> {
+            this.searchBooks = task.getValue();
+            loadTop5Books();
+            setUpPagination();
+        }));
 
         task.setOnFailed(e -> {
             System.out.println("Failed to load books: " + task.getException());
         });
-        executorService.submit(task);
+        executorService.execute(task);
     }
 
     private void setUpSearchPopup() {
@@ -164,13 +166,24 @@ public class UserHomeController implements Initializable {
     }
 
     public void setUpPagination() {
+        if (searchBooks == null) {
+            pagina.setPageCount(1);
+            pagina.setPageFactory(pageIndex -> {
+                VBox placeholderPage = new VBox();
+                Label loadingLabel = new Label("Loading books...");
+                loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #555;");
+                placeholderPage.getChildren().add(loadingLabel);
+                return placeholderPage;
+            });
+            return;
+        }
         Task<Integer> countPage = BookService.getInstance().fetchTotalBook();
         countPage.setOnSucceeded(event -> Platform.runLater(()-> {
             int totalBooks = countPage.getValue();
             int pageCount = (int) Math.ceil(totalBooks / (double) ITEMS_PER_PAGE);
             pagina.setPageCount(pageCount);
             pagina.setPageFactory(this::createPage);
-            pagina.setStyle("-fx-background-color: #F3CEC6");
+            pagina.setStyle("-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
             progressIndicator.setVisible(false);
         }));
 
@@ -198,6 +211,7 @@ public class UserHomeController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            setUpSearchPopup();
         }));
         task.setOnFailed(e -> System.out.println("Failed to load top 5 books: " + task.getException()));
         executorService.submit(task);
@@ -209,58 +223,81 @@ public class UserHomeController implements Initializable {
         }
 
         VBox pageBox = new VBox();
-        pageBox.setStyle("-fx-background-color: #F3CEC6");
-        GridPane newGridPane = new GridPane();
-        newGridPane.getChildren().clear();
-        newGridPane.setHgap(25);
-        newGridPane.setVgap(15);
-        newGridPane.setPadding(new Insets(10));
-        pageBox.setPrefWidth(925);
-        pageBox.setPrefHeight(473);
-        newGridPane.setStyle("-fx-background-color: #F3CEC6 ");
+        pageBox.setStyle("-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
 
-        int start = pageIndex * ITEMS_PER_PAGE;
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(25);
+        gridPane.setVgap(15);
+        gridPane.setPadding(new Insets(10));
+        gridPane.setStyle("-fx-background-color: transparent;");
 
-        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookForPage(start, ITEMS_PER_PAGE);
-        task.setOnSucceeded(event -> Platform.runLater(() ->{
-
-            progressIndicator.setVisible(false);
-
-            ObservableList<Book> bookPerPage = task.getValue();
-            for (int i = 0; i < bookPerPage.size(); i++) {
-                Book book = bookPerPage.get(i);
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/BookCard.fxml"));
-                    VBox cardBox = fxmlLoader.load();
-                    cardBox.setStyle("-fx-border-radius: 20px 20px 20px 20px");
-                    BookCardController bookCardController = fxmlLoader.getController();
-                    bookCardController.setData(book);
-                    bookCardController.setUserHomeController(this);
-                    int column = i % COLUMNS;
-                    int row = i / COLUMNS;
-                    newGridPane.add(cardBox, column, row);
-                    GridPane.setMargin(cardBox, new Insets(10));
-                } catch (IOException e) {
-                    System.err.println("Failed to load book card: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }));
-
-        task.setOnRunning(event -> {
-            progressIndicator.setVisible(true);
-        });
-        executorService.submit(task);
-
-        ScrollPane scrollPane = new ScrollPane(newGridPane);
+        ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setPrefWidth(960);
         scrollPane.setPrefHeight(460);
-        scrollPane.setStyle("-fx-background-color: #F3CEC6");
+        scrollPane.setStyle("-fx-background-color: transparent;");
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         pageBox.getChildren().add(scrollPane);
+
+
+        int start = pageIndex * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, searchBooks.size());
+
+        if (start >= searchBooks.size()) {
+            Label noBooksLabel = new Label("No books available for this page.");
+            noBooksLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #555;");
+            pageBox.getChildren().add(noBooksLabel);
+            pageCache.put(pageIndex, pageBox);
+            return pageBox;
+        }
+        Task<Void> loadBooksTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                for (int i = start; i < end; i++) {
+                    Book book = searchBooks.get(i);
+                    int tmp = i;
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/BookCard.fxml"));
+                            VBox cardBox = fxmlLoader.load();
+                            BookCardController bookCardController = fxmlLoader.getController();
+                            bookCardController.setData(book);
+                            bookCardController.setUserHomeController(UserHomeController.this);
+
+                            int column = (tmp - start) % COLUMNS;
+                            int row = (tmp - start) / COLUMNS;
+                            gridPane.add(cardBox, column, row);
+                            GridPane.setMargin(cardBox, new Insets(10));
+                        } catch (IOException e) {
+                            System.err.println("Failed to load book card: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+
+                    Thread.sleep(20);
+                }
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                progressIndicator.setVisible(false);
+            }
+
+            @Override
+            protected void failed() {
+                System.err.println("Failed to load books for page: " + pageIndex);
+                progressIndicator.setVisible(false);
+            }
+        };
+
+        progressIndicator.setVisible(true);
+        executorService.submit(loadBooksTask);
+
+        // Lưu trang vào cache và trả về
         pageCache.put(pageIndex, pageBox);
         return pageBox;
     }
+
 
     public void openBookDetails(Book book) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));

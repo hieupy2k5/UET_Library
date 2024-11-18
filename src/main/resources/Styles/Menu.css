@@ -1,19 +1,17 @@
 .MenuBar {
-    -fx-background-color: #333A56;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #94C3FC, #E1C2FC);
     -fx-border-width: 2px 2px 2px 2px;
-    /*-fx-border-radius: 10px;*/
-    /*-fx-background-radius: 10px;*/
     -fx-border-style: solid;
-    -fx-border-color: #333A56;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100%, #C1E3FF, #ABC7FF);
 }
 
 .Button {
-    -fx-background-color: #2A2A2A;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 80%, #3190E9, #93CFC7);
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
     -fx-border-style: solid;
-    -fx-border-color: #333A56;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100%, #F8C390, #D279EE);
     -fx-font-family: "Black Ops One";
     -font-size: 14px;
     -fx-text-alignment: right;

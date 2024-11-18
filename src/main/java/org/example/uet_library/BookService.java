@@ -120,7 +120,7 @@ public class BookService {
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
-                        //book.setqrCode(resultSet.getBytes("QRCODE"));
+                        book.setqrCode(resultSet.getBytes("QRCODE"));
                         bookList.add(book);
                     }
 
