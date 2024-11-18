@@ -276,7 +276,7 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     String query =
-                        "SELECT requests.*, books.title, books.author, books.image_url "
+                        "SELECT requests.*, books.ISBN, books.title, books.author, books.image_url "
                             +
                             "FROM requests " +
                             "JOIN books ON requests.book_id = books.ISBN " +
@@ -286,12 +286,14 @@ public class BookService {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
+                        int request_id = resultSet.getInt("id");
+                        String book_id = resultSet.getString("book_id");
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
                         String status = resultSet.getString("status");
                         String image = resultSet.getString("image_url");
 
-                        Request request = new Request(title, author, status, image);
+                        Request request = new Request(request_id, book_id, title, author, status, image);
                         myRequestList.add(request);
                     }
 
@@ -326,6 +328,7 @@ public class BookService {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
+                        int request_id = resultSet.getInt("id");
                         int user_id = resultSet.getInt("user_id");
                         String book_id = resultSet.getString("book_id");
                         String username = resultSet.getString("username");
@@ -334,7 +337,7 @@ public class BookService {
                         String status = resultSet.getString("status");
                         String image = resultSet.getString("image_url");
 
-                        Request request = new Request(user_id, book_id, username, title, author,
+                        Request request = new Request(request_id, user_id, book_id, username, title, author,
                             status, image);
                         myRequestList.add(request);
                     }
@@ -509,13 +512,11 @@ public class BookService {
             updateStmt.setString(2, bookId);
             updateStmt.executeUpdate();
 
-            // Borrow the book
-            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
-            PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-            insertStmt.setInt(1, userId);
-            insertStmt.setString(2, bookId);
-            insertStmt.setInt(3, 1);
-            insertStmt.executeUpdate();
+            // Decrement book amount from stock
+            String decrementQuery = "UPDATE books SET quantity = books.quantity - 1 WHERE ISBN = ?";
+            PreparedStatement decrementStmt = conn.prepareStatement(decrementQuery);
+            decrementStmt.setString(1, bookId);
+            decrementStmt.executeUpdate();
 
             return true;
         } catch (SQLException e) {
@@ -542,9 +543,46 @@ public class BookService {
     }
 
 
-    public void userBorrowBook(String bookId) {
+    public boolean userBorrowBook(int requestId, String bookId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            // Insert new borrow record
+            int userId = SessionManager.getInstance().getUserId();
+            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
+            PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
+            insertStmt.setInt(1, userId);
+            insertStmt.setString(2, bookId);
+            insertStmt.setInt(3, 1);
+            insertStmt.executeUpdate();
+
+            // Delete accepted request after borrowing
+            String deleteQuery = "DELETE FROM requests WHERE id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+            deleteStmt.setInt(1, requestId);
+            deleteStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    public boolean userTryAgain(int requestId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            int userId = SessionManager.getInstance().getUserId();
+            String updateQuery = "UPDATE requests SET status = 'pending' WHERE id = ?";
+            PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+            updateStmt.setInt(1, requestId);
+            updateStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public Task<ObservableList<Book>> top5BookRecentlyAdded() {
         return new Task<>() {

@@ -6,15 +6,20 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.example.uet_library.AlertHelper;
-import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 import org.example.uet_library.Request;
 
@@ -80,10 +85,10 @@ public class MyRequestsController {
                     };
 
                     loadImageTask.setOnSucceeded(
-                            event -> imageView.setImage(loadImageTask.getValue()));
+                        event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
                         System.err.println(
-                                "Failed to load image: " + loadImageTask.getException().getMessage());
+                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -93,7 +98,7 @@ public class MyRequestsController {
     }
 
     private void fetchFromDB() {
-        Task<ObservableList<Request>> task = BookService.getInstance().fetchMyRequestFromDB();
+        Task<ObservableList<Request>> task = BookService.getInstance(). fetchMyRequestFromDB();
 
         // Bind progress indicator to task status
         task.setOnRunning(event -> Platform.runLater(() -> {
@@ -159,15 +164,16 @@ public class MyRequestsController {
                 actionButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
                     if ("accepted".equals(selectedRequest.getStatus())) {
-                        BookService.getInstance().userBorrowBook(selectedRequest.getBook_id());
+                        BookService.getInstance().userBorrowBook(selectedRequest.getId(), selectedRequest.getBook_id());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Successful",
                             String.format("You have successfully borrowed the book %s",
                                 selectedRequest.getTitle()));
                     } else if ("declined".equals(selectedRequest.getStatus())) {
-                        AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Failed",
-                            String.format("Asking for admins to borrow %s again",
-                                selectedRequest.getTitle()));
+                        BookService.getInstance().userTryAgain(selectedRequest.getId());
+                        fetchFromDB();
+                        AlertHelper.showAlert(AlertType.INFORMATION, "Successfully requested again",
+                            "Now you need to wait for admins to approve your request.");
                     }
                 });
             }
