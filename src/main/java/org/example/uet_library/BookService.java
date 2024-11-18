@@ -289,8 +289,9 @@ public class BookService {
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
                         String status = resultSet.getString("status");
+                        String image = resultSet.getString("image_url");
 
-                        Request request = new Request(title, author, status);
+                        Request request = new Request(title, author, status, image);
                         myRequestList.add(request);
                     }
 
@@ -331,9 +332,10 @@ public class BookService {
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
                         String status = resultSet.getString("status");
+                        String image = resultSet.getString("image_url");
 
                         Request request = new Request(user_id, book_id, username, title, author,
-                            status);
+                            status, image);
                         myRequestList.add(request);
                     }
 
@@ -382,6 +384,17 @@ public class BookService {
 
             // Sufficient # of books => Allow users to request
             if (rs.next() && rs.getInt("quantity") >= requestedQuantity) {
+                // Check if books already in request
+//                String existenceQuery = "SELECT * FROM requests WHERE user_id = ? AND book_id = ?";
+//                PreparedStatement existenceStmt = conn.prepareStatement(existenceQuery);
+//                existenceStmt.setInt(1, userId);
+//                existenceStmt.setString(2, bookId);
+//                ResultSet existenceRs = existenceStmt.executeQuery();
+//
+//                if (existenceRs.next()) {
+//                    return 2;
+//                }
+
                 // Update # of books in db after requesting
                 String updateQuery = "UPDATE books SET quantity = books.quantity - ? WHERE ISBN = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateQuery);

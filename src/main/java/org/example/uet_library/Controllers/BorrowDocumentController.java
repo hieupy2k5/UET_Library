@@ -74,7 +74,7 @@ public class BorrowDocumentController {
     private ObservableList<Book> books;
 
     @FXML
-    private TableColumn<Book, Void> titleAuthorColumn;
+    private TableColumn<Book, Void> informationColumn;
 
     @FXML
     private AnchorPane slidingPane;
@@ -97,7 +97,7 @@ public class BorrowDocumentController {
             waitProgress.setVisible(false);
             setupSearch();
             setupBorrowButton();
-            setupTitleAuthorColumn();
+            setupInformation();
         }));
 
         task.setOnFailed(event -> Platform.runLater(() -> {
@@ -126,9 +126,9 @@ public class BorrowDocumentController {
         selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void setupTitleAuthorColumn() {
-        titleAuthorColumn.setText("Document Information");
-        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
+    private void setupInformation() {
+        informationColumn.setText("Document Information");
+        informationColumn.setCellFactory(column -> new TableCell<>() {
             private final HBox hbox = new HBox();
             private final VBox vbox = new VBox();
             private final ImageView imageView = new ImageView();
@@ -314,10 +314,9 @@ public class BorrowDocumentController {
             protected Void call() throws Exception {
                 for (Map.Entry<Book, Integer> entry : selectedBooksMap.entrySet()) {
                     Book book = entry.getKey();
-                    int quantity = entry.getValue();
 
-                    if (quantity > 0 && quantity <= book.getQuantity()) {
-                        boolean success = BookService.getInstance().requestBook(userID, book.getIsbn(), quantity);
+                    if (book.getQuantity() > 0) {
+                        boolean success = BookService.getInstance().requestBook(userID, book.getIsbn(), 1);
 
                         if (!success) {
                             throw new RuntimeException("Database Error while requesting book: " + book.getTitle());

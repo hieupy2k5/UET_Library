@@ -5,39 +5,91 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import org.example.uet_library.AlertHelper;
+import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 import org.example.uet_library.Request;
 
 public class MyRequestsController {
 
     public TableView<Request> tableView;
-    public TableColumn<Request, String> titleColumn;
-    public TableColumn<Request, String> authorColumn;
     public TableColumn<Request, String> statusColumn;
     public TableColumn<Request, Void> actionColumn;
     public ProgressIndicator waitProgress;
     public TextField searchField;
     private ObservableList<Request> myRequestsList;
+    @FXML
+    private TableColumn<Request, Void> informationColumn;
+
 
     public void initialize() {
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
+        setupInformation();
 
         fetchFromDB();
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    private void setupInformation() {
+        informationColumn.setText("Document Information");
+        informationColumn.setCellFactory(column -> new TableCell<>() {
+            private final HBox hbox = new HBox();
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                vbox.getChildren().addAll(titleLabel, authorLabel);
+                vbox.setSpacing(5);
+                hbox.setSpacing(15);
+                hbox.getChildren().addAll(imageView, vbox);
+
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null) {
+                    setGraphic(null);
+                } else {
+                    Request request = getTableView().getItems().get(getIndex());
+
+                    titleLabel.setText(request.getTitle());
+                    authorLabel.setText(request.getAuthor());
+                    setGraphic(hbox);
+
+                    Task<Image> loadImageTask = new Task<>() {
+                        @Override
+                        protected Image call() {
+                            return new Image(request.getImageUrl(), true);
+                        }
+                    };
+
+                    loadImageTask.setOnSucceeded(
+                            event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnFailed(event -> {
+                        System.err.println(
+                                "Failed to load image: " + loadImageTask.getException().getMessage());
+                    });
+
+                    new Thread(loadImageTask).start();
+                }
+            }
+        });
     }
 
     private void fetchFromDB() {
@@ -99,8 +151,8 @@ public class MyRequestsController {
             {
                 // Configure the button
                 ImageView buttonImageView = new ImageView();
-                buttonImageView.setFitWidth(32);
-                buttonImageView.setFitHeight(32);
+                buttonImageView.setFitWidth(16);
+                buttonImageView.setFitHeight(16);
                 actionButton.setGraphic(buttonImageView);
                 actionButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
 
@@ -113,9 +165,8 @@ public class MyRequestsController {
                             String.format("You have successfully borrowed the book %s",
                                 selectedRequest.getTitle()));
                     } else if ("declined".equals(selectedRequest.getStatus())) {
-                        fetchFromDB();
-                        AlertHelper.showAlert(AlertType.ERROR, "Borrow Failed",
-                            String.format("Please try again for the book %s",
+                        AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Failed",
+                            String.format("Asking for admins to borrow %s again",
                                 selectedRequest.getTitle()));
                     }
                 });

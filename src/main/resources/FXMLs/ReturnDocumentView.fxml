@@ -11,7 +11,7 @@
   <children>
     <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="740.0" prefWidth="960.0">
       <columns>
-        <TableColumn fx:id="titleAuthorColumn" editable="false" prefWidth="304.0" text="Document" />
+        <TableColumn fx:id="informationColumn" editable="false" prefWidth="304.0" text="Document" />
         <TableColumn fx:id="categoryColumn" editable="false" prefWidth="182.0" text="Category" />
         <TableColumn fx:id="borrowDateColumn" editable="false" minWidth="0.0" prefWidth="173.0" text="Borrow Date" />
         <TableColumn fx:id="returnDateColumn" editable="false" minWidth="0.0" prefWidth="174.0" text="Return Date" />

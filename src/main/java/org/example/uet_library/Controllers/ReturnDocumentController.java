@@ -43,11 +43,11 @@ public class ReturnDocumentController {
     private ObservableList<Borrow> borrowedBooks;
 
     @FXML
-    private TableColumn<Borrow, Void> titleAuthorColumn;
+    private TableColumn<Borrow, Void> informationColumn;
 
-    private void setupTitleAuthorColumn() {
-        titleAuthorColumn.setText("Document Information");
-        titleAuthorColumn.setCellFactory(column -> new TableCell<>() {
+    private void setupInformation() {
+        informationColumn.setText("Document Information");
+        informationColumn.setCellFactory(column -> new TableCell<>() {
             private final HBox hbox = new HBox();
             private final VBox vbox = new VBox();
             private final ImageView imageView = new ImageView();
@@ -142,7 +142,7 @@ public class ReturnDocumentController {
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
 
-        setupTitleAuthorColumn();
+        setupInformation();
         tableView.getSortOrder().add(returnDateColumn);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
