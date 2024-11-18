@@ -50,7 +50,7 @@ public class LogInController implements Initializable {
             menuController.setStage(this.stage);
             menuController.configureMenu(isAdmin);
             if (isAdmin) {
-                menuController.loadView("/FXMLs/HomeView.fxml");
+                menuController.loadView("/FXMLs/temporary.fxml");
             } else {
                 menuController.loadHomeUser();
             }
