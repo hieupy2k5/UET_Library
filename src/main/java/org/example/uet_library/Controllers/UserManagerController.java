@@ -35,7 +35,7 @@ public class UserManagerController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         waitProgress.setVisible(true);
 
-        fetchFromDB();
+            fetchFromDB();
     }
 
     public void fetchFromDB() {

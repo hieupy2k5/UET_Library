@@ -26,7 +26,7 @@
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Button layoutX="173.0" layoutY="746.0" mnemonicParsing="false" onAction="#borrowAllBooks" text="Borrow">
+            <Button layoutX="173.0" layoutY="746.0" mnemonicParsing="false" onAction="#requestAllBook" text="Borrow">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

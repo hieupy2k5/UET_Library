@@ -1,13 +1,10 @@
 package org.example.uet_library.Controllers;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Random;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,12 +12,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.uet_library.App;
 
 public class MenuController {
 
     @FXML
     public Button button_UserManage;
+
+    @FXML
+    public Button button_MyRequests;
+
+    @FXML
+    public Button button_UserRequests;
+
     private boolean isAdmin;
     private Stage primaryStage;
 
@@ -82,6 +85,9 @@ public class MenuController {
 
             button_Home_User.setVisible(false);
             button_Home_User.setManaged(false);
+
+            button_MyRequests.setVisible(false);
+            button_MyRequests.setManaged(false);
         } else {
             button_AddBook.setVisible(false);
             button_AddBook.setManaged(false);
@@ -97,6 +103,9 @@ public class MenuController {
 
             button_BookShow.setVisible(false);
             button_BookShow.setManaged(false);
+
+            button_UserRequests.setVisible(false);
+            button_UserRequests.setManaged(false);
         }
 
         this.setAdmin(isAdmin);
@@ -131,6 +140,16 @@ public class MenuController {
     @FXML
     public void loadUserManagerView(ActionEvent actionEvent) {
         loadView("/FXMLs/UserManager.fxml");
+    }
+
+    @FXML
+    public void loadMyRequests(ActionEvent actionEvent) {
+       loadView("/FXMLs/MyRequests.fxml");
+    }
+
+    @FXML
+    public void loadUserRequests(ActionEvent actionEvent) {
+        loadView("/FXMLs/UserRequests.fxml");
     }
 
     @FXML
@@ -225,7 +244,8 @@ public class MenuController {
     }
 
     public Parent getContent() {
-        return contentPane.getChildren().isEmpty() ? null : (Parent) contentPane.getChildren().get(0);
+        return contentPane.getChildren().isEmpty() ? null
+            : (Parent) contentPane.getChildren().get(0);
     }
 
 }

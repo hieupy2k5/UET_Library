@@ -300,7 +300,7 @@ public class BorrowDocumentController {
 
 
     @FXML
-    private void borrowAllBooks() {
+    private void requestAllBook() {
         int userID = SessionManager.getInstance().getUserId();
 
         if (selectedBooksMap.isEmpty()) {
@@ -317,10 +317,10 @@ public class BorrowDocumentController {
                     int quantity = entry.getValue();
 
                     if (quantity > 0 && quantity <= book.getQuantity()) {
-                        boolean success = BookService.getInstance().borrowBook(userID, book.getIsbn(), quantity);
+                        boolean success = BookService.getInstance().requestBook(userID, book.getIsbn(), quantity);
 
                         if (!success) {
-                            throw new RuntimeException("Database Error while borrowing book: " + book.getTitle());
+                            throw new RuntimeException("Database Error while requesting book: " + book.getTitle());
                         }
                     }
                 }
@@ -333,8 +333,8 @@ public class BorrowDocumentController {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                AlertHelper.showAlert(AlertType.INFORMATION, "Borrow successfully",
-                        "You have successfully borrowed all selected books.");
+                AlertHelper.showAlert(AlertType.INFORMATION, "Request successfully",
+                        "Now you need to wait for admins to approve your request(s)");
                 cartButtonClicked();
             }
 

@@ -7,14 +7,26 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.uet_library.*;
+import org.example.uet_library.AlertHelper;
+import org.example.uet_library.BookService;
+import org.example.uet_library.Borrow;
+import org.example.uet_library.SessionManager;
 
 /**
  * This is a feature for users
@@ -23,10 +35,7 @@ public class ReturnDocumentController {
 
     public TextField searchField;
     public TableView<Borrow> tableView;
-    public TableColumn<Borrow, String> titleColumn;
-    public TableColumn<Borrow, String> authorColumn;
     public TableColumn<Borrow, String> categoryColumn;
-    public TableColumn<Borrow, Integer> quantityColumn;
     public TableColumn<Borrow, LocalDateTime> borrowDateColumn;
     public TableColumn<Borrow, LocalDateTime> returnDateColumn;
     public TableColumn<Borrow, Void> actionColumn;
@@ -76,9 +85,11 @@ public class ReturnDocumentController {
                         }
                     };
 
-                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnSucceeded(
+                        event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println("Failed to load image: " + loadImageTask.getException().getMessage());
+                        System.err.println(
+                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -127,7 +138,6 @@ public class ReturnDocumentController {
 
     public void initialize() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
@@ -135,7 +145,6 @@ public class ReturnDocumentController {
         setupTitleAuthorColumn();
         tableView.getSortOrder().add(returnDateColumn);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
 
         fetchFromDB();
     }
@@ -170,7 +179,8 @@ public class ReturnDocumentController {
             private final Button returnButton = new Button();
 
             {
-                Image returnImage = new Image(getClass().getResource("/Images/returnBook.png").toExternalForm());
+                Image returnImage = new Image(
+                    getClass().getResource("/Images/returnBook.png").toExternalForm());
                 ImageView imageView = new ImageView(returnImage);
                 imageView.setFitWidth(16);
                 imageView.setFitHeight(16);
@@ -209,7 +219,8 @@ public class ReturnDocumentController {
         Platform.runLater(() -> {
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Confirmation");
-            dialog.setHeaderText(String.format("Are you sure you want to return %s?", borrowBook.getTitle()));
+            dialog.setHeaderText(
+                String.format("Are you sure you want to return %s?", borrowBook.getTitle()));
 
             ButtonType confirmButtonType = new ButtonType("YES", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
@@ -233,7 +244,7 @@ public class ReturnDocumentController {
             @Override
             protected Boolean call() {
                 return BookService.getInstance()
-                        .returnBook(userID, borrowedBook.getIsbn(), borrowDate);
+                    .returnBook(userID, borrowedBook.getIsbn(), borrowDate);
             }
         };
 
@@ -242,17 +253,17 @@ public class ReturnDocumentController {
                 Platform.runLater(() -> {
                     fetchFromDB(); // Đảm bảo fetch chạy trên luồng nền
                     AlertHelper.showAlert(AlertType.INFORMATION, "Return successfully",
-                            String.format("You have returned %s", borrowedBook.getTitle()));
+                        String.format("You have returned %s", borrowedBook.getTitle()));
                 });
             } else {
                 Platform.runLater(() -> AlertHelper.showAlert(AlertType.ERROR, "Error",
-                        "Database Error"));
+                    "Database Error"));
             }
         });
 
         returnTask.setOnFailed(event -> Platform.runLater(() -> {
             AlertHelper.showAlert(AlertType.ERROR, "Error",
-                    "Failed to connect to the database.");
+                "Failed to connect to the database.");
         }));
 
         new Thread(returnTask).start();

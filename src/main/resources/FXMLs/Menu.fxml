@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <BorderPane prefHeight="850.0"
   prefWidth="1180.0"
-  xmlns="http://javafx.com/javafx"
+  xmlns="http://javafx.com/javafx/23"
   xmlns:fx="http://javafx.com/fxml/1"
   fx:controller="org.example.uet_library.Controllers.MenuController">
   <left>
@@ -318,6 +318,72 @@
                       preserveRatio="true">
                       <image>
                         <Image url="@../Images/hooman.png"/>
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0"/>
+                  </font>
+                  <VBox.margin>
+                    <Insets left="5.0"/>
+                  </VBox.margin>
+                </Button>
+                <Button fx:id="button_MyRequests"
+                  alignment="BASELINE_LEFT"
+                  layoutX="15.0"
+                  layoutY="486.0"
+                  mnemonicParsing="false"
+                  onAction="#loadMyRequests"
+                  prefHeight="57.0"
+                  prefWidth="190.0"
+                  styleClass="Button"
+                  stylesheets="@../Styles/Menu.css"
+                  text="My Requests"
+                  textAlignment="CENTER"
+                  textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0"
+                      fitWidth="200.0"
+                      pickOnBounds="true"
+                      preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/list.png"/>
+                      </image>
+                    </ImageView>
+                  </graphic>
+                  <font>
+                    <Font size="14.0"/>
+                  </font>
+                  <VBox.margin>
+                    <Insets left="5.0"/>
+                  </VBox.margin>
+                </Button>
+                <Button fx:id="button_UserRequests"
+                  alignment="BASELINE_LEFT"
+                  layoutX="15.0"
+                  layoutY="554.0"
+                  mnemonicParsing="false"
+                  onAction="#loadUserRequests"
+                  prefHeight="57.0"
+                  prefWidth="190.0"
+                  styleClass="Button"
+                  stylesheets="@../Styles/Menu.css"
+                  text="User Requests"
+                  textAlignment="CENTER"
+                  textFill="WHITE">
+                  <cursor>
+                    <Cursor fx:constant="HAND"/>
+                  </cursor>
+                  <graphic>
+                    <ImageView fitHeight="40.0"
+                      fitWidth="200.0"
+                      pickOnBounds="true"
+                      preserveRatio="true">
+                      <image>
+                        <Image url="@../Images/list.png"/>
                       </image>
                     </ImageView>
                   </graphic>
