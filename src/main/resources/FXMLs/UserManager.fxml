@@ -1,63 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0"
-  prefWidth="600.0"
-  xmlns="http://javafx.com/javafx"
-  xmlns:fx="http://javafx.com/fxml/1"
-  fx:controller="org.example.uet_library.Controllers.UserManagerController">
+
+<AnchorPane prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserManagerController">
   <children>
-    <TableView fx:id="tableView"
-      cache="true"
-      cacheHint="SPEED"
-      depthTest="DISABLE"
-      layoutX="10.0"
-      layoutY="70.0"
-      prefHeight="740.0"
-      prefWidth="960.0">
+    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0">
       <columns>
-        <TableColumn fx:id="usernameColumn" editable="false" prefWidth="186.0" text="Username"/>
-        <TableColumn fx:id="firstNameColumn"
-          editable="false"
-          minWidth="0.0"
-          prefWidth="169.0185546875"
-          text="First Name"/>
-        <TableColumn fx:id="lastNameColumn"
-          editable="false"
-          minWidth="0.0"
-          prefWidth="169.0185546875"
-          text="Last Name"/>
-        <TableColumn fx:id="emailColumn"
-          editable="false"
-          minWidth="0.0"
-          prefWidth="278.931884765625"
-          text="Email"/>
-        <TableColumn fx:id="actionColumn"
-          editable="false"
-          prefWidth="155.06817626953125"
-          sortable="false"
-          text="Options"/>
+        <TableColumn fx:id="usernameColumn" editable="false" prefWidth="186.0" text="Username" />
+        <TableColumn fx:id="firstNameColumn" editable="false" minWidth="0.0" prefWidth="169.0185546875" text="First Name" />
+        <TableColumn fx:id="lastNameColumn" editable="false" minWidth="0.0" prefWidth="169.0185546875" text="Last Name" />
+        <TableColumn fx:id="emailColumn" editable="false" minWidth="0.0" prefWidth="278.931884765625" text="Email" />
+        <TableColumn fx:id="actionColumn" editable="false" prefWidth="155.06817626953125" sortable="false" text="Options" />
       </columns>
     </TableView>
-    <Button layoutX="900.0" layoutY="26.0" mnemonicParsing="false" text="Search"/>
-    <ProgressIndicator fx:id="waitProgress"
-      layoutX="454.0"
-      layoutY="410.0"
-      maxHeight="1.7976931348623157E308"
-      maxWidth="1.7976931348623157E308"
-      prefHeight="92.0"
-      prefWidth="91.0"
-      progress="-1"/>
-    <TextField fx:id="searchField"
-      layoutX="136.0"
-      layoutY="25.0"
-      prefHeight="27.0"
-      prefWidth="719.0"/>
+    <Button layoutX="830.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
+    <ProgressIndicator fx:id="waitProgress" layoutX="454.0" layoutY="410.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" />
+    <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="719.0" />
   </children>
 </AnchorPane>

@@ -7,10 +7,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserRequestsController">
+<AnchorPane prefHeight="800.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserRequestsController">
    <children>
-      <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="20.0" layoutY="80.0" prefHeight="740.0" prefWidth="960.0">
+      <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0">
          <columns>
             <TableColumn fx:id="usernameColumn" editable="false" prefWidth="186.0" text="Username" />
             <TableColumn fx:id="titleColumn" editable="false" minWidth="0.0" prefWidth="305.47084045410156" text="Title" />
@@ -19,8 +18,8 @@
             <TableColumn fx:id="actionColumn" editable="false" prefWidth="128.77850341796875" sortable="false" text="Options" />
          </columns>
       </TableView>
-      <Button layoutX="910.0" layoutY="36.0" mnemonicParsing="false" text="Search" />
+      <Button layoutX="830.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
       <ProgressIndicator fx:id="waitProgress" layoutX="464.0" layoutY="420.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" />
-      <TextField fx:id="searchField" layoutX="146.0" layoutY="35.0" prefHeight="27.0" prefWidth="719.0" />
+      <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="719.0" />
    </children>
 </AnchorPane>
