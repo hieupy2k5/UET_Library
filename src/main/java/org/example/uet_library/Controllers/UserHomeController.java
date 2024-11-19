@@ -320,4 +320,10 @@ public class UserHomeController implements Initializable {
             isPush = true;
         }
     }
+
+    @Override
+    public void finalize() throws Throwable {
+        super.finalize();
+        executorService.shutdownNow();
+    }
 }

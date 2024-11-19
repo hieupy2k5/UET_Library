@@ -59,6 +59,18 @@ public class Book {
         this.quantity = quantity;
     }
 
+    public Book() {
+
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }

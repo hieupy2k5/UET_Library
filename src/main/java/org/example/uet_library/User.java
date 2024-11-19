@@ -1,6 +1,7 @@
 package org.example.uet_library;
 
 public class User extends Account{
+    private int numberOfBookBorrowed;
 
     public User(int id, String username, String password, String first_name, String last_name,
         String email) {
@@ -10,5 +11,13 @@ public class User extends Account{
     public User(String username, String first_name, String last_name,
         String email) {
         super(username, first_name, last_name, email);
+    }
+
+    public void setNumberOfBookBorrowed(int numberOfBookBorrowed) {
+        this.numberOfBookBorrowed = numberOfBookBorrowed;
+    }
+
+    public int getNumberOfBookBorrowed() {
+        return numberOfBookBorrowed;
     }
 }

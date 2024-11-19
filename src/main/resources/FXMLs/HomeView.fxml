@@ -1,282 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane maxHeight="-Infinity"
-  maxWidth="-Infinity"
-  minHeight="-Infinity"
-  minWidth="-Infinity"
-  prefHeight="900.0"
-  prefWidth="980.0"
-  style="-fx-background-color: #EAEEF4;"
-  xmlns="http://javafx.com/javafx"
-  xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: #EAEEF4;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.AdminHomeController">
   <children>
     <VBox layoutX="0.0" layoutY="0.0" prefHeight="900.0" prefWidth="980.0">
       <children>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #96CBCE;">
+        <AnchorPane prefHeight="134.0" prefWidth="980.0" style="-fx-background-color: #96CBCE;">
           <children>
-            <Text layoutX="67.0"
-              layoutY="96.0"
-              strokeType="OUTSIDE"
-              strokeWidth="0.0"
-              text="Hello! Welcome Back ...">
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
+            <Text layoutX="67.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello! Welcome Back ...">
               <font>
-                <Font name="Arial Rounded MT Bold" size="36.0"/>
+                <Font name="Arial Rounded MT Bold" size="36.0" />
               </font>
             </Text>
-            <Text layoutX="691.0"
-              layoutY="57.0"
-              strokeType="OUTSIDE"
-              strokeWidth="0.0"
-              text="WEATHER ..">
+            <Text layoutX="691.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WEATHER ..">
               <font>
-                <Font name="Bauhaus 93" size="48.0"/>
+                <Font name="Bauhaus 93" size="48.0" />
               </font>
             </Text>
           </children>
         </AnchorPane>
-        <AnchorPane prefHeight="250.0" prefWidth="980.0">
+        <AnchorPane prefHeight="293.0" prefWidth="980.0">
           <children>
-            <Pane layoutX="54.0"
-              layoutY="14.0"
-              prefHeight="209.0"
-              prefWidth="129.0"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
+            <Pane layoutX="54.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane_book_issue" stylesheets="@../Styles/AdminHome.css">
               <children>
-                <Text layoutX="38.0"
-                  layoutY="31.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="Book">
+                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0"/>
+                    <Font name="Blackadder ITC" size="28.0" />
                   </font>
                 </Text>
-                <ImageView fitHeight="50.0"
-                  fitWidth="50.0"
-                  layoutX="38.0"
-                  layoutY="141.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/bookIcon.png"/>
+                    <Image url="@../Images/bookIcon.png" />
                   </image>
                 </ImageView>
+                        <Text fx:id="numberOfBookField" layoutX="47.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="31.63671875">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="numberOfBookField1" layoutX="53.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="31.63671875">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
               </children>
             </Pane>
-            <Pane layoutX="263.0"
-              layoutY="14.0"
-              prefHeight="209.0"
-              prefWidth="129.0"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
+            <Pane layoutX="263.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
               <children>
-                <Text layoutX="38.0"
-                  layoutY="31.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="User">
+                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0"/>
+                    <Font name="Blackadder ITC" size="28.0" />
                   </font>
                 </Text>
-                <ImageView fitHeight="50.0"
-                  fitWidth="50.0"
-                  layoutX="38.0"
-                  layoutY="138.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/userIcon.png"/>
+                    <Image url="@../Images/userIcon.png" />
                   </image>
                 </ImageView>
+                        <Text fx:id="numeberOfUser" layoutX="57.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1.0">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
               </children>
             </Pane>
-            <Pane layoutX="463.0"
-              layoutY="14.0"
-              prefHeight="209.0"
-              prefWidth="129.0"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
+            <Pane layoutX="463.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
               <children>
-                <Text layoutY="36.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="Issued Book"
-                  wrappingWidth="129.33333333333326">
+                <Text layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Issued Book" wrappingWidth="129.33333333333326">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0"/>
+                    <Font name="Blackadder ITC" size="28.0" />
                   </font>
                 </Text>
-                <ImageView fitHeight="75.0"
-                  fitWidth="50.0"
-                  layoutX="40.0"
-                  layoutY="135.0"
-                  pickOnBounds="true"
-                  preserveRatio="true">
+                <ImageView fitHeight="75.0" fitWidth="50.0" layoutX="40.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@../Images/hand-book_4797819.png"/>
+                    <Image url="@../Images/hand-book_4797819.png" />
                   </image>
                 </ImageView>
+                        <Text fx:id="issued_book" layoutX="44.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="41.07600021362302">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
               </children>
             </Pane>
-            <Pane layoutX="668.0"
-              layoutY="14.0"
-              prefHeight="209.0"
-              prefWidth="129.0"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                  <font>
-                    <Font name="Blackadder ITC" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
+                  <AnchorPane layoutX="648.0" layoutY="28.0" prefHeight="291.0" prefWidth="281.0">
+                     <children>
+                        <PieChart fx:id="chartBookIssue" layoutX="-92.0" layoutY="-28.0" prefHeight="326.0" prefWidth="378.0" />
+                     </children>
+                  </AnchorPane>
           </children>
         </AnchorPane>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-          <children>
-            <Text layoutX="14.0"
-              layoutY="19.0"
-              strokeType="OUTSIDE"
-              strokeWidth="0.0"
-              text="Most Borrowed Books">
-            </Text>
-            <ImageView fitHeight="34.0"
-              fitWidth="29.0"
-              layoutX="172.0"
-              layoutY="8.0"
-              pickOnBounds="true"
-              preserveRatio="true">
-              <image>
-                <Image url="@../Images/hotBookIcon.png"/>
-              </image>
-            </ImageView>
-            <Pane layoutX="59.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FF6B6B;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#1">
-                  <font>
-                    <Font name="@../Fonts/Alata-Regular.ttf" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-            <Pane layoutX="522.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FFF3B0;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#4">
-                  <font>
-                    <Font name="@../Fonts/Alata-Regular.ttf" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-            <Pane layoutX="360.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FFAD60;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#3">
-                  <font>
-                    <Font name="Alata Regular" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-            <Pane layoutX="208.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FFAD60;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#2">
-                  <font>
-                    <Font name="Alata Regular" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-            <Pane layoutX="683.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FFF3B0;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#5">
-                  <font>
-                    <Font name="Alata Regular" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-            <Pane layoutX="834.0"
-              layoutY="38.0"
-              prefHeight="145.0"
-              prefWidth="113.0"
-              style="-fx-background-color: #FFF3B0;"
-              styleClass="pane"
-              stylesheets="@../Styles/Menu.css">
-              <children>
-                <Text layoutX="18.0"
-                  layoutY="38.0"
-                  strokeType="OUTSIDE"
-                  strokeWidth="0.0"
-                  text="#5">
-                  <font>
-                    <Font name="Alata Regular" size="28.0"/>
-                  </font>
-                </Text>
-              </children>
-            </Pane>
-          </children>
-        </AnchorPane>
+            <HBox prefHeight="420.0" prefWidth="980.0">
+               <children>
+              <AnchorPane prefHeight="420.0" prefWidth="487.0">
+                <children>
+                  <ImageView fitHeight="34.0" fitWidth="29.0" layoutX="19.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                      <Image url="@../Images/hotBookIcon.png" />
+                    </image>
+                  </ImageView>
+                        <Pane layoutX="50.0" layoutY="29.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="imageTop1" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D height="113.0" width="97.0" />
+                                 </viewport></ImageView>
+                              <Text layoutX="55.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#1" />
+                              <Label fx:id="top1Text" layoutX="4.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="50.0" layoutY="208.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="ImageTop4" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+                              <Text layoutX="54.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#4" />
+                              <Label fx:id="top4Text" layoutX="4.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="355.0" layoutY="29.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="ImageTop3" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+                              <Text layoutX="50.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#3" />
+                              <Label fx:id="top3Text" layoutX="6.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="199.0" layoutY="29.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="ImageTop2" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D height="113.0" width="97.0" />
+                                 </viewport></ImageView>
+                              <Text layoutX="53.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#2" />
+                              <Label fx:id="top2Text" layoutX="4.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="199.0" layoutY="208.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="ImageTop5" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+                              <Text layoutX="57.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#5" />
+                              <Label fx:id="top5Text" layoutX="6.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="355.0" layoutY="208.0" prefHeight="159.0" prefWidth="123.0" styleClass="bookCard" stylesheets="@../Styles/card.css">
+                           <children>
+                              <ImageView fx:id="ImageTop6" fitHeight="113.0" fitWidth="97.0" layoutX="13.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+                              <Text layoutX="54.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="#6" />
+                              <Label fx:id="top6Text" layoutX="4.0" layoutY="137.0" prefHeight="17.0" prefWidth="116.0" />
+                           </children>
+                        </Pane>
+                </children>
+              </AnchorPane>
+                  <AnchorPane prefHeight="420.0" prefWidth="497.0">
+                     <children>
+                        <AnchorPane layoutX="23.0" layoutY="122.0" prefHeight="194.0" prefWidth="441.0">
+                           <children>
+                              <VBox fx:id="tableOfTopBorrower" prefHeight="180.0" prefWidth="441.0" style="-fx-border-radius: 20px; -fx-border-color: #000;" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
       </children>
     </VBox>
   </children>

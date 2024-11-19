@@ -184,25 +184,35 @@ public class BookManagerController {
     }
 
     private void removeBook(String isbn) {
-        Task<Void> task = BookService.getInstance().deleteBook(isbn);
+        Task<Boolean> task = BookService.getInstance().deleteBook(isbn);
         task.setOnSucceeded(event -> {
-            this.resetImage();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Notion");
-            alert.setHeaderText(null);
-            alert.setContentText("Book deleted successfully");
-            AuthorEdit.setText(null);
-            ISBNEdit.setText(null);
-            titleEdit.setText(null);
-            ISBNEdit.setText(null);
-            QuantityEdit.setText(null);
-            ISBNSearch.setText(null);
-            yearOfPublication.setText(null);
-            categoryBook.setText(null);
-            alert.showAndWait();
-            handleCancel();
+            if(task.getValue()) {
+                this.resetImage();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Notion");
+                alert.setHeaderText(null);
+                alert.setContentText("Book deleted successfully");
+                AuthorEdit.setText(null);
+                ISBNEdit.setText(null);
+                titleEdit.setText(null);
+                ISBNEdit.setText(null);
+                QuantityEdit.setText(null);
+                ISBNSearch.setText(null);
+                yearOfPublication.setText(null);
+                categoryBook.setText(null);
+                alert.showAndWait();
+                handleCancel();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Notion");
+                alert.setHeaderText(null);
+                alert.setContentText("The book cannot be deleted because it is still being borrowed by someone.");
+                alert.showAndWait();
+            }
         });
-        task.setOnFailed(event->task.getException().printStackTrace());
+        task.setOnFailed(event->{
+            System.err.println("Error");
+        });
         new Thread(task).start();
     }
 
