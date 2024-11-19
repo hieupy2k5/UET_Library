@@ -42,40 +42,40 @@ public class SignUpController implements Initializable {
         boolean isAdmin = choiceBox.getValue().equals(choices[0]);
 
         if (username.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty username",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty username",
                 "You cannot leave your username empty!");
             return;
         } else if (password.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty password",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty password",
                 "You cannot leave your password empty!");
             return;
 //        } else if (password.length() < 8) {
-//            AlertHelper.showAlert(AlertType.WARNING, "Your password is too short",
+//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too short",
 //                "Your password must be at least 8 characters");
 //            return;
 //        } else if (password.length() >= 30) {
-//            AlertHelper.showAlert(AlertType.WARNING, "Your password is too long",
+//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too long",
 //                "Are you going to remember all this? Your password should be less than 30 characters");
 //            return;
         } else if (confirmPassword.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty password confirmation",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty password confirmation",
                 "You haven't confirm your password yet!");
             return;
         }
         if (!password.equals(confirmPassword)) {
-            AlertHelper.showAlert(AlertType.WARNING, "Passwords do not match",
+            AlertHelper.showAlert(AlertType.ERROR, "Passwords do not match",
                 "Please confirm your password again");
             return;
         } else if (firstName.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty first name",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty first name",
                 "Don't you have a first name?");
             return;
         } else if (lastName.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty last name",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty last name",
                 "Don't you have a last name?");
             return;
         } else if (email.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty email",
+            AlertHelper.showAlert(AlertType.ERROR, "Empty email",
                 "Please provide a valid email address!");
             return;
         }
@@ -90,7 +90,7 @@ public class SignUpController implements Initializable {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new user account",
                 "You can log in using your new user account now!");
         } else {
-            AlertHelper.showAlert(AlertType.WARNING, "Username already exists",
+            AlertHelper.showAlert(AlertType.ERROR, "Username already exists",
                 "Please choose another username");
         }
     }
