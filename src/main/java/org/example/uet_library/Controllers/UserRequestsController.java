@@ -114,13 +114,20 @@ public class UserRequestsController {
 
                 acceptButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
-                    BookService.getInstance().adminAcceptRequest(selectedRequest.getUser_id(),
-                        selectedRequest.getBook_id());
-                    fetchFromDB();
-                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully accepted request",
-                        String.format(
-                            "You have granted permission for this user to borrow the book %s",
-                            selectedRequest.getTitle()));
+                    Integer quantityInStock = BookService.getInstance()
+                        .bookQuantityForRequest(selectedRequest.getId());
+                    if (quantityInStock > 0) {
+                        BookService.getInstance().adminAcceptRequest(selectedRequest.getUser_id(),
+                            selectedRequest.getBook_id());
+                        fetchFromDB();
+                        AlertHelper.showAlert(AlertType.INFORMATION,
+                            "Successfully accepted request",
+                            String.format(
+                                "You have granted permission for this user to borrow the book %s",
+                                selectedRequest.getTitle()));
+                    } else {
+                        AlertHelper.showAlert(AlertType.ERROR, "Cannot approve request", "We have ran out of copies for this book in stock.");
+                    }
                 });
 
                 Image returnImage = new Image(

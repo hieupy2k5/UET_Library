@@ -219,7 +219,13 @@ public class BorrowDocumentController {
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
-                    SharedData.getInstance().addToCart(selectedBook);
+                    int quantityInStock = selectedBook.getQuantity();
+                    if (quantityInStock > 0) {
+                        SharedData.getInstance().addToCart(selectedBook);
+                    } else {
+                        AlertHelper.showAlert(AlertType.ERROR, "Insufficient amount of books",
+                            "We have ran out of stock for this book. Please try again later!");
+                    }
                 });
             }
 
@@ -316,10 +322,12 @@ public class BorrowDocumentController {
                     Book book = entry.getKey();
 
                     if (book.getQuantity() > 0) {
-                        boolean success = BookService.getInstance().requestBook(userID, book.getIsbn(), 1);
+                        boolean success = BookService.getInstance()
+                            .requestBook(userID, book.getIsbn(), 1);
 
                         if (!success) {
-                            throw new RuntimeException("Database Error while requesting book: " + book.getTitle());
+                            throw new RuntimeException(
+                                "Database Error while requesting book: " + book.getTitle());
                         }
                     }
                 }
@@ -333,7 +341,7 @@ public class BorrowDocumentController {
             protected void succeeded() {
                 super.succeeded();
                 AlertHelper.showAlert(AlertType.INFORMATION, "Request successfully",
-                        "Now you need to wait for admins to approve your request(s)");
+                    "Now you need to wait for admins to approve your request(s)");
                 cartButtonClicked();
             }
 
