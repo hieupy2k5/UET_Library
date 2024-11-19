@@ -36,6 +36,7 @@ public class MyRequestsController {
 
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("Your request list is empty..."));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
         setupInformation();

@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,6 +30,7 @@ public class UserManagerController {
 
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("No user? So sad..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("first_name"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("last_name"));

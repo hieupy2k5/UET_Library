@@ -111,7 +111,7 @@ public class BorrowDocumentController {
     }
 
     public void initialize() {
-
+        tableView.setPlaceholder(new Label("Your borrow list is empty..."));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));

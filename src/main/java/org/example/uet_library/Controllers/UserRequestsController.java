@@ -7,6 +7,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -33,6 +34,7 @@ public class UserRequestsController {
     private ObservableList<Request> userRequestsList;
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("There is no request here..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));

@@ -137,6 +137,7 @@ public class ReturnDocumentController {
     }
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("Your return list is empty..."));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
