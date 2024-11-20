@@ -169,8 +169,8 @@ public class BorrowDocumentController {
                     loadImageTask.setOnSucceeded(
                         event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println(
-                            "Failed to load image: " + loadImageTask.getException().getMessage());
+//                        System.err.println(
+//                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -219,6 +219,19 @@ public class BorrowDocumentController {
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
+                    // check if book is in request list
+                    if (BookService.getInstance().isBookInRequest(selectedBook.getIsbn())) {
+                        AlertHelper.showAlert(AlertType.ERROR, "Book already in request list",
+                            "Please check \"My Requests\" tab to see your request for this book.");
+                        return;
+                    }
+                    // check if book is in borrowed list (in borrow table and status = 'borrowed')
+                    if (BookService.getInstance().isBookInBorrowed(selectedBook.getIsbn())) {
+                        AlertHelper.showAlert(AlertType.ERROR,
+                            "You are already borrowing this book",
+                            "To borrow this book again, please return it first.");
+                        return;
+                    }
                     int quantityInStock = selectedBook.getQuantity();
                     if (quantityInStock > 0) {
                         SharedData.getInstance().addToCart(selectedBook);

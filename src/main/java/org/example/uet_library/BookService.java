@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.chart.PieChart.Data;
 import org.json.JSONArray;
 
 
@@ -505,6 +506,38 @@ public class BookService {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public Boolean isBookInRequest(String bookId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ?";
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            ResultSet rs = queryStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Boolean isBookInBorrowed(String bookId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND status = 'borrowed'";
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            ResultSet rs = queryStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
