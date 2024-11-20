@@ -430,7 +430,7 @@ public class BookService {
             updateStmt.executeUpdate();
 
             // Update each selected borrow entry with the return date
-            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = NOW() WHERE book_id = ? and borrow_date = ?";
+            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE book_id = ? and borrow_date = ?";
             PreparedStatement returnStmt = conn.prepareStatement(returnQuery);
             returnStmt.setString(1, bookId);
             returnStmt.setString(2, borrowDate.toString());
@@ -489,7 +489,7 @@ public class BookService {
         try (Connection conn = dbConnection.getConnection()) {
             // Insert new borrow record
             int userId = SessionManager.getInstance().getUserId();
-            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
+            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, CONVERT_TZ(NOW(), 'UTC', '+07:00'), 'borrowed')";
             PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
             insertStmt.setInt(1, userId);
             insertStmt.setString(2, bookId);
