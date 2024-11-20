@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import org.example.uet_library.AlertHelper;
+import org.example.uet_library.enums.SignUpResult;
 
 public class SignUpController implements Initializable {
 
@@ -41,11 +42,11 @@ public class SignUpController implements Initializable {
         String email = emailFld.getText();
         boolean isAdmin = choiceBox.getValue().equals(choices[0]);
 
-        if (username.equals("")) {
+        if (username.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty username",
                 "You cannot leave your username empty!");
             return;
-        } else if (password.equals("")) {
+        } else if (password.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty password",
                 "You cannot leave your password empty!");
             return;
@@ -57,7 +58,7 @@ public class SignUpController implements Initializable {
 //            AlertHelper.showAlert(AlertType.ERROR, "Your password is too long",
 //                "Are you going to remember all this? Your password should be less than 30 characters");
 //            return;
-        } else if (confirmPassword.equals("")) {
+        } else if (confirmPassword.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty password confirmation",
                 "You haven't confirm your password yet!");
             return;
@@ -66,32 +67,34 @@ public class SignUpController implements Initializable {
             AlertHelper.showAlert(AlertType.ERROR, "Passwords do not match",
                 "Please confirm your password again");
             return;
-        } else if (firstName.equals("")) {
+        } else if (firstName.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty first name",
                 "Don't you have a first name?");
             return;
-        } else if (lastName.equals("")) {
+        } else if (lastName.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty last name",
                 "Don't you have a last name?");
             return;
-        } else if (email.equals("")) {
+        } else if (email.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty email",
                 "Please provide a valid email address!");
             return;
         }
 
-        if (userController.signUpUser(username, password, firstName, lastName, email, isAdmin)
-            == 1) {
+        SignUpResult signUpResult = userController.signUpUser(username, password, firstName, lastName, email,
+            isAdmin);
+        if (signUpResult == SignUpResult.ADMIN_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new admin account",
                 "You can log in using your new admin account now!");
-        } else if (
-            userController.signUpUser(username, password, firstName, lastName, email, isAdmin)
-                == 2) {
+        } else if (signUpResult == SignUpResult.USER_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new user account",
                 "You can log in using your new user account now!");
-        } else {
+        } else if (signUpResult == SignUpResult.ALREADY_EXISTS) {
             AlertHelper.showAlert(AlertType.ERROR, "Username already exists",
                 "Please choose another username");
+        } else {
+            AlertHelper.showAlert(AlertType.ERROR, "Something unexpected occurred",
+                "Please try again later.");
         }
     }
 
