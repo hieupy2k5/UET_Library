@@ -88,8 +88,8 @@ public class ReturnDocumentController {
                     loadImageTask.setOnSucceeded(
                         event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println(
-                            "Failed to load image: " + loadImageTask.getException().getMessage());
+//                        System.err.println(
+//                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();

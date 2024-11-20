@@ -7,23 +7,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.util.Pair;
 import org.example.uet_library.Database;
+import org.example.uet_library.enums.SignUpResult;
 
 public class UserController {
 
-    /**
-     * Performs the signing up.
-     *
-     * @return 0 if unable to sign up, 1 if signed up an admin and 2 if signed up a user.
-     */
-    public int signUpUser(String username, String password, String firstName, String lastName,
+    public SignUpResult signUpUser(String username, String password, String firstName, String lastName,
         String email, boolean isAdmin) {
+
         String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
         Database connection = new Database();
         String tableName = isAdmin ? "admins" : "users";
+        String checkQuery = "SELECT COUNT(*) FROM " + tableName + " WHERE username = ?";
         String insertUserQuery = "INSERT INTO " + tableName
             + " (username, password, first_name, last_name, email) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conDB = connection.getConnection()) {
+            PreparedStatement checkStatement = conDB.prepareStatement(checkQuery);
+            checkStatement.setString(1, username);
+            ResultSet rs = checkStatement.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            if (count > 0) {
+                return SignUpResult.ALREADY_EXISTS;
+            }
+
             PreparedStatement statement = conDB.prepareStatement(insertUserQuery);
             statement.setString(1, username);
             statement.setString(2, hashedPassword);
@@ -33,13 +40,12 @@ public class UserController {
             statement.executeUpdate();
 
             if (isAdmin) {
-                return 1;
+                return SignUpResult.ADMIN_CREATED;
             }
-            return 2;
+            return SignUpResult.USER_CREATED;
         } catch (SQLException e) {
             e.printStackTrace();
-
-            return 0;
+            return SignUpResult.FAILED;
         }
     }
 
