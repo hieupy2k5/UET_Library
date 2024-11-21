@@ -23,7 +23,7 @@ public class BookAPI {
             default -> baseUrl += query; // Default case for generic search
         }
 
-        String url = baseUrl + "&key=" + ApiKey + "&maxResults=8";
+        String url = baseUrl + "&key=" + ApiKey + "&maxResults=1";
 
 
         Request request = new Request.Builder()

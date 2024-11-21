@@ -44,7 +44,13 @@ public class BookCardController {
 
     public void setData(Book book) {
         this.book = book;
-        Image image = new ImageView(book.getImageLink()).getImage();
+        String url = book.getImageUrl();
+        Image image;
+        if (url == null || url.equals("")) {
+            image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+        } else {
+            image = new Image(url);
+        }
         ImageBook.setImage(image);
         bookTitle.setText(book.getTitle());
         String randomColor = colors[(int)(Math.random() * colors.length)];

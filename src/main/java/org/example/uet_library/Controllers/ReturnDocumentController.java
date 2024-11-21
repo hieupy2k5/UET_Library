@@ -1,32 +1,27 @@
 package org.example.uet_library.Controllers;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.BookService;
-import org.example.uet_library.Borrow;
-import org.example.uet_library.SessionManager;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.example.uet_library.*;
 
 /**
  * This is a feature for users
@@ -44,6 +39,8 @@ public class ReturnDocumentController {
 
     @FXML
     private TableColumn<Borrow, Void> informationColumn;
+
+    private Borrow borrowSelected;
 
     private void setupInformation() {
         informationColumn.setText("Document Information");
@@ -177,7 +174,8 @@ public class ReturnDocumentController {
     private void setUpReturnButton() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button returnButton = new Button();
-
+            private final Button ratingBook = new Button();
+            private final HBox hbox = new HBox();
             {
                 Image returnImage = new Image(
                     getClass().getResource("/Images/returnBook.png").toExternalForm());
@@ -201,6 +199,13 @@ public class ReturnDocumentController {
                         showQuantityDialog(selectedBook);
                     }
                 });
+
+                ratingBook.setText("Rate");
+                ratingBook.setOnAction(event -> {
+                    borrowSelected = getTableView().getItems().get(getIndex());
+                    showRatingDialog(borrowSelected);
+                });
+                hbox.getChildren().addAll(returnButton, ratingBook);
             }
 
             @Override
@@ -209,7 +214,9 @@ public class ReturnDocumentController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(returnButton);
+                    borrowSelected = getTableView().getItems().get(getIndex());
+                    setGraphic(hbox);
+                    ratingBook.setVisible(borrowSelected.getReturnDate() != null);
                 }
             }
         });
@@ -269,5 +276,20 @@ public class ReturnDocumentController {
         new Thread(returnTask).start();
     }
 
+    private void showRatingDialog(Borrow borrowedBook) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/RatingBookDialog.fxml"));
+            Parent root = loader.load();
+            RatingDialogController ratingDialogController = loader.getController();
+            ratingDialogController.setData(borrowedBook);
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Confirmation");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

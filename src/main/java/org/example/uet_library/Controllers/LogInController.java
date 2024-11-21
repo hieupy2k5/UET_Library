@@ -1,6 +1,7 @@
 package org.example.uet_library.Controllers;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,6 @@ import org.example.uet_library.AlertHelper;
 import org.example.uet_library.SessionManager;
 
 public class LogInController implements Initializable {
-
     public TextField usernameFld;
     public Text registerBtn;
     public PasswordField passwordFld;
@@ -37,6 +37,7 @@ public class LogInController implements Initializable {
     public void handleLogInButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
+        RatingDialogController.userName = username.toLowerCase();
         Integer userID = userController.checkLoginCredentials(username, password).getKey();
         Boolean isAdmin = userController.checkLoginCredentials(username, password).getValue();
         if (userID != null && userID != -1) {

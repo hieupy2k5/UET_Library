@@ -1,15 +1,12 @@
 package org.example.uet_library;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
 import org.json.JSONArray;
 
 
@@ -65,10 +62,10 @@ public class BookService {
         };
     }
 
-    public Task<Void> deleteBook(String ISBN) {
+    public Task<Boolean> deleteBook(String ISBN) {
         return new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Boolean call() throws Exception {
                 String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
@@ -76,9 +73,9 @@ public class BookService {
                     preparedStatement.setString(1, ISBN);
                     preparedStatement.execute();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    return false;
                 }
-                return null;
+                return true;
             }
         };
     }
@@ -119,8 +116,10 @@ public class BookService {
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
+                        String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
-                        //book.setqrCode(resultSet.getBytes("QRCODE"));
+                        book.setDescription(description);
+                        book.setqrCode(resultSet.getBytes("QRCODE"));
                         bookList.add(book);
                     }
 
@@ -753,4 +752,113 @@ public class BookService {
             }
         };
     }
+
+
+    public Task<Integer> loadNumberOfUser() {
+        return new Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                Database db = new Database();
+                try (Connection connection = db.getConnection()) {
+                    String query = "SELECT COUNT(*) FROM users";
+                    try (PreparedStatement ps = connection.prepareStatement(query);
+                         ResultSet resultSet = ps.executeQuery()) {
+                        if (resultSet.next()) {
+                            return resultSet.getInt("COUNT(*)");
+                        }
+                    } catch (SQLException ex) {
+                        System.err.println("Fail to load data");
+                    }
+                }
+                return 0;
+            }
+        };
+    }
+
+    public Task<Integer> fetchNumberOfBookBorrowed() {
+        return new Task<>() {
+
+            @Override
+            protected Integer call() throws Exception {
+                try {
+                    Database db = new Database();
+                    Connection connection = db.getConnection();
+                    String query = "SELECT COUNT(DISTINCT(book_id)) AS totalBorrowed FROM borrow";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    if (resultSet.next()) {
+                        return resultSet.getInt("totalBorrowed");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                return 0;
+            }
+        };
+    }
+
+    public Task<ObservableList<Book>> top6BookMostBorrowed() {
+        return new Task<>() {
+            @Override
+            protected ObservableList<Book> call() throws Exception {
+                ObservableList<Book> bookList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    String query = "SELECT books.title, image_url, COUNT(ISBN) AS TONG\n" +
+                            "from books\n" +
+                            "INNER JOIN borrow\n" +
+                            "ON books.ISBN = borrow.book_id\n" +
+                            "GROUP BY ISBN\n" +
+                            "ORDER BY TONG DESC\n" +
+                            "LIMIT 6;";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        String title = resultSet.getString("title");
+                        String imageUrl = resultSet.getString("image_url");
+                        Book book = new Book();
+                        book.setTitle(title);
+                        book.setImageLink(imageUrl);
+                        bookList.add(book);
+                    }
+                } catch (SQLException e) {
+                    System.err.println("fail to load data");
+                }
+                return bookList;
+            }
+        };
+    }
+
+    public Task<ObservableList<User>> fetchTop5Borrower() {
+        return new Task<>() {
+            @Override
+            protected ObservableList<User> call() throws Exception {
+                ObservableList<User> userList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                try (Connection conDB = connection.getConnection()) {
+                    String query = "SELECT U.id,U.username,U.email,SUM(quantity) AS TONG\n" +
+                            "FROM users U\n" +
+                            "INNER JOIN borrow B\n" +
+                            "ON U.id = B.user_id\n" +
+                            "GROUP BY user_id\n" +
+                            "ORDER BY TONG DESC\n" +
+                            "LIMIT 5;\n";
+                    Statement statement = conDB.createStatement();
+                    ResultSet resultSet = statement.executeQuery(query);
+                    while (resultSet.next()) {
+                        String id = resultSet.getString("id");
+                        String username = resultSet.getString("username");
+                        String email = resultSet.getString("email");
+                        int sumOfBookBorrowed = resultSet.getInt("TONG");
+                        User user = new User(username, "","",email);
+                        user.setNumberOfBookBorrowed(sumOfBookBorrowed);
+                        userList.add(user);
+                    }
+                }
+                return userList;
+            }
+        };
+    }
+
+
 }

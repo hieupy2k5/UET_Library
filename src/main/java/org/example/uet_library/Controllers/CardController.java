@@ -50,7 +50,13 @@ public class CardController {
     Book book;
     public void setData(Book book) {
         this.book = book;
-        Image image = new ImageView(book.getImageLink()).getImage();
+        String url = book.getImageUrl();
+        Image image;
+        if (url == null || url.equals("")) {
+            image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+        } else {
+            image = new Image(url);
+        }
         BookImage.setImage(image);
         BookTitle.setText(book.getTitle());
         authorBook.setText(book.getAuthor());
