@@ -483,6 +483,21 @@ public class BookService {
         }
     }
 
+    public boolean deleteUser(int userId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String deleteQuery = "DELETE FROM users WHERE id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+            deleteStmt.setInt(1, userId);
+            deleteStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public boolean userBorrowBook(int requestId, String bookId) {
         Database dbConnection = new Database();

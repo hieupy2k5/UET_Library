@@ -33,7 +33,7 @@ public class SignUpController implements Initializable {
         choiceBox.setValue(choices[1]);
     }
 
-    public void handleSignUpButton(ActionEvent event) throws Exception {
+    public void handleSignUpButton() throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         String confirmPassword = confirmPasswordFld.getText();
