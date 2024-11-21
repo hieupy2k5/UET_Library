@@ -102,7 +102,7 @@ public class BorrowDocumentController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books from database: " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() (BorrowDocumentController.java): " + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 

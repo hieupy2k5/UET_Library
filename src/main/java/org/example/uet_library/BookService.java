@@ -165,7 +165,7 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books from database: " + e.getMessage());
+                    System.err.println("Error fetching books in fetchBookFromDB(String ISBN) (BookService.java): " + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
