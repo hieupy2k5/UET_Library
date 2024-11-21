@@ -1,8 +1,14 @@
 package org.example.uet_library;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -125,7 +131,7 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books from database: " + e.getMessage());
+                    System.err.println("Error fetching books in fetchBookFromDB() (BookService.java): " + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
@@ -163,7 +169,7 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books from database: " + e.getMessage());
+                    System.err.println("Error fetching books in fetchBookFromDB(String ISBN) (BookService.java): " + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
@@ -199,23 +205,23 @@ public class BookService {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
+                        int borrowID = resultSet.getInt("id");
                         String isbn = resultSet.getString("book_id");
                         int quantity = resultSet.getInt("quantity");
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
                         String category = resultSet.getString("category");
                         String image = resultSet.getString("image_url");
-                        Timestamp borrowTimestamp = resultSet.getTimestamp("borrow_date");
-                        Timestamp returnTimestamp = resultSet.getTimestamp("return_date");
+                        Date borrowTimestamp = resultSet.getTimestamp("borrow_date");
+                        Date returnTimestamp = resultSet.getTimestamp("return_date");
 
-                        LocalDateTime borrow_date =
-                            (borrowTimestamp != null) ? borrowTimestamp.toLocalDateTime() : null;
-                        LocalDateTime return_date =
-                            (returnTimestamp != null) ? returnTimestamp.toLocalDateTime() : null;
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String formattedBorrowDate = sdf.format(borrowTimestamp);
+                        String formattedReturnDate = (returnTimestamp != null)  ? sdf.format(returnTimestamp) : "N/A";
 
                         String status = resultSet.getString("status");
-                        Borrow borrow = new Borrow(isbn, title, author, category, quantity,
-                            borrow_date, return_date, status, image);
+                        Borrow borrow = new Borrow(borrowID, isbn, title, author, category, quantity,
+                            formattedBorrowDate, formattedReturnDate, status, image);
                         borrowList.add(borrow);
                     }
 
@@ -250,7 +256,7 @@ public class BookService {
                         String lastName = resultSet.getString("last_name");
                         String fullName = firstName + " " + lastName;
 
-                        User user = new User(username, firstName, lastName, email);
+                        User user = new User(userID, username, firstName, lastName, email);
                         userList.add(user);
                     }
 
@@ -292,7 +298,8 @@ public class BookService {
                         String status = resultSet.getString("status");
                         String image = resultSet.getString("image_url");
 
-                        Request request = new Request(request_id, book_id, title, author, status, image);
+                        Request request = new Request(request_id, book_id, title, author, status,
+                            image);
                         myRequestList.add(request);
                     }
 
@@ -336,7 +343,8 @@ public class BookService {
                         String status = resultSet.getString("status");
                         String image = resultSet.getString("image_url");
 
-                        Request request = new Request(request_id, user_id, book_id, username, title, author,
+                        Request request = new Request(request_id, user_id, book_id, username, title,
+                            author,
                             status, image);
                         myRequestList.add(request);
                     }
@@ -386,24 +394,6 @@ public class BookService {
 
             // Sufficient # of books => Allow users to request
             if (rs.next() && rs.getInt("quantity") >= requestedQuantity) {
-                // Check if books already in request
-//                String existenceQuery = "SELECT * FROM requests WHERE user_id = ? AND book_id = ?";
-//                PreparedStatement existenceStmt = conn.prepareStatement(existenceQuery);
-//                existenceStmt.setInt(1, userId);
-//                existenceStmt.setString(2, bookId);
-//                ResultSet existenceRs = existenceStmt.executeQuery();
-//
-//                if (existenceRs.next()) {
-//                    return 2;
-//                }
-
-                // Update # of books in db after requesting
-                String updateQuery = "UPDATE books SET quantity = books.quantity - ? WHERE ISBN = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setInt(1, requestedQuantity);
-                updateStmt.setString(2, bookId);
-                updateStmt.executeUpdate();
-
                 // Record the requesting action
                 String insertQuery = "INSERT INTO requests (user_id, book_id, quantity, status) VALUES (?, ?, ?, 'pending')";
                 PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
@@ -423,75 +413,20 @@ public class BookService {
         }
     }
 
-    /**
-     * For borrowing books.
-     *
-     * @param userId           is the id of the borrower.
-     * @param bookId           is the book they want to borrow.
-     * @param borrowedQuantity the quantity of books they want to borrow.
-     * @return whether the book is borrowed successfully.
-     */
-    public boolean borrowBook(int userId, String bookId, int borrowedQuantity) {
-        Database dbConnection = new Database();
-        try (Connection conn = dbConnection.getConnection()) {
-            String checkQuery = "SELECT quantity FROM books WHERE ISBN = ?";
-            PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
-            checkStmt.setString(1, bookId);
-            ResultSet rs = checkStmt.executeQuery();
-
-            // Sufficient # of books => Allow users to borrow
-            if (rs.next() && rs.getInt("quantity") >= borrowedQuantity) {
-                // Update # of books in db after borrowing
-                String updateQuery = "UPDATE books SET quantity = books.quantity - ? WHERE ISBN = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setInt(1, borrowedQuantity);
-                updateStmt.setString(2, bookId);
-                updateStmt.executeUpdate();
-
-                // Record the borrowing action
-                String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
-                PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-                insertStmt.setInt(1, userId);
-                insertStmt.setString(2, bookId);
-                insertStmt.setInt(3, borrowedQuantity);
-                insertStmt.executeUpdate();
-
-                return true;
-            } else { // Insufficient number of books => Tell users to get lost
-                System.out.println("Not enough books available.");
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * For returning books.
-     *
-     * @param userId     is the id of the current user.
-     * @param bookId     is the book that the user wants to return.
-     * @param borrowDate is the borrow date of that book.
-     * @return whether the book is successfully returned.
-     */
-    public boolean returnBook(int userId, String bookId, LocalDateTime borrowDate) {
+    public boolean returnBook(int borrowId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Add the return books to library
-            String updateQuery = "UPDATE books SET quantity = quantity + (SELECT quantity FROM borrow WHERE user_id = ? AND book_id = ? AND status = 'borrowed' and borrow_date = ?) WHERE ISBN = ?";
+            String updateQuery = "UPDATE books SET quantity = quantity + (SELECT quantity FROM borrow WHERE id = ?) WHERE ISBN = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-            updateStmt.setInt(1, userId);
+            updateStmt.setInt(1, borrowId);
             updateStmt.setString(2, bookId);
-            updateStmt.setString(3, borrowDate.toString());
-            updateStmt.setString(4, bookId);
             updateStmt.executeUpdate();
 
             // Update each selected borrow entry with the return date
-            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = NOW() WHERE book_id = ? and borrow_date = ?";
+            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE id = ?";
             PreparedStatement returnStmt = conn.prepareStatement(returnQuery);
-            returnStmt.setString(1, bookId);
-            returnStmt.setString(2, borrowDate.toString());
+            returnStmt.setInt(1, borrowId);
             returnStmt.executeUpdate();
 
             return true;
@@ -541,13 +476,41 @@ public class BookService {
         }
     }
 
+    public boolean deleteUser(int userId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            // Delete borrowed records of that user
+            String deleteBorrowQuery = "DELETE FROM borrow WHERE user_id = ?";
+            PreparedStatement deleteBorrowStmt = conn.prepareStatement(deleteBorrowQuery);
+            deleteBorrowStmt.setInt(1, userId);
+            deleteBorrowStmt.executeUpdate();
+
+            // Delete requested records of that user
+            String deleteRequestQuery = "DELETE FROM requests WHERE user_id = ?";
+            PreparedStatement deleteRequestStmt = conn.prepareStatement(deleteRequestQuery);
+            deleteRequestStmt.setInt(1, userId);
+            deleteRequestStmt.executeUpdate();
+
+            // Delete user
+            String deleteQuery = "DELETE FROM users WHERE id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+            deleteStmt.setInt(1, userId);
+            deleteStmt.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public boolean userBorrowBook(int requestId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Insert new borrow record
             int userId = SessionManager.getInstance().getUserId();
-            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, NOW(), 'borrowed')";
+            String insertQuery = "INSERT INTO borrow (user_id, book_id, quantity, borrow_date, status) VALUES (?, ?, ?, CONVERT_TZ(NOW(), 'UTC', '+07:00'), 'borrowed')";
             PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
             insertStmt.setInt(1, userId);
             insertStmt.setString(2, bookId);
@@ -567,6 +530,42 @@ public class BookService {
         }
     }
 
+    public Boolean isBookInRequest(String bookId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            int userID = SessionManager.getInstance().getUserId();
+            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ? AND user_id = ?";
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userID);
+            ResultSet rs = queryStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Boolean isBookInBorrowed(String bookId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            int userID = SessionManager.getInstance().getUserId();
+            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'";
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userID);
+            ResultSet rs = queryStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            return count > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean userTryAgain(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -580,6 +579,24 @@ public class BookService {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public Integer bookQuantityForRequest(int requestId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String query = "SELECT b.quantity " +
+                "FROM books b " +
+                "INNER JOIN requests r ON b.ISBN = r.book_id " +
+                "WHERE r.id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, requestId);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getInt("quantity");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

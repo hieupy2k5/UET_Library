@@ -7,6 +7,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -33,6 +34,7 @@ public class UserRequestsController {
     private ObservableList<Request> userRequestsList;
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("There is no request here..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -61,7 +63,7 @@ public class UserRequestsController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books from database: " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() (UserRequestsController.java): " + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 
@@ -112,13 +114,20 @@ public class UserRequestsController {
 
                 acceptButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
-                    BookService.getInstance().adminAcceptRequest(selectedRequest.getUser_id(),
-                        selectedRequest.getBook_id());
-                    fetchFromDB();
-                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully accepted request",
-                        String.format(
-                            "You have granted permission for this user to borrow the book %s",
-                            selectedRequest.getTitle()));
+                    Integer quantityInStock = BookService.getInstance()
+                        .bookQuantityForRequest(selectedRequest.getId());
+                    if (quantityInStock > 0) {
+                        BookService.getInstance().adminAcceptRequest(selectedRequest.getUser_id(),
+                            selectedRequest.getBook_id());
+                        fetchFromDB();
+                        AlertHelper.showAlert(AlertType.INFORMATION,
+                            "Successfully accepted request",
+                            String.format(
+                                "You have granted permission for this user to borrow the book %s",
+                                selectedRequest.getTitle()));
+                    } else {
+                        AlertHelper.showAlert(AlertType.ERROR, "Cannot approve request", "We have ran out of copies for this book in stock.");
+                    }
                 });
 
                 Image returnImage = new Image(

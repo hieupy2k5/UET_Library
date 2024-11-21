@@ -102,7 +102,7 @@ public class BorrowDocumentController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books from database: " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() (BorrowDocumentController.java): " + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 
@@ -111,7 +111,7 @@ public class BorrowDocumentController {
     }
 
     public void initialize() {
-
+        tableView.setPlaceholder(new Label("Your borrow list is empty..."));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -169,8 +169,8 @@ public class BorrowDocumentController {
                     loadImageTask.setOnSucceeded(
                         event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println(
-                            "Failed to load image: " + loadImageTask.getException().getMessage());
+//                        System.err.println(
+//                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -219,7 +219,26 @@ public class BorrowDocumentController {
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
-                    SharedData.getInstance().addToCart(selectedBook);
+                    // check if book is in request list
+                    if (BookService.getInstance().isBookInRequest(selectedBook.getIsbn())) {
+                        AlertHelper.showAlert(AlertType.ERROR, "Book already in request list",
+                            "Please check \"My Requests\" tab to see your request for this book.");
+                        return;
+                    }
+                    // check if book is in borrowed list (in borrow table and status = 'borrowed')
+                    if (BookService.getInstance().isBookInBorrowed(selectedBook.getIsbn())) {
+                        AlertHelper.showAlert(AlertType.ERROR,
+                            "You are already borrowing this book",
+                            "To borrow this book again, please return it first.");
+                        return;
+                    }
+                    int quantityInStock = selectedBook.getQuantity();
+                    if (quantityInStock > 0) {
+                        SharedData.getInstance().addToCart(selectedBook);
+                    } else {
+                        AlertHelper.showAlert(AlertType.ERROR, "Insufficient amount of books",
+                            "We have ran out of stock for this book. Please try again later!");
+                    }
                 });
             }
 
@@ -316,10 +335,12 @@ public class BorrowDocumentController {
                     Book book = entry.getKey();
 
                     if (book.getQuantity() > 0) {
-                        boolean success = BookService.getInstance().requestBook(userID, book.getIsbn(), 1);
+                        boolean success = BookService.getInstance()
+                            .requestBook(userID, book.getIsbn(), 1);
 
                         if (!success) {
-                            throw new RuntimeException("Database Error while requesting book: " + book.getTitle());
+                            throw new RuntimeException(
+                                "Database Error while requesting book: " + book.getTitle());
                         }
                     }
                 }
@@ -333,7 +354,7 @@ public class BorrowDocumentController {
             protected void succeeded() {
                 super.succeeded();
                 AlertHelper.showAlert(AlertType.INFORMATION, "Request successfully",
-                        "Now you need to wait for admins to approve your request(s)");
+                    "Now you need to wait for admins to approve your request(s)");
                 cartButtonClicked();
             }
 

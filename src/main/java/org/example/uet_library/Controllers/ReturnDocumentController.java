@@ -1,5 +1,6 @@
 package org.example.uet_library.Controllers;
 
+import java.util.Date;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import javafx.application.Platform;
@@ -31,8 +32,8 @@ public class ReturnDocumentController {
     public TextField searchField;
     public TableView<Borrow> tableView;
     public TableColumn<Borrow, String> categoryColumn;
-    public TableColumn<Borrow, LocalDateTime> borrowDateColumn;
-    public TableColumn<Borrow, LocalDateTime> returnDateColumn;
+    public TableColumn<Borrow, Date> borrowDateColumn;
+    public TableColumn<Borrow, Date> returnDateColumn;
     public TableColumn<Borrow, Void> actionColumn;
     public ProgressIndicator waitProgress;
     private ObservableList<Borrow> borrowedBooks;
@@ -85,8 +86,8 @@ public class ReturnDocumentController {
                     loadImageTask.setOnSucceeded(
                         event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println(
-                            "Failed to load image: " + loadImageTask.getException().getMessage());
+//                        System.err.println(
+//                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -134,6 +135,7 @@ public class ReturnDocumentController {
     }
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("Your return list is empty..."));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
@@ -193,7 +195,7 @@ public class ReturnDocumentController {
                     Integer q = selectedBook.getQuantity();
 
                     if (selectedBook.getReturnDate() != null) {
-                        AlertHelper.showAlert(AlertType.WARNING, "Already returned",
+                        AlertHelper.showAlert(AlertType.ERROR, "Already returned",
                             String.format("You have already returned it"));
                     } else {
                         showQuantityDialog(selectedBook);
@@ -244,14 +246,11 @@ public class ReturnDocumentController {
     }
 
     private void returnBook(Borrow borrowedBook) {
-        int userID = SessionManager.getInstance().getUserId();
-        LocalDateTime borrowDate = borrowedBook.getBorrowDate();
-
         Task<Boolean> returnTask = new Task<>() {
             @Override
             protected Boolean call() {
                 return BookService.getInstance()
-                    .returnBook(userID, borrowedBook.getIsbn(), borrowDate);
+                    .returnBook(borrowedBook.getId(), borrowedBook.getIsbn());
             }
         };
 

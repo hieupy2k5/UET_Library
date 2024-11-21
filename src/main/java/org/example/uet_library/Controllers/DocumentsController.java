@@ -95,7 +95,7 @@ public class DocumentsController {
         // when task fail, show error and turn off
         task.setOnFailed(event -> {
             Platform.runLater(() -> {
-                System.err.println("Error fetching books from database: " + task.getException().getMessage());
+                System.err.println("Error fetching books in DocumentsController.java: " + task.getException().getMessage());
                 waitprogress.setVisible(false);
             });
         });

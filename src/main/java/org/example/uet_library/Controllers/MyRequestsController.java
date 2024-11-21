@@ -36,6 +36,7 @@ public class MyRequestsController {
 
 
     public void initialize() {
+        tableView.setPlaceholder(new Label("Your request list is empty..."));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
         setupInformation();
@@ -87,8 +88,8 @@ public class MyRequestsController {
                     loadImageTask.setOnSucceeded(
                         event -> imageView.setImage(loadImageTask.getValue()));
                     loadImageTask.setOnFailed(event -> {
-                        System.err.println(
-                            "Failed to load image: " + loadImageTask.getException().getMessage());
+//                        System.err.println(
+//                            "Failed to load image: " + loadImageTask.getException().getMessage());
                     });
 
                     new Thread(loadImageTask).start();
@@ -116,7 +117,7 @@ public class MyRequestsController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books from database: " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() in MyRequestsController.java: " + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 

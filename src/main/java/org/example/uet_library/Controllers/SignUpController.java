@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import org.example.uet_library.AlertHelper;
+import org.example.uet_library.enums.SignUpResult;
 
 public class SignUpController implements Initializable {
 
@@ -32,7 +33,7 @@ public class SignUpController implements Initializable {
         choiceBox.setValue(choices[1]);
     }
 
-    public void handleSignUpButton(ActionEvent event) throws Exception {
+    public void handleSignUpButton() throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         String confirmPassword = confirmPasswordFld.getText();
@@ -41,57 +42,59 @@ public class SignUpController implements Initializable {
         String email = emailFld.getText();
         boolean isAdmin = choiceBox.getValue().equals(choices[0]);
 
-        if (username.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty username",
+        if (username.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty username",
                 "You cannot leave your username empty!");
             return;
-        } else if (password.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty password",
+        } else if (password.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty password",
                 "You cannot leave your password empty!");
             return;
 //        } else if (password.length() < 8) {
-//            AlertHelper.showAlert(AlertType.WARNING, "Your password is too short",
+//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too short",
 //                "Your password must be at least 8 characters");
 //            return;
 //        } else if (password.length() >= 30) {
-//            AlertHelper.showAlert(AlertType.WARNING, "Your password is too long",
+//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too long",
 //                "Are you going to remember all this? Your password should be less than 30 characters");
 //            return;
-        } else if (confirmPassword.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty password confirmation",
+        } else if (confirmPassword.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty password confirmation",
                 "You haven't confirm your password yet!");
             return;
         }
         if (!password.equals(confirmPassword)) {
-            AlertHelper.showAlert(AlertType.WARNING, "Passwords do not match",
+            AlertHelper.showAlert(AlertType.ERROR, "Passwords do not match",
                 "Please confirm your password again");
             return;
-        } else if (firstName.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty first name",
+        } else if (firstName.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty first name",
                 "Don't you have a first name?");
             return;
-        } else if (lastName.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty last name",
+        } else if (lastName.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty last name",
                 "Don't you have a last name?");
             return;
-        } else if (email.equals("")) {
-            AlertHelper.showAlert(AlertType.WARNING, "Empty email",
+        } else if (email.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Empty email",
                 "Please provide a valid email address!");
             return;
         }
 
-        if (userController.signUpUser(username, password, firstName, lastName, email, isAdmin)
-            == 1) {
+        SignUpResult signUpResult = userController.signUpUser(username, password, firstName, lastName, email,
+            isAdmin);
+        if (signUpResult == SignUpResult.ADMIN_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new admin account",
                 "You can log in using your new admin account now!");
-        } else if (
-            userController.signUpUser(username, password, firstName, lastName, email, isAdmin)
-                == 2) {
+        } else if (signUpResult == SignUpResult.USER_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new user account",
                 "You can log in using your new user account now!");
-        } else {
-            AlertHelper.showAlert(AlertType.WARNING, "Username already exists",
+        } else if (signUpResult == SignUpResult.ALREADY_EXISTS) {
+            AlertHelper.showAlert(AlertType.ERROR, "Username already exists",
                 "Please choose another username");
+        } else {
+            AlertHelper.showAlert(AlertType.ERROR, "Something unexpected occurred",
+                "Please try again later.");
         }
     }
 

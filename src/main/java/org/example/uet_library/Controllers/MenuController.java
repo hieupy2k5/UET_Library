@@ -198,6 +198,7 @@ public class MenuController {
             if (contentPane != null) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
                 AnchorPane newPane = loader.load();
+                // Uncomment the lines + change the temporary fxml to see User Home View
                 UserHomeController userHomeController = loader.getController();
                 userHomeController.setStage(primaryStage);
                 userHomeController.setMenuController(this);

@@ -9,17 +9,17 @@
 
 <AnchorPane prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.ReturnDocumentController">
   <children>
-    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="740.0" prefWidth="960.0">
+    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0">
       <columns>
         <TableColumn fx:id="informationColumn" editable="false" prefWidth="304.0" text="Document" />
         <TableColumn fx:id="categoryColumn" editable="false" prefWidth="182.0" text="Category" />
-        <TableColumn fx:id="borrowDateColumn" editable="false" minWidth="0.0" prefWidth="173.0" text="Borrow Date" />
-        <TableColumn fx:id="returnDateColumn" editable="false" minWidth="0.0" prefWidth="174.0" text="Return Date" />
+        <TableColumn fx:id="borrowDateColumn" editable="false" minWidth="0.0" prefWidth="173.0" sortType="DESCENDING" text="Borrow Date" />
+        <TableColumn fx:id="returnDateColumn" editable="false" minWidth="0.0" prefWidth="174.0" sortType="DESCENDING" text="Return Date" />
         <TableColumn fx:id="actionColumn" editable="false" prefWidth="126.0" sortable="false" text="Options" />
       </columns>
     </TableView>
-    <Button layoutX="890.0" layoutY="16.0" mnemonicParsing="false" text="Search" />
+    <Button layoutX="830.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
     <ProgressIndicator fx:id="waitProgress" layoutX="444.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" rotate="45.0" />
-    <TextField fx:id="searchField" layoutX="126.0" layoutY="15.0" prefHeight="27.0" prefWidth="719.0" />
+    <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="720.0" />
   </children>
 </AnchorPane>

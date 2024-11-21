@@ -8,10 +8,8 @@
 
 <AnchorPane fx:id="root" prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
   <children>
-    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="840.0" prefWidth="960.0" styleClass="table" stylesheets="@../Styles/table.css">
+    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0" styleClass="table" stylesheets="@../Styles/table.css">
       <columns>
-<!--        <TableColumn fx:id="titleColumn" editable="false" prefWidth="327.0" text="Title" />-->
-<!--        <TableColumn fx:id="authorColumn" editable="false" minWidth="0.0" prefWidth="184.0" text="Author" />-->
         <TableColumn fx:id="informationColumn" editable="false" prefWidth="347.0" text="Document Information" />
         <TableColumn fx:id="yearColumn" editable="false" minWidth="0.0" prefWidth="79.0" text="Year" />
         <TableColumn fx:id="typeColumn" editable="false" minWidth="0.0" prefWidth="205.0" text="Type" />
@@ -39,9 +37,9 @@
             </TableView>
          </children>
       </AnchorPane>
-    <Button layoutX="751.0" layoutY="16.0" mnemonicParsing="false" text="Search" />
+    <Button layoutX="750.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
     <ProgressIndicator fx:id="waitProgress" layoutX="444.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" rotate="45.0" />
-    <TextField fx:id="searchField" layoutX="48.0" layoutY="15.0" prefHeight="27.0" prefWidth="652.0" />
+    <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="652.0" />
       <Button layoutX="850.0" layoutY="12.0" mnemonicParsing="false" onAction="#cartButtonClicked" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />
