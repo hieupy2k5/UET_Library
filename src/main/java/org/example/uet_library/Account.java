@@ -16,6 +16,13 @@ public abstract class Account {
         this.last_name = last_name;
         this.email = email;
     }
+    public Account(int id, String username, String first_name, String last_name, String email) {
+        this.id = id;
+        this.username = username;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+    }
 
     public Account(String username, String first_name, String last_name, String email) {
         this.username = username;

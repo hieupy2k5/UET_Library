@@ -252,7 +252,7 @@ public class BookService {
                         String lastName = resultSet.getString("last_name");
                         String fullName = firstName + " " + lastName;
 
-                        User user = new User(username, firstName, lastName, email);
+                        User user = new User(userID, username, firstName, lastName, email);
                         userList.add(user);
                     }
 
@@ -486,6 +486,19 @@ public class BookService {
     public boolean deleteUser(int userId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
+            // Delete borrowed records of that user
+            String deleteBorrowQuery = "DELETE FROM borrow WHERE user_id = ?";
+            PreparedStatement deleteBorrowStmt = conn.prepareStatement(deleteBorrowQuery);
+            deleteBorrowStmt.setInt(1, userId);
+            deleteBorrowStmt.executeUpdate();
+
+            // Delete requested records of that user
+            String deleteRequestQuery = "DELETE FROM requests WHERE user_id = ?";
+            PreparedStatement deleteRequestStmt = conn.prepareStatement(deleteRequestQuery);
+            deleteRequestStmt.setInt(1, userId);
+            deleteRequestStmt.executeUpdate();
+
+            // Delete user
             String deleteQuery = "DELETE FROM users WHERE id = ?";
             PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
             deleteStmt.setInt(1, userId);
@@ -527,9 +540,11 @@ public class BookService {
     public Boolean isBookInRequest(String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ?";
+            int userID = SessionManager.getInstance().getUserId();
+            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ? AND user_id = ?";
             PreparedStatement queryStmt = conn.prepareStatement(query);
             queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userID);
             ResultSet rs = queryStmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);
@@ -543,9 +558,11 @@ public class BookService {
     public Boolean isBookInBorrowed(String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND status = 'borrowed'";
+            int userID = SessionManager.getInstance().getUserId();
+            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'";
             PreparedStatement queryStmt = conn.prepareStatement(query);
             queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userID);
             ResultSet rs = queryStmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);

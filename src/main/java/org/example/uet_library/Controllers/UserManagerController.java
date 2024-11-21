@@ -219,6 +219,7 @@ public class UserManagerController {
         if (confirmDelete) {
             if (BookService.getInstance().deleteUser(user.getId())) {
                 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                fetchFromDB();
                 alert1.setTitle("Success");
                 alert1.setHeaderText("User Deleted");
                 alert1.setContentText("User has been deleted successfully.");
