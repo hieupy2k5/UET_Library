@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -126,7 +127,7 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books from database: " + e.getMessage());
+                    System.err.println("Error fetching books in fetchBookFromDB() (BookService.java): " + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
@@ -200,6 +201,7 @@ public class BookService {
 
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
+                        int borrowID = resultSet.getInt("id");
                         String isbn = resultSet.getString("book_id");
                         int quantity = resultSet.getInt("quantity");
                         String title = resultSet.getString("title");
@@ -209,9 +211,13 @@ public class BookService {
                         Date borrowTimestamp = resultSet.getTimestamp("borrow_date");
                         Date returnTimestamp = resultSet.getTimestamp("return_date");
 
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String formattedBorrowDate = sdf.format(borrowTimestamp);
+                        String formattedReturnDate = (returnTimestamp != null)  ? sdf.format(returnTimestamp) : "N/A";
+
                         String status = resultSet.getString("status");
-                        Borrow borrow = new Borrow(isbn, title, author, category, quantity,
-                            borrowTimestamp, returnTimestamp, status, image);
+                        Borrow borrow = new Borrow(borrowID, isbn, title, author, category, quantity,
+                            formattedBorrowDate, formattedReturnDate, status, image);
                         borrowList.add(borrow);
                     }
 
@@ -403,31 +409,20 @@ public class BookService {
         }
     }
 
-    /**
-     * For returning books.
-     *
-     * @param userId     is the id of the current user.
-     * @param bookId     is the book that the user wants to return.
-     * @param borrowDate is the borrow date of that book.
-     * @return whether the book is successfully returned.
-     */
-    public boolean returnBook(int userId, String bookId, Date borrowDate) {
+    public boolean returnBook(int borrowId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Add the return books to library
-            String updateQuery = "UPDATE books SET quantity = quantity + (SELECT quantity FROM borrow WHERE user_id = ? AND book_id = ? AND status = 'borrowed' and borrow_date = ?) WHERE ISBN = ?";
+            String updateQuery = "UPDATE books SET quantity = quantity + (SELECT quantity FROM borrow WHERE id = ?) WHERE ISBN = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-            updateStmt.setInt(1, userId);
+            updateStmt.setInt(1, borrowId);
             updateStmt.setString(2, bookId);
-            updateStmt.setString(3, borrowDate.toString());
-            updateStmt.setString(4, bookId);
             updateStmt.executeUpdate();
 
             // Update each selected borrow entry with the return date
-            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE book_id = ? and borrow_date = ?";
+            String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE id = ?";
             PreparedStatement returnStmt = conn.prepareStatement(returnQuery);
-            returnStmt.setString(1, bookId);
-            returnStmt.setString(2, borrowDate.toString());
+            returnStmt.setInt(1, borrowId);
             returnStmt.executeUpdate();
 
             return true;

@@ -1,7 +1,6 @@
 package org.example.uet_library;
 
 
-import java.util.Date;
 
 public class Borrow {
 
@@ -9,16 +8,17 @@ public class Borrow {
     private String user_id;
     private String book_id;
     private int quantity;
-    private Date borrow_date;
-    private Date return_date;
+    private String borrow_date;
+    private String return_date;
     private String status;
     private String title;
     private String author;
     private String category;
     private String image_url;
 
-    public Borrow(String book_id, String title, String author, String category, int quantity, Date borrow_date,
-        Date return_date, String status, String image_url) {
+    public Borrow(int id, String book_id, String title, String author, String category, int quantity, String borrow_date,
+        String return_date, String status, String image_url) {
+        this.id = id;
         this.book_id = book_id;
         this.title = title;
         this.author = author;
@@ -28,6 +28,10 @@ public class Borrow {
         this.return_date = return_date;
         this.status = status;
         this.image_url = image_url;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getAuthor() {
@@ -52,11 +56,11 @@ public class Borrow {
 
     public String getImageUrl() { return image_url; }
 
-    public Date getBorrowDate() {
+    public String getBorrowDate() {
         return borrow_date;
     }
 
-    public Date getReturnDate() {
+    public String getReturnDate() {
         return return_date;
     }
 
