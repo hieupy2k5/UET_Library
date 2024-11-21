@@ -37,8 +37,8 @@ public class ReturnDocumentController {
     public TextField searchField;
     public TableView<Borrow> tableView;
     public TableColumn<Borrow, String> categoryColumn;
-    public TableColumn<Borrow, LocalDateTime> borrowDateColumn;
-    public TableColumn<Borrow, LocalDateTime> returnDateColumn;
+    public TableColumn<Borrow, Date> borrowDateColumn;
+    public TableColumn<Borrow, Date> returnDateColumn;
     public TableColumn<Borrow, Void> actionColumn;
     public ProgressIndicator waitProgress;
     private ObservableList<Borrow> borrowedBooks;
