@@ -1,6 +1,7 @@
 package org.example.uet_library.Controllers;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -239,7 +240,7 @@ public class ReturnDocumentController {
 
     private void returnBook(Borrow borrowedBook) {
         int userID = SessionManager.getInstance().getUserId();
-        LocalDateTime borrowDate = borrowedBook.getBorrowDate();
+        Date borrowDate = borrowedBook.getBorrowDate();
 
         Task<Boolean> returnTask = new Task<>() {
             @Override

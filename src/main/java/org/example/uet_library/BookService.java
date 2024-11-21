@@ -4,13 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.chart.PieChart.Data;
 import org.json.JSONArray;
 
 
@@ -207,17 +206,12 @@ public class BookService {
                         String author = resultSet.getString("author");
                         String category = resultSet.getString("category");
                         String image = resultSet.getString("image_url");
-                        Timestamp borrowTimestamp = resultSet.getTimestamp("borrow_date");
-                        Timestamp returnTimestamp = resultSet.getTimestamp("return_date");
-
-                        LocalDateTime borrow_date =
-                            (borrowTimestamp != null) ? borrowTimestamp.toLocalDateTime() : null;
-                        LocalDateTime return_date =
-                            (returnTimestamp != null) ? returnTimestamp.toLocalDateTime() : null;
+                        Date borrowTimestamp = resultSet.getTimestamp("borrow_date");
+                        Date returnTimestamp = resultSet.getTimestamp("return_date");
 
                         String status = resultSet.getString("status");
                         Borrow borrow = new Borrow(isbn, title, author, category, quantity,
-                            borrow_date, return_date, status, image);
+                            borrowTimestamp, returnTimestamp, status, image);
                         borrowList.add(borrow);
                     }
 
@@ -417,7 +411,7 @@ public class BookService {
      * @param borrowDate is the borrow date of that book.
      * @return whether the book is successfully returned.
      */
-    public boolean returnBook(int userId, String bookId, LocalDateTime borrowDate) {
+    public boolean returnBook(int userId, String bookId, Date borrowDate) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Add the return books to library
