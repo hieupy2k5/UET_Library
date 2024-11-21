@@ -50,7 +50,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fx:id="numberOfBookField1" layoutX="53.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="31.63671875">
+                        <Text fx:id="numberOfBookField1" layoutX="47.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="31.63671875">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -69,7 +69,7 @@
                     <Image url="@../Images/userIcon.png" />
                   </image>
                 </ImageView>
-                        <Text fx:id="numeberOfUser" layoutX="57.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1.0">
+                        <Text fx:id="numeberOfUser" layoutX="40.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="50.0">
                            <font>
                               <Font size="24.0" />
                            </font>

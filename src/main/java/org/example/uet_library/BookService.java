@@ -116,7 +116,9 @@ public class BookService {
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
                         String type = resultSet.getString("category");
+                        String description = resultSet.getString("description");
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
+                        book.setDescription(description);
                         book.setqrCode(resultSet.getBytes("QRCODE"));
                         bookList.add(book);
                     }
@@ -806,4 +808,6 @@ public class BookService {
             }
         };
     }
+
+
 }

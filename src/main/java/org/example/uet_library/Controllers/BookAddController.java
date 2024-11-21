@@ -41,8 +41,15 @@ public class BookAddController {
                 typeBook.setText(newBook.getType());
             }
             yearBook.setText(newBook.getYear()+"");
-            Image imageAdd = new Image(newBook.getImageLink(),150,150, true, true);
-            imageOfBook.setImage(imageAdd);
+            if (newBook.getImageLink() == null || newBook.getImageLink().isEmpty()) {
+                Image image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+                imageOfBook.setImage(image);
+                imageOfBook.setFitHeight(150);
+                imageOfBook.setFitWidth(150f);
+            } else {
+                Image imageAdd = new Image(newBook.getImageLink(),150,150, true, true);
+                imageOfBook.setImage(imageAdd);
+            }
 
         } else {
             authoradd.setText("");
