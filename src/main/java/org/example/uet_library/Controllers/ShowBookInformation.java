@@ -96,7 +96,7 @@ public class ShowBookInformation {
                     ps.setString(1, bookCurrent.getIsbn());
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
-                        String username = rs.getString("Username");
+                        String username = rs.getString("User_name");
                         Integer rating = rs.getInt("Rating");
                         String comment = rs.getString("Comment");
                         Timestamp commentAt = rs.getTimestamp("comment_at");

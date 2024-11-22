@@ -1,8 +1,15 @@
 package org.example.uet_library.Controllers;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -37,6 +44,7 @@ public class ReturnDocumentController {
     public TableColumn<Borrow, Void> actionColumn;
     public ProgressIndicator waitProgress;
     private ObservableList<Borrow> borrowedBooks;
+    private HashSet<String> isRatedBooks = new HashSet<>();
 
     @FXML
     private TableColumn<Borrow, Void> informationColumn;
@@ -107,6 +115,7 @@ public class ReturnDocumentController {
 
         task.setOnSucceeded(_ -> Platform.runLater(() -> {
             borrowedBooks = task.getValue();
+            this.fetchRating();
             SortedList<Borrow> sortedBorrowedBooks = new SortedList<>(borrowedBooks);
 
             sortedBorrowedBooks.setComparator((b1, b2) -> {
@@ -146,6 +155,7 @@ public class ReturnDocumentController {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         fetchFromDB();
+        Platform.runLater(() -> tableView.refresh());
     }
 
     private void setupSearch() {
@@ -205,7 +215,8 @@ public class ReturnDocumentController {
                 ratingBook.setText("Rate");
                 ratingBook.setOnAction(event -> {
                     borrowSelected = getTableView().getItems().get(getIndex());
-                    showRatingDialog(borrowSelected);
+                    String type = ratingBook.getText();
+                    showRatingDialog(borrowSelected, type);
                 });
                 hbox.getChildren().addAll(returnButton, ratingBook);
             }
@@ -218,7 +229,14 @@ public class ReturnDocumentController {
                 } else {
                     borrowSelected = getTableView().getItems().get(getIndex());
                     setGraphic(hbox);
-                    ratingBook.setVisible(borrowSelected.getReturnDate() != null);
+                    if (isRatedBooks.contains(borrowSelected.getIsbn())) {
+                        ratingBook.setText("Re-Rate");
+                    } else {
+                        ratingBook.setText("Rate");
+                    }
+
+                    // Only show the rating button if the book has been returned
+                    ratingBook.setVisible(borrowSelected.getReturnDate().equals("N/A"));
                 }
             }
         });
@@ -275,12 +293,14 @@ public class ReturnDocumentController {
         new Thread(returnTask).start();
     }
 
-    private void showRatingDialog(Borrow borrowedBook) {
+    private void showRatingDialog(Borrow borrowedBook, String type) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/RatingBookDialog.fxml"));
             Parent root = loader.load();
             RatingDialogController ratingDialogController = loader.getController();
             ratingDialogController.setData(borrowedBook);
+            ratingDialogController.setReturnDocumentController(this);
+            ratingDialogController.setTypeFeedBack(type);
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Confirmation");
             dialogStage.setScene(new Scene(root));
@@ -289,6 +309,58 @@ public class ReturnDocumentController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Task<HashSet<String>> rateBook() {
+        return new Task<>() {
+          @Override
+          protected HashSet<String> call() {
+              HashSet<String> resultQuery = new HashSet<>();
+              Database database = new Database();
+              try {
+                  Connection connection = database.getConnection();
+                  String query = "SELECT ISBN FROM Ratings WHERE user_name = ?";
+                  PreparedStatement preparedStatement = connection.prepareStatement(query);
+                  preparedStatement.setString(1, RatingDialogController.userName);
+                  ResultSet resultSet = preparedStatement.executeQuery();
+                  while (resultSet.next()) {
+                      resultQuery.add(resultSet.getString(1));
+                  }
+              } catch (SQLException e) {
+                  throw new RuntimeException(e);
+              }
+              return resultQuery;
+          }
+        };
+    }
+
+    public void fetchRating() {
+        Task<HashSet<String>> task = rateBook();
+        task.setOnSucceeded(event -> {
+            this.isRatedBooks = task.getValue();
+            for (Borrow x : borrowedBooks) {
+                if (isRatedBooks.contains(x.getIsbn())) {
+                    x.setRate(true);
+                } else {
+                    x.setRate(false);
+                }
+            }
+            Platform.runLater(() -> tableView.refresh());
+        });
+        task.setOnFailed(event -> {
+
+        });
+        new Thread(task).start();
+    }
+
+    public void updateTableWithRating() {
+        for (Borrow x : borrowedBooks) {
+            if (isRatedBooks.contains(x.getIsbn())) {
+                x.setRate(true);
+                break;
+            }
+        }
+        Platform.runLater(() -> tableView.refresh());
     }
 
 }

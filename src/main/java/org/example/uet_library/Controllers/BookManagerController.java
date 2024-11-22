@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 
-/**
- * This is a feature for admins.
- */
 public class BookManagerController {
 
     @FXML
@@ -99,7 +96,15 @@ public class BookManagerController {
         listViewTable.setOnMouseClicked(event -> {
             bookSelected = listViewTable.getSelectionModel().getSelectedItem();
             this.setTextField(bookSelected);
-            Image image = new Image(bookSelected.getImageUrl());
+            String imageUrl = bookSelected.getImageUrl();
+            Image image;
+
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+            } else {
+                image = new Image(imageUrl);
+            }
+
             imageOfBook.setImage(image);
             imageOfBook.setFitHeight(imageOfBook.getFitHeight());
             imageOfBook.setFitWidth(imageOfBook.getFitWidth());

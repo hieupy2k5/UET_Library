@@ -15,6 +15,7 @@ public class Borrow {
     private String author;
     private String category;
     private String image_url;
+    private boolean isRate = false;
 
     public Borrow(int id, String book_id, String title, String author, String category, int quantity, String borrow_date,
         String return_date, String status, String image_url) {
@@ -66,5 +67,13 @@ public class Borrow {
 
     public String getStatus() {
         return status;
+    }
+
+    public boolean isRate() {
+        return isRate;
+    }
+
+    public void setRate(boolean isRate) {
+        this.isRate = isRate;
     }
 }
