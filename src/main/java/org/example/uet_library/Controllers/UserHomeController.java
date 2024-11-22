@@ -312,7 +312,6 @@ public class UserHomeController implements Initializable {
 
         progressIndicator.setVisible(true);
         executorService.submit(loadBooksTask);
-        executorService.close();
 
         // Lưu trang vào cache và trả về
         pageCache.put(pageIndex, pageBox);
