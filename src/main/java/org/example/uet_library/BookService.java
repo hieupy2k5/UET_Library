@@ -31,15 +31,6 @@ public class BookService {
         return instance;
     }
 
-    public Task<JSONArray> searchBooks(String query, String filter) {
-        return new Task<>() {
-            @Override
-            protected JSONArray call() throws Exception {
-                return bookAPI.fetchBooks(query, filter);
-            }
-        };
-    }
-
     public Task<Void> addBook(Book book) {
         return new Task<>() {
             @Override

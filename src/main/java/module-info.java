@@ -8,6 +8,10 @@ module org.example.uet_library {
     requires bcrypt;
     requires org.json;
     requires mysql.connector.j;
+    requires java.net.http;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
 
     opens org.example.uet_library to javafx.fxml;
     exports org.example.uet_library;

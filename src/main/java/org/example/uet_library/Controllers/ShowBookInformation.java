@@ -33,6 +33,8 @@ public class ShowBookInformation {
     private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/star.png").toExternalForm(),20,20,false, true);
     private final Image STAR_FILL = new Image(getClass().getResource("/Images/star_color.png").toExternalForm(),20,20,false, true);
 
+    private boolean checkFetchback = false;
+
     @FXML
     Button showAllButton;
 
@@ -170,6 +172,7 @@ public class ShowBookInformation {
         Task<ObservableList<BookRating>> task = getFeedBack();
 
         task.setOnSucceeded(event -> {
+            this.checkFetchback = false;
             this.feedback = task.getValue();
             if (feedback == null || feedback.isEmpty()) {
                 VBox commentBox = new VBox();

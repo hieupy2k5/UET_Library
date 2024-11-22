@@ -107,6 +107,14 @@ public class Book {
         return this.year;
     }
 
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public String toString() {
         return "Book:\n" +

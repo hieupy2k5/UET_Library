@@ -140,6 +140,8 @@ public class UserHomeController implements Initializable {
                     openBookDetails(selectedBook);
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
@@ -299,7 +301,7 @@ public class UserHomeController implements Initializable {
     }
 
 
-    public void openBookDetails(Book book) throws IOException {
+    public void openBookDetails(Book book) throws IOException, InterruptedException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
         Parent root = fxmlLoader.load();
 

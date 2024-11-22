@@ -1,6 +1,5 @@
 package org.example.uet_library.Controllers;
 
-import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -9,189 +8,166 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.example.uet_library.BookAPI;
+
+import java.io.IOException;
 
 public class BookAPISearch {
-
     public static MenuController menuController;
-
-    private Book selectedBook;
-
-    public void setMenuController(MenuController menuController) {
-        this.menuController = menuController;
-    }
-
-
-    @FXML
-    private TableColumn<Book, String> ISBN;
-
-    @FXML
-    private TableColumn<Book, String> author;
-
-    @FXML
-    private TableColumn<Book, String> image;
 
     @FXML
     private TextField queryBook;
 
     @FXML
-    private TableView<Book> tableOfBook;
-
-    @FXML
-    private TableColumn<Book, String> title;
-
-    @FXML
-    private TableColumn<Book, String> type;
-
-    @FXML
-    private TableColumn<Book, Integer> year;
-
-    @FXML
     private ChoiceBox<String> filterSearch;
+
+    public void setMenuController(MenuController menuController) {
+        this.menuController = menuController;
+    }
+
+    @FXML
+    private Pagination pagination;
+
+    private static final int BOOKS_PER_PAGE = 10;
+    private ObservableList<Book> allBooks = FXCollections.observableArrayList();
+    private Book selectedBook;
+
+    @FXML
+    public void initialize() {
+        filterSearch.setItems(FXCollections.observableArrayList("Title", "Author", "ISBN"));
+    }
 
     @FXML
     public void searchBookOnAction(ActionEvent event) {
-        if (queryBook.getText().equals("")) {
-            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please enter a search term");
-        } else if (filterSearch.getValue() == null || filterSearch.getValue().equals("")) {
-            AlertHelper.showAlert(AlertType.ERROR, "Error",
-                "You want to search by ISBN, author or title ? please select your type");
-        } else {
-            searchBook(queryBook.getText(), filterSearch.getValue());
+        String query = queryBook.getText();
+        String filter = filterSearch.getValue();
+
+        if (query == null || query.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please enter a search term.");
+            return;
         }
+        if (filter == null || filter.isEmpty()) {
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please select a search filter (Title, Author, or ISBN).");
+            return;
+        }
+
+        searchBooks(query, filter);
     }
 
-    public void searchBook(String query, String filter) {
-        Task<JSONArray> task = BookService.getInstance().searchBooks(query, filter);
+    /**
+     * Fetch book from API to my Lib
+     * @param query
+     * @param filter
+     */
+    private void searchBooks(String query, String filter) {
+        Task<ObservableList<Book>> task = BookAPI.searchBooks(query, filter);
 
         task.setOnSucceeded(event -> {
-            JSONArray jsonArray = task.getValue();
-            updateTableView(jsonArray);
+            allBooks = task.getValue();
+            int pageCount = (int) Math.ceil((double) allBooks.size() / BOOKS_PER_PAGE);
+            pagination.setPageCount(pageCount);
+            pagination.setPageFactory(this::createPage);
         });
 
         task.setOnFailed(event -> {
             Throwable exception = task.getException();
-            System.out.println(exception.getMessage());
+            exception.printStackTrace();
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to load books: " + exception.getMessage());
         });
 
         new Thread(task).start();
     }
 
-    public void updateTableView(JSONArray bookArrJson) {
-        ObservableList<Book> bookList = FXCollections.observableArrayList();
-        for (int i = 0; i < bookArrJson.length(); i++) {
-            JSONObject bookJson = bookArrJson.getJSONObject(i).getJSONObject("volumeInfo");
-            if (bookJson != null) {
-                JSONObject volumeInfo = bookJson.optJSONObject("volumeInfo");
-                String title = bookJson.optString("title", "No title");
-                JSONArray authors = bookJson.optJSONArray("authors");
-                String author = (authors != null) ? authors.getString(0) : "No author";
-                String isbn = null;
-                if (bookJson.optJSONArray("industryIdentifiers") != null) {
-                    isbn = bookJson.optJSONArray("industryIdentifiers").getJSONObject(0)
-                        .getString("identifier");
-                }
-                JSONArray categories = bookJson.optJSONArray("categories");
-                String type = null;
-                if (categories != null && categories.length() > 0) {
-                    type = categories.getString(0);
-                }
+    /**
+     *
+     * @param pageIndex
+     * @return the page we control with pagination
+     */
+    private ScrollPane createPage(int pageIndex) {
+        VBox pageBox = new VBox(10);
+        int start = pageIndex * BOOKS_PER_PAGE;
+        int end = Math.min(start + BOOKS_PER_PAGE, allBooks.size());
 
-                JSONObject imageLinks = bookJson.optJSONObject("imageLinks");
-                String imageUrl = (imageLinks != null) ? imageLinks.optString("thumbnail", "") : "";
-
-                int year = 0;
-                if (bookJson.has("publishedDate")) {
-                    String pushlishedDate = bookJson.optString("publishedDate");
-                    if (pushlishedDate.length() >= 4) {
-                        year = Integer.parseInt(pushlishedDate.substring(0, 4));
-                    }
-                }
-                String url = "";
-                if (bookJson.has("infoLink")) {
-                    url = bookJson.optString("infoLink", "");
-                }
-                String description = "";
-                if (bookJson.has("description")) {
-                    description = bookJson.optString("description", "");
-                }
-                bookList.add(new Book(title, author, isbn, imageUrl, year, type, url, description));
-            }
+        for (int i = start; i < end; i++) {
+            Book book = allBooks.get(i);
+            HBox bookBox = createBookBox(book);
+            pageBox.getChildren().add(bookBox);
         }
-        tableOfBook.setItems(bookList);
+
+        ScrollPane scrollPane = new ScrollPane(pageBox);
+        scrollPane.setPrefWidth(960);
+        scrollPane.setPrefHeight(460);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        return scrollPane;
     }
 
-    @FXML
-    public void initialize() {
-        if (filterSearch != null) {
-            filterSearch.getItems().addAll("Title", "Author", "ISBN");
-        }
+    /**
+     *
+     * @param book
+     * @return each hbox will contain one book
+     */
+    private HBox createBookBox(Book book) {
+        HBox bookBox = new HBox(10);
+        bookBox.setStyle("-fx-padding: 10; -fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5;");
+        bookBox.setPrefHeight(100);
 
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        author.setCellValueFactory(new PropertyValueFactory<>("author"));
-        ISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        year.setCellValueFactory(new PropertyValueFactory<>("year"));
-        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        // Lazy-load image
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(80);
+        imageView.setPreserveRatio(true);
 
-        image.setCellValueFactory(new PropertyValueFactory<>("imageLink"));
-        image.setCellFactory(column -> new TableCell<Book, String>() {
-            private final ImageView imageView = new ImageView();
-
+        Task<Image> imageTask = new Task<>() {
             @Override
-            protected void updateItem(String imageLink, boolean empty) {
-                super.updateItem(imageLink, empty);
-                if (empty || imageLink == null || imageLink.isEmpty()) {
-                    setGraphic(null);
-                } else {
-                    Image imageAdd = new Image(imageLink, 70, 70, true, true);
-                    imageView.setImage(imageAdd);
-                    setGraphic(imageView);
-                }
+            protected Image call() {
+                return new Image(book.getImageLink(), 80, 80, true, true, true);
             }
-        });
-        tableOfBook.setOnMouseClicked(event -> {
-            selectedBook = tableOfBook.getSelectionModel().getSelectedItem();
-        });
-        filterSearch.valueProperty().addListener((observable, oldValue, newValue) -> {
-            tableOfBook.getItems().clear();
-        });
+        };
+        imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));
+        new Thread(imageTask).start();
+
+        // Details
+        VBox detailsBox = new VBox(5);
+        detailsBox.getChildren().addAll(
+                new Text("Title: " + book.getTitle()),
+                new Text("Author: " + book.getAuthor()),
+                new Text("Year: " + book.getYear()),
+                new Text("ISBN: " + book.getIsbn())
+        );
+
+        bookBox.getChildren().addAll(imageView, detailsBox);
+        bookBox.setOnMouseClicked(event -> selectedBook = book);
+
+        return bookBox;
     }
 
     @FXML
-    public void AddBookOnAction(ActionEvent actionEvent) throws IOException {
+    public void addBookOnAction(ActionEvent event) {
+        if (selectedBook == null) {
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please select a book to add.");
+            return;
+        }
 
-        if (selectedBook == null || tableOfBook.getSelectionModel().getSelectedItem() == null) {
-            AlertHelper.showAlert(AlertType.ERROR, "Error", "Please enter a search term");
-        } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
-                Parent root = loader.load();
-
-                // Fetch controller of MenuController
-                BookAddController controller = loader.getController();
-                controller.setNewBook(selectedBook); // Transfer Book Information
-
-                // Add root into Pane
-                if (menuController != null) {
-                    menuController.setContent(root);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
+            Parent root = loader.load();
+            BookAddController controller = loader.getController();
+            controller.setNewBook(selectedBook);
+            menuController.setContent(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to load Add Book screen.");
         }
     }
-
 }
