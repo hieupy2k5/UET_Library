@@ -29,7 +29,7 @@ public class BookAPI {
             @Override
             protected ObservableList<Book> call() {
                 String searchQuery = buildSearchQuery(query, filter);
-                String apiResponse = getHttpResponse(API_URL + searchQuery + "&maxResults=1&key=" + ApiKey);
+                String apiResponse = getHttpResponse(API_URL + searchQuery + "&maxResults=40&key=" + ApiKey);
                 return getDocumentFromJson(apiResponse);
             }
         };
