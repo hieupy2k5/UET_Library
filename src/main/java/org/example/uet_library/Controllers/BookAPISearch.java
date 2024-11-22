@@ -1,5 +1,6 @@
 package org.example.uet_library.Controllers;
 
+import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookAPI;
@@ -25,6 +27,8 @@ import java.io.IOException;
 
 public class BookAPISearch {
     public static MenuController menuController;
+
+    private HBox selectedHBox = null;
 
     @FXML
     private TextField queryBook;
@@ -123,7 +127,7 @@ public class BookAPISearch {
         bookBox.setStyle("-fx-padding: 10; -fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5;");
         bookBox.setPrefHeight(100);
 
-        // Lazy-load image
+        // Lazy-load hình ảnh
         ImageView imageView = new ImageView();
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
@@ -137,7 +141,7 @@ public class BookAPISearch {
         imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));
         new Thread(imageTask).start();
 
-        // Details
+        // Chi tiết sách
         VBox detailsBox = new VBox(5);
         detailsBox.getChildren().addAll(
                 new Text("Title: " + book.getTitle()),
@@ -147,7 +151,20 @@ public class BookAPISearch {
         );
 
         bookBox.getChildren().addAll(imageView, detailsBox);
-        bookBox.setOnMouseClicked(event -> selectedBook = book);
+
+
+        bookBox.setOnMouseClicked(event -> {
+
+            if (selectedHBox != null) {
+                selectedHBox.setStyle("-fx-padding: 10; -fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5;");
+            }
+
+            selectedHBox = bookBox;
+            bookBox.setStyle("-fx-padding: 10; -fx-background-color: #ADD8E6; -fx-border-color: #0078D4; -fx-border-radius: 5;");
+
+            selectedBook = book;
+            /
+        });
 
         return bookBox;
     }
