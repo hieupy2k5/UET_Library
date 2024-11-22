@@ -13,11 +13,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/LogIn.fxml"));
         Scene scene = new Scene(loader.load());
 
-        LogInController loginController = loader.getController();
-        loginController.setStage(primaryStage);
+        LogInController logInController = loader.getController();
+        logInController.setStage(primaryStage);
 
         Font.loadFont(
             getClass().getResource("/Fonts/BlackOpsOne-Regular.ttf").toExternalForm(),

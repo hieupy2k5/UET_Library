@@ -2,13 +2,9 @@ package org.example.uet_library.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Platform;
@@ -272,13 +268,14 @@ public class UserHomeController implements Initializable {
 
         Task<Void> loadBooksTask = new Task<>() {
             @Override
-             public Void call() throws Exception {
+            public Void call() throws Exception {
                 for (int i = start; i < end; i++) {
                     Book book = searchBooks.get(i);
                     int tmp = i;
                     Platform.runLater(() -> {
                         try {
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/BookCard.fxml"));
+                            FXMLLoader fxmlLoader = new FXMLLoader(
+                                getClass().getResource("/FXMLs/BookCard.fxml"));
                             VBox cardBox = fxmlLoader.load();
                             BookCardController bookCardController = fxmlLoader.getController();
                             bookCardController.setData(book);
@@ -312,9 +309,8 @@ public class UserHomeController implements Initializable {
 
         progressIndicator.setVisible(true);
         executorService.submit(loadBooksTask);
-        executorService.close();
 
-        // Lưu trang vào cache và trả về
+        // Save page in cache
         pageCache.put(pageIndex, pageBox);
 
         return pageBox;
@@ -341,11 +337,5 @@ public class UserHomeController implements Initializable {
             this.menuController.setContent(sceneStack.pop());
             isPush = true;
         }
-    }
-
-    @Override
-    public void finalize() throws Throwable {
-        super.finalize();
-        executorService.shutdownNow();
     }
 }

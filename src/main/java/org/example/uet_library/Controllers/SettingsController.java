@@ -1,10 +1,8 @@
 package org.example.uet_library.Controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.mysql.cj.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -125,7 +123,7 @@ public class SettingsController {
             PreparedStatement statement = conDB.prepareStatement(query);
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
-            Integer userID = userController.checkLoginCredentials(username, enteredPassword).getKey();
+            Integer userID = userController.checkLogInCredentials(username, enteredPassword).getKey();
 
             if (resultSet.next()) {
                 System.out.println(userID);

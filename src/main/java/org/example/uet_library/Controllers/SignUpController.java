@@ -2,7 +2,6 @@ package org.example.uet_library.Controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -22,7 +21,7 @@ public class SignUpController implements Initializable {
     public TextField lastNameFld;
     public TextField emailFld;
     public Button registerBtn;
-    public Text loginBtn;
+    public Text logInBtn;
     public ChoiceBox<String> choiceBox;
     UserController userController = new UserController();
     private final String[] choices = {"Admin", "User"};

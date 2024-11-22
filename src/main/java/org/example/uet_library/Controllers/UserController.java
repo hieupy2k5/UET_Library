@@ -55,7 +55,7 @@ public class UserController {
      * @return a pair of Integer and Boolean, whereas Integer denotes the ID of the user/admin and
      * Boolean denotes whether the person is admin or not.
      */
-    public Pair<Integer, Boolean> checkLoginCredentials(String username, String password) {
+    public Pair<Integer, Boolean> checkLogInCredentials(String username, String password) {
         String query = """
                 SELECT id, password, 'user' AS user_type FROM users WHERE username = ?
                 UNION
