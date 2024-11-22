@@ -29,7 +29,7 @@ public class BookAPI {
             @Override
             protected ObservableList<Book> call() {
                 String searchQuery = buildSearchQuery(query, filter);
-                String apiResponse = getHttpResponse(API_URL + searchQuery + "&maxResults=40&key=" + ApiKey);
+                String apiResponse = getHttpResponse(API_URL + searchQuery + "&maxResults=1&key=" + ApiKey);
                 return getDocumentFromJson(apiResponse);
             }
         };
@@ -94,7 +94,6 @@ public class BookAPI {
                 for (JsonNode item : items) {
                     Book book = new Book();
                     JsonNode volumeInfo = item.get("volumeInfo");
-                   
                     if (volumeInfo != null) {
                         book.setTitle(volumeInfo.get("title").asText());
 
@@ -152,6 +151,11 @@ public class BookAPI {
                             book.setInfoBookLink(volumeInfo.get("infoLink").asText());
                         }
                         // Add the book to the list
+                        if (volumeInfo.has("categories")) {
+                            book.setType(volumeInfo.get("categories").get(0).asText());
+                        } else {
+                            book.setType("");
+                        }
                         books.add(book);
                     }
                 }
