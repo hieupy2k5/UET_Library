@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.example.uet_library.AlertHelper;
 import org.example.uet_library.SessionManager;
 
@@ -38,8 +39,9 @@ public class LogInController implements Initializable {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         RatingDialogController.userName = username.toLowerCase();
-        Integer userID = userController.checkLoginCredentials(username, password).getKey();
-        Boolean isAdmin = userController.checkLoginCredentials(username, password).getValue();
+        Pair<Integer, Boolean> loginResult = userController.checkLoginCredentials(username, password);
+        Integer userID = loginResult.getKey();
+        Boolean isAdmin = loginResult.getValue();
         if (userID != null && userID != -1) {
             SessionManager.getInstance().setUserId(userID);
             SessionManager.getInstance().setAdmin(isAdmin);
