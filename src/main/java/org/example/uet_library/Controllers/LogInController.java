@@ -1,7 +1,6 @@
 package org.example.uet_library.Controllers;
 
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +25,7 @@ public class LogInController implements Initializable {
     public TextField usernameFld;
     public Text registerBtn;
     public PasswordField passwordFld;
-    public Button loginBtn;
+    public Button logInBtn;
     private UserController userController = new UserController();
 
     private Stage stage;
@@ -39,9 +38,9 @@ public class LogInController implements Initializable {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         RatingDialogController.userName = username.toLowerCase();
-        Pair<Integer, Boolean> loginResult = userController.checkLoginCredentials(username, password);
-        Integer userID = loginResult.getKey();
-        Boolean isAdmin = loginResult.getValue();
+        Pair<Integer, Boolean> logInResult = userController.checkLogInCredentials(username, password);
+        Integer userID = logInResult.getKey();
+        Boolean isAdmin = logInResult.getValue();
         if (userID != null && userID != -1) {
             SessionManager.getInstance().setUserId(userID);
             SessionManager.getInstance().setAdmin(isAdmin);

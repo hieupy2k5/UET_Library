@@ -214,7 +214,7 @@ public class MenuController {
 
     @FXML
     public void handleLogOut() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXMLs/LogIn.fxml"));
         Scene logInScene = new Scene(root);
 
         Stage currentStage = (Stage) button_LogOut.getScene().getWindow();

@@ -33,11 +33,11 @@
       <children>
         <TextField fx:id="usernameFld" layoutX="52.0" layoutY="149.0" prefHeight="25.0" prefWidth="202.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
         <PasswordField fx:id="passwordFld" layoutX="52.0" layoutY="188.0" prefHeight="25.0" prefWidth="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-        <Button fx:id="loginBtn" layoutX="113.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleLogInButton" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #404040; -fx-background-radius: 0px;" text="Log in" textFill="WHITE">
+        <Button fx:id="logInBtn" layoutX="113.0" layoutY="277.0" mnemonicParsing="false" onAction="#handleLogInButton" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #404040; -fx-background-radius: 0px;" text="Log in" textFill="WHITE">
           <cursor>
             <Cursor fx:constant="OPEN_HAND" />
           </cursor></Button>
-        <Text fill="#404040" layoutX="84.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" textAlignment="CENTER" wrappingWidth="137.24869537353516">
+        <Text fill="#404040" layoutX="84.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Log In" textAlignment="CENTER" wrappingWidth="137.24869537353516">
           <font>
             <Font name="Wingdings 3" size="27.0" />
           </font>

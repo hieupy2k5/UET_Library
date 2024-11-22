@@ -29,7 +29,7 @@
             <HBox layoutX="61.0" layoutY="373.0" prefHeight="26.0" prefWidth="182.0" spacing="3.0">
                <children>
                   <Label text="Already have an account?" />
-              <Text fx:id="loginBtn" fill="#0a41ff" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
+              <Text fx:id="logInBtn" fill="#0a41ff" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Log in" underline="true">
                 <cursor>
                   <Cursor fx:constant="HAND" />
                 </cursor>
