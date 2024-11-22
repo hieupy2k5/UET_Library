@@ -62,9 +62,9 @@ public class UserController {
                 SELECT id, password, 'admin' AS user_type FROM admins WHERE username = ?
             """;
 
-        Database connection = new Database();
-        try (Connection conDB = connection.getConnection()) {
-            PreparedStatement statement = conDB.prepareStatement(query);
+        Database db = new Database();
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             statement.setString(2, username);
             ResultSet resultSet = statement.executeQuery();

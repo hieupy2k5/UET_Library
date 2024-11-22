@@ -1,15 +1,15 @@
 package org.example.uet_library;
 
+import java.sql.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.example.uet_library.Controllers.LogInController;
-import org.example.uet_library.Controllers.UserHomeController;
 
 public class App extends Application {
+    Connection connection = new Database().getConnection();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

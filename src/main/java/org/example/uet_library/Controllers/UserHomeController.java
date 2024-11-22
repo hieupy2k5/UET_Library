@@ -1,15 +1,31 @@
 package org.example.uet_library.Controllers;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Stack;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
@@ -17,20 +33,14 @@ import javafx.stage.Stage;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookService;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.ResourceBundle;
-import java.util.Stack;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class UserHomeController implements Initializable {
+
     private static final int ITEMS_PER_PAGE = 8;
     private static final int COLUMNS = 4;
     private static final int ROWS = 1;
     private ObservableList<Book> books;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4); // ThreadPool for background tasks
+    private final ExecutorService executorService = Executors.newFixedThreadPool(
+        4); // ThreadPool for background tasks
 
 
     private Stack<Parent> sceneStack = new Stack<>(); // Storing previous scenes
@@ -76,7 +86,8 @@ public class UserHomeController implements Initializable {
             loadAllBooks();
             setUpSearchPopup();
         });
-        cardLayout.setStyle("-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
+        cardLayout.setStyle(
+            "-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
     }
 
     public void loadAllBooks() {
@@ -102,12 +113,14 @@ public class UserHomeController implements Initializable {
             if (newValue == null || newValue.isEmpty()) {
                 searchPopup.hide();
             } else {
-                Task<ObservableList<Book>> task = BookService.getInstance().fetchBookByTitleOrAuthor(newValue);
+                Task<ObservableList<Book>> task = BookService.getInstance()
+                    .fetchBookByTitleOrAuthor(newValue);
                 task.setOnSucceeded(e -> Platform.runLater(() -> {
                     this.searchBooks = task.getValue();
                     displaySearchResults(searchBooks);
                 }));
-                task.setOnFailed(e -> System.out.println("Error fetching search results: " + task.getException()));
+                task.setOnFailed(e -> System.out.println(
+                    "Error fetching search results: " + task.getException()));
                 executorService.submit(task);
             }
         });
@@ -150,8 +163,10 @@ public class UserHomeController implements Initializable {
         searchPopup.getContent().add(listView);
 
         if (!searchPopup.isShowing()) {
-            double xPosition = searchField.getScene().getWindow().getX() + searchField.getLayoutX() + 210;
-            double yPosition = searchField.getScene().getWindow().getY() + searchField.getLayoutY() + searchField.getHeight() + 20;
+            double xPosition =
+                searchField.getScene().getWindow().getX() + searchField.getLayoutX() + 210;
+            double yPosition = searchField.getScene().getWindow().getY() + searchField.getLayoutY()
+                + searchField.getHeight() + 20;
 
             double padding = 6;
             yPosition += padding;
@@ -180,12 +195,13 @@ public class UserHomeController implements Initializable {
             return;
         }
         Task<Integer> countPage = BookService.getInstance().fetchTotalBook();
-        countPage.setOnSucceeded(event -> Platform.runLater(()-> {
+        countPage.setOnSucceeded(event -> Platform.runLater(() -> {
             int totalBooks = countPage.getValue();
             int pageCount = (int) Math.ceil(totalBooks / (double) ITEMS_PER_PAGE);
             pagina.setPageCount(pageCount);
             pagina.setPageFactory(this::createPage);
-            pagina.setStyle("-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
+            pagina.setStyle(
+                "-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
             progressIndicator.setVisible(false);
         }));
 
@@ -203,7 +219,8 @@ public class UserHomeController implements Initializable {
             books = task.getValue();
             for (Book book : books) {
                 try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/Card.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(
+                        getClass().getResource("/FXMLs/Card.fxml"));
                     HBox cardBox = fxmlLoader.load();
                     CardController cardController = fxmlLoader.getController();
                     cardController.setData(book);
@@ -215,7 +232,8 @@ public class UserHomeController implements Initializable {
             }
             setUpSearchPopup();
         }));
-        task.setOnFailed(e -> System.out.println("Failed to load top 5 books: " + task.getException()));
+        task.setOnFailed(
+            e -> System.out.println("Failed to load top 5 books: " + task.getException()));
         executorService.submit(task);
     }
 
@@ -225,7 +243,8 @@ public class UserHomeController implements Initializable {
         }
 
         VBox pageBox = new VBox();
-        pageBox.setStyle("-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
+        pageBox.setStyle(
+            "-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
 
         GridPane gridPane = new GridPane();
         gridPane.setHgap(25);
@@ -240,7 +259,6 @@ public class UserHomeController implements Initializable {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         pageBox.getChildren().add(scrollPane);
 
-
         int start = pageIndex * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, searchBooks.size());
 
@@ -251,9 +269,10 @@ public class UserHomeController implements Initializable {
             pageCache.put(pageIndex, pageBox);
             return pageBox;
         }
+
         Task<Void> loadBooksTask = new Task<>() {
             @Override
-            protected Void call() throws Exception {
+             public Void call() throws Exception {
                 for (int i = start; i < end; i++) {
                     Book book = searchBooks.get(i);
                     int tmp = i;
@@ -275,7 +294,6 @@ public class UserHomeController implements Initializable {
                         }
                     });
 
-                    Thread.sleep(20);
                 }
                 return null;
             }
@@ -294,9 +312,11 @@ public class UserHomeController implements Initializable {
 
         progressIndicator.setVisible(true);
         executorService.submit(loadBooksTask);
+        executorService.close();
 
         // Lưu trang vào cache và trả về
         pageCache.put(pageIndex, pageBox);
+
         return pageBox;
     }
 

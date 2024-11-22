@@ -49,7 +49,7 @@ public class BookCardController {
         if (url == null || url.equals("")) {
             image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
         } else {
-            image = new Image(url);
+            image = new Image(url, true);
         }
         ImageBook.setImage(image);
         bookTitle.setText(book.getTitle());
