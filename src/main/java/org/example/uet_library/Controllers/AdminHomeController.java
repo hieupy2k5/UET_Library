@@ -153,7 +153,13 @@ public class AdminHomeController {
                 for(int i = 0; i < bookTop6.size(); i++) {
                     Book book = bookTop6.get(i);
                     String title = book.getTitle();
-                    Image image = new Image(book.getImageUrl());
+                    String imageUrl = book.getImageUrl();
+                    Image image;
+                    if (imageUrl == null || imageUrl.isEmpty()) {
+                        image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+                    } else {
+                         image = new Image(book.getImageUrl());
+                    }
                     switch (i) {
                         case 0:
                             imageTop1.setImage(image);

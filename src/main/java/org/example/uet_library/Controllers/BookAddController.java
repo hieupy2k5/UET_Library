@@ -1,5 +1,6 @@
 package org.example.uet_library.Controllers;
 
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +22,20 @@ import org.example.uet_library.Book;
 public class BookAddController {
     private MenuController menuController = BookAPISearch.menuController;
     private Book newBook;
+    private ObservableList<Book> bookListToBack;
+    private int pageIndex = 0;
 
     public void setMenuControllerForAddManager(MenuController menuController) {
         this.menuController = menuController;
     }
+
+    private BookAPISearch bookAPISearch;
+
+    public void setBookAPISearch(BookAPISearch bookAPISearch) {
+        this.bookAPISearch = bookAPISearch;
+    }
+
+
     public void setNewBook(Book newBook) {
         this.newBook = newBook;
         if (newBook != null) {
@@ -139,11 +150,10 @@ public class BookAddController {
         }
     }
 
-    public void saveBookTask(Book book) {
+    public void saveBookTask(Book book) throws IOException {
         Task<Void> task = BookService.getInstance().addBook(book);
 
         task.setOnSucceeded(event->{
-
         });
 
         task.setOnFailed(event -> {
@@ -151,16 +161,10 @@ public class BookAddController {
         });
 
         task.setOnRunning(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAPISearch.fxml"));
-            Parent root = null;
             try {
-                root = loader.load();
+                BookAPISearch.setBack();
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-            menuController = BookAPISearch.menuController;
-            if (menuController != null) {
-                menuController.setContent(root);
             }
         });
         new Thread(task).start();
@@ -195,26 +199,9 @@ public class BookAddController {
 
     @FXML
     public void BackOnAction(ActionEvent event) throws IOException {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAPISearch.fxml"));
-            Parent root = loader.load();
-            menuController = BookAPISearch.menuController;
-            if (menuController != null) {
-                menuController.setContent(root);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (this.bookAPISearch != null) {
+            BookAPISearch.setBack();
         }
     }
 
-   /* private void setQRcode(Book book) {
-        Task<Void> qrCodeGenerator = BookService.getInstance().bookQRGenerator(book, book.getIsbn());
-        qrCodeGenerator.setOnSucceeded(event->{
-           System.out.println("Successfully generated QR code");
-        });
-        qrCodeGenerator.setOnFailed(event->{
-            System.err.println("Failed to generate QR code");
-        });
-        new Thread(qrCodeGenerator).start();
-    }*/
 }

@@ -1,5 +1,6 @@
 package org.example.uet_library.Controllers;
 
+import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,13 +23,15 @@ import javafx.util.Duration;
 import org.example.uet_library.AlertHelper;
 import org.example.uet_library.Book;
 import org.example.uet_library.BookAPI;
-
+import java.util.Stack;
 import java.io.IOException;
 
 public class BookAPISearch {
     public static MenuController menuController;
-
+    private int currentPage = 0;
     private HBox selectedHBox = null;
+
+    private static Stack<Parent> stageStack = new Stack<>();
 
     @FXML
     private TextField queryBook;
@@ -99,6 +102,7 @@ public class BookAPISearch {
      * @return the page we control with pagination
      */
     private ScrollPane createPage(int pageIndex) {
+        this.currentPage = pageIndex;
         VBox pageBox = new VBox(10);
         int start = pageIndex * BOOKS_PER_PAGE;
         int end = Math.min(start + BOOKS_PER_PAGE, allBooks.size());
@@ -176,14 +180,22 @@ public class BookAPISearch {
         }
 
         try {
+            stageStack.push(this.menuController.getContent());
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
             Parent root = loader.load();
             BookAddController controller = loader.getController();
+            controller.setBookAPISearch(this);
             controller.setNewBook(selectedBook);
             menuController.setContent(root);
         } catch (IOException e) {
             e.printStackTrace();
             AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to load Add Book screen.");
+        }
+    }
+
+    public static void setBack() throws IOException {
+        if(!stageStack.isEmpty()) {
+            menuController.setContent(stageStack.pop());
         }
     }
 }
