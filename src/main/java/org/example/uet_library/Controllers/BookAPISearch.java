@@ -31,7 +31,7 @@ public class BookAPISearch {
     private int currentPage = 0;
     private HBox selectedHBox = null;
 
-    private static Stack<Parent> stageStack = new Stack<>();
+    private static Parent pageCache;
 
     @FXML
     private TextField queryBook;
@@ -180,7 +180,7 @@ public class BookAPISearch {
         }
 
         try {
-            stageStack.push(this.menuController.getContent());
+            pageCache = menuController.getContent();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/BookAdd.fxml"));
             Parent root = loader.load();
             BookAddController controller = loader.getController();
@@ -194,8 +194,8 @@ public class BookAPISearch {
     }
 
     public static void setBack() throws IOException {
-        if(!stageStack.isEmpty()) {
-            menuController.setContent(stageStack.pop());
+        if(!(pageCache == null)) {
+            menuController.setContent(pageCache);
         }
     }
 }

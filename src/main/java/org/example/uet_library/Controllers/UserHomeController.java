@@ -40,6 +40,7 @@ public class UserHomeController implements Initializable {
 
 
     private Stack<Parent> sceneStack = new Stack<>(); // Storing previous scenes
+
     private Stage stage;
 
     @FXML
