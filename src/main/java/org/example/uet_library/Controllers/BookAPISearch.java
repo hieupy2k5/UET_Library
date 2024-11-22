@@ -163,7 +163,6 @@ public class BookAPISearch {
             bookBox.setStyle("-fx-padding: 10; -fx-background-color: #ADD8E6; -fx-border-color: #0078D4; -fx-border-radius: 5;");
 
             selectedBook = book;
-            /
         });
 
         return bookBox;
