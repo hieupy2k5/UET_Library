@@ -1,5 +1,7 @@
 package org.example.uet_library.Controllers;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -33,6 +35,8 @@ public class MyRequestsController {
     private ObservableList<Request> myRequestsList;
     @FXML
     private TableColumn<Request, Void> informationColumn;
+
+    private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
 
     public void initialize() {
@@ -78,21 +82,30 @@ public class MyRequestsController {
                     authorLabel.setText(request.getAuthor());
                     setGraphic(hbox);
 
-                    Task<Image> loadImageTask = new Task<>() {
-                        @Override
-                        protected Image call() {
-                            return new Image(request.getImageUrl(), true);
-                        }
-                    };
+                    String imageUrl = request.getImageUrl();
+                    if (imageCache.containsKey(imageUrl)) {
+                        imageView.setImage(imageCache.get(imageUrl));
+                    } else {
+                        Task<Image> loadImageTask = new Task<>() {
+                            @Override
+                            protected Image call() {
+                                return new Image(request.getImageUrl(), true);
+                            }
+                        };
 
-                    loadImageTask.setOnSucceeded(
-                        event -> imageView.setImage(loadImageTask.getValue()));
-                    loadImageTask.setOnFailed(event -> {
+                        loadImageTask.setOnSucceeded(
+                            event -> {
+                                Image img = loadImageTask.getValue();
+                                imageCache.put(imageUrl, img);
+                                imageView.setImage(loadImageTask.getValue());
+                            });
+                        loadImageTask.setOnFailed(event -> {
 //                        System.err.println(
 //                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                    });
+                        });
 
-                    new Thread(loadImageTask).start();
+                        new Thread(loadImageTask).start();
+                    }
                 }
             }
         });

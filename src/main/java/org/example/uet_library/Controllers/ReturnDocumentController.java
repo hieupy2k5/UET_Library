@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -49,6 +51,8 @@ public class ReturnDocumentController {
     @FXML
     private TableColumn<Borrow, Void> informationColumn;
 
+    private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
+
     private Borrow borrowSelected;
 
     private void setupInformation() {
@@ -84,21 +88,30 @@ public class ReturnDocumentController {
                     authorLabel.setText(borrow.getAuthor());
                     setGraphic(hbox);
 
-                    Task<Image> loadImageTask = new Task<>() {
-                        @Override
-                        protected Image call() {
-                            return new Image(borrow.getImageUrl(), true);
-                        }
-                    };
+                    String imageUrl = borrow.getImageUrl();
+                    if (imageCache.containsKey(imageUrl)) {
+                        imageView.setImage(imageCache.get(imageUrl));
+                    } else {
+                        Task<Image> loadImageTask = new Task<>() {
+                            @Override
+                            protected Image call() {
+                                return new Image(borrow.getImageUrl(), true);
+                            }
+                        };
 
-                    loadImageTask.setOnSucceeded(
-                        event -> imageView.setImage(loadImageTask.getValue()));
-                    loadImageTask.setOnFailed(event -> {
+                        loadImageTask.setOnSucceeded(
+                            event -> {
+                                Image img = loadImageTask.getValue();
+                                imageCache.put(imageUrl, img);
+                                imageView.setImage(loadImageTask.getValue());
+                            });
+                        loadImageTask.setOnFailed(event -> {
 //                        System.err.println(
 //                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                    });
+                        });
 
-                    new Thread(loadImageTask).start();
+                        new Thread(loadImageTask).start();
+                    }
                 }
             }
         });
