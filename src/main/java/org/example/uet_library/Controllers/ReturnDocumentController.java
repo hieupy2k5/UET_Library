@@ -204,7 +204,7 @@ public class ReturnDocumentController {
                     Borrow selectedBook = getTableView().getItems().get(getIndex());
                     Integer q = selectedBook.getQuantity();
 
-                    if (selectedBook.getReturnDate() != null) {
+                    if (!selectedBook.getReturnDate().equals("N/A")) {
                         AlertHelper.showAlert(AlertType.ERROR, "Already returned",
                             String.format("You have already returned it"));
                     } else {
@@ -236,7 +236,7 @@ public class ReturnDocumentController {
                     }
 
                     // Only show the rating button if the book has been returned
-                    ratingBook.setVisible(borrowSelected.getReturnDate().equals("N/A"));
+                    ratingBook.setVisible(!borrowSelected.getReturnDate().equals("N/A"));
                 }
             }
         });

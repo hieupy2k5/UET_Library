@@ -1,6 +1,8 @@
 package org.example.uet_library.Controllers;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -82,6 +84,8 @@ public class BorrowDocumentController {
     private ObservableMap<Book, Integer> selectedBooksMap = SharedData.getInstance()
         .getSelectedBooksMap();
 
+    private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
+
     public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
@@ -159,21 +163,30 @@ public class BorrowDocumentController {
                     authorLabel.setText(book.getAuthor());
                     setGraphic(hbox);
 
-                    Task<Image> loadImageTask = new Task<>() {
-                        @Override
-                        protected Image call() {
-                            return new Image(book.getImageUrl(), true);
-                        }
-                    };
+                    String imageUrl = book.getImageUrl();
+                    if (imageCache.containsKey(imageUrl)) {
+                        imageView.setImage(imageCache.get(imageUrl));
+                    } else {
+                        Task<Image> loadImageTask = new Task<>() {
+                            @Override
+                            protected Image call() {
+                                return new Image(book.getImageUrl(), true);
+                            }
+                        };
 
-                    loadImageTask.setOnSucceeded(
-                        event -> imageView.setImage(loadImageTask.getValue()));
-                    loadImageTask.setOnFailed(event -> {
+                        loadImageTask.setOnSucceeded(
+                            event -> {
+                                Image img = loadImageTask.getValue();
+                                imageCache.put(imageUrl, img);
+                                imageView.setImage(loadImageTask.getValue());
+                            });
+                        loadImageTask.setOnFailed(event -> {
 //                        System.err.println(
 //                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                    });
+                        });
 
-                    new Thread(loadImageTask).start();
+                        new Thread(loadImageTask).start();
+                    }
                 }
             }
         });

@@ -53,6 +53,7 @@ public class BookAPISearch {
     @FXML
     public void initialize() {
         filterSearch.setItems(FXCollections.observableArrayList("Title", "Author", "ISBN"));
+        filterSearch.setValue("Title");
     }
 
     @FXML
