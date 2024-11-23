@@ -278,7 +278,6 @@ public class BorrowDocumentController {
                             if (BookService.getInstance().isFavorite(selectedBook)) {
                                 BookService.getInstance().removeBookFromFavoritesByBookIDAndUserID(selectedBook);
 
-                                // Cập nhật giao diện và hiển thị thông báo
                                 Platform.runLater(() -> {
                                     updateFavorImage(favorOffImage);
                                     showAlertInUI(AlertType.INFORMATION, "Successfully Removed",
@@ -287,7 +286,6 @@ public class BorrowDocumentController {
                             } else {
                                 BookService.getInstance().addBookToFavorites(selectedBook);
 
-                                // Cập nhật giao diện và hiển thị thông báo
                                 Platform.runLater(() -> {
                                     updateFavorImage(favorOnImage);
                                     showAlertInUI(AlertType.INFORMATION, "Successfully Added",

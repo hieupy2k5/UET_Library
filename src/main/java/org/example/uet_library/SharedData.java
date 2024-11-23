@@ -1,5 +1,6 @@
 package org.example.uet_library;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
@@ -25,12 +26,11 @@ public class SharedData {
     public void addToCart(Book book) {
         if (!selectedBooksMap.containsKey(book)) {
             selectedBooksMap.put(book, 1);
-            AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Book added to cart successfully",
-                    String.format("You have added %s to your cart.", book.getTitle()));
+            Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Book added to cart successfully",
+                    String.format("You have added %s to your cart.", book.getTitle())));
         } else {
-            AlertHelper.showAlert(Alert.AlertType.WARNING, "Book already in cart",
-                    "The selected book is already in your cart.");
+            Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.WARNING, "Book already in cart",
+                    "The selected book is already in your cart."));
         }
     }
-
 }
