@@ -195,11 +195,12 @@ public class RatingDialogController {
             protected Void call() throws Exception {
                 Database db = new Database();
                 try(Connection con = db.getConnection()) {
-                    String sql = "Update Ratings SET comment = ?, rating = ? WHERE User_name = ? ";
+                    String sql = "Update Ratings SET comment = ?, rating = ? WHERE User_name = ? AND isbn = ?";
                     PreparedStatement ps = con.prepareStatement(sql);
                     ps.setString(1, commentField.getText());
                     ps.setInt(2, rating);
                     ps.setString(3, userName);
+                    ps.setString(4, borrow.getIsbn());
                     ps.executeUpdate();
                 } catch (Exception e) {
                     e.printStackTrace();
