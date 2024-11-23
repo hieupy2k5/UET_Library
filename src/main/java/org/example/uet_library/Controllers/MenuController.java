@@ -90,6 +90,9 @@ public class MenuController {
 
             button_MyRequests.setVisible(false);
             button_MyRequests.setManaged(false);
+
+            button_MyFavorite.setVisible(false);
+            button_MyFavorite.setManaged(false);
         } else {
             button_AddBook.setVisible(false);
             button_AddBook.setManaged(false);

@@ -17,16 +17,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.BookService;
-import org.example.uet_library.Request;
+import javafx.scene.layout.VBox;
+import org.example.uet_library.*;
 
 public class UserRequestsController {
 
     public TableView<Request> tableView;
     public TableColumn<Request, String> usernameColumn;
-    public TableColumn<Request, String> titleColumn;
-    public TableColumn<Request, String> authorColumn;
+    public TableColumn<Request, Void> informationColumn;
     public TableColumn<Request, String> statusColumn;
     public TableColumn<Request, Void> actionColumn;
     public ProgressIndicator waitProgress;
@@ -36,12 +34,59 @@ public class UserRequestsController {
     public void initialize() {
         tableView.setPlaceholder(new Label("There is no request here..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
 
+        setupInformation();
         fetchFromDB();
+    }
+
+    private void setupInformation() {
+        informationColumn.setText("Document Information");
+        informationColumn.setCellFactory(column -> new TableCell<>() {
+            private final HBox hbox = new HBox();
+            private final VBox vbox = new VBox();
+            private final ImageView imageView = new ImageView();
+            private final Label titleLabel = new Label();
+            private final Label authorLabel = new Label();
+
+            {
+                vbox.getChildren().addAll(titleLabel, authorLabel);
+                vbox.setSpacing(5);
+                hbox.setSpacing(15);
+                hbox.getChildren().addAll(imageView, vbox);
+
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                authorLabel.setStyle("-fx-font-style: italic;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null) {
+                    setGraphic(null);
+                } else {
+                    Request request = getTableView().getItems().get(getIndex());
+                    titleLabel.setText(request.getTitle());
+                    authorLabel.setText(request.getAuthor());
+                    setGraphic(hbox);
+
+                    Task<Image> loadImageTask = new Task<>() {
+                        @Override
+                        protected Image call() {
+                            return new Image(request.getImageUrl(), true);
+                        }
+                    };
+
+                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
+                    loadImageTask.setOnFailed(event -> imageView.setImage(null));
+
+                    new Thread(loadImageTask).start();
+                }
+            }
+        });
     }
 
     private void fetchFromDB() {

@@ -12,8 +12,7 @@
       <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0">
          <columns>
             <TableColumn fx:id="usernameColumn" editable="false" prefWidth="186.0" text="Username" />
-            <TableColumn fx:id="titleColumn" editable="false" minWidth="0.0" prefWidth="305.47084045410156" text="Title" />
-            <TableColumn fx:id="authorColumn" editable="false" minWidth="0.0" prefWidth="191.02914428710938" text="Author" />
+            <TableColumn fx:id="informationColumn" editable="false" minWidth="0.0" prefWidth="500" text="Document" />
             <TableColumn fx:id="statusColumn" editable="false" minWidth="0.0" prefWidth="149.15667724609375" text="Status" />
             <TableColumn fx:id="actionColumn" editable="false" prefWidth="128.77850341796875" sortable="false" text="Options" />
          </columns>
