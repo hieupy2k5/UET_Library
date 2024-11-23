@@ -215,6 +215,24 @@
                     <Insets left="5.0" />
                   </VBox.margin>
                 </Button>
+                        <Button fx:id="button_MyFavorite" alignment="BASELINE_LEFT" layoutX="15.0" layoutY="562.0" mnemonicParsing="false" onAction="#loadMyFavorites" prefHeight="57.0" prefWidth="190.0" styleClass="Button" stylesheets="@../Styles/Menu.css" text="My Favorites" textAlignment="CENTER" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Images/list.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="5.0" />
+                           </VBox.margin>
+                        </Button>
               </children>
             </VBox>
             <Button fx:id="button_Settings" layoutX="30.0" layoutY="717.0" mnemonicParsing="false" onAction="#loadSettingsView" prefHeight="40.0" prefWidth="140.0" styleClass="OtherButton" stylesheets="@../Styles/Menu.css" text="Settings" textAlignment="JUSTIFY" textFill="WHITE">

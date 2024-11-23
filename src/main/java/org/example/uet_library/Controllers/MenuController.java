@@ -23,6 +23,8 @@ public class MenuController {
 
     @FXML
     public Button button_UserRequests;
+    @FXML
+    public Button button_MyFavorite;
 
     private boolean isAdmin;
     private Stage primaryStage;
@@ -151,6 +153,9 @@ public class MenuController {
     public void loadUserRequests(ActionEvent actionEvent) {
         loadView("/FXMLs/UserRequests.fxml");
     }
+
+    @FXML
+    public void loadMyFavorites(ActionEvent actionEvent) { loadView("/FXMLs/UserFavorites.fxml"); }
 
     @FXML
     public void loadBookAPISearchView() {
