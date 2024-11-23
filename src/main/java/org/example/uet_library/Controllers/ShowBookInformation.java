@@ -1,26 +1,20 @@
 package org.example.uet_library.Controllers;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import org.example.uet_library.*;
 import javafx.scene.text.Text;
 
@@ -30,8 +24,8 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 public class ShowBookInformation {
-    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/star.png").toExternalForm(),20,20,false, true);
-    private final Image STAR_FILL = new Image(getClass().getResource("/Images/star_color.png").toExternalForm(),20,20,false, true);
+    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/favor1.png").toExternalForm(),40,40,false, true);
+    private final Image STAR_FILL = new Image(getClass().getResource("/Images/favor2.png").toExternalForm(),40,40,false, true);
 
     private boolean checkFetchback = false;
 
@@ -61,6 +55,9 @@ public class ShowBookInformation {
 
     @FXML
     private VBox commentBook;
+
+    @FXML
+    private ImageView Favor;
 
     private ObservableList<Book> recommendBooks;
 
@@ -132,6 +129,7 @@ public class ShowBookInformation {
         qrCode = book.getqrCode();
         ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
         this.qrCode.setImage(new Image(bis));
+        checkIfFavorite();
         fetchBookForRecommendBook();
         setCommentBook();
     }
@@ -248,6 +246,64 @@ public class ShowBookInformation {
         showAllFeedBack = !showAllFeedBack;
         displayFeedBack(showAllFeedBack);
         showAllButton.setText(showAllFeedBack ? "Show Less" : "Show All");
+    }
+
+    private boolean checkIfFavorite() {
+        try {
+            Database db = new Database();
+            try (Connection conn = db.getConnection()) {
+                String checkQuery = "SELECT COUNT(*) FROM favors WHERE user_id = ? AND book_id = ?";
+                PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+                checkStmt.setInt(1, SessionManager.getInstance().getUserId());
+                checkStmt.setString(2, bookCurrent.getIsbn());
+
+                ResultSet rs = checkStmt.executeQuery();
+                rs.next();
+                boolean isFavorite = rs.getInt(1) > 0;
+
+                if (isFavorite) {
+                    Favor.setImage(STAR_FILL);
+                } else {
+                    Favor.setImage(STAR_NOT_FILL);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    @FXML
+    public void handleHeartIcon() {
+        try {
+            Database db = new Database();
+            try (Connection conn = db.getConnection()) {
+                if (checkIfFavorite()) {
+                    String deleteQuery = "DELETE FROM favors WHERE user_id = ? AND book_id = ?";
+                    PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+                    deleteStmt.setInt(1, SessionManager.getInstance().getUserId());
+                    deleteStmt.setString(2, bookCurrent.getIsbn());
+                    deleteStmt.executeUpdate();
+
+                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Removed",
+                            "You have removed \"" + bookCurrent.getTitle()
+                                    + "\" from your favorites.");
+                } else {
+                    String insertQuery = "INSERT INTO favors (user_id, book_id) VALUES (?, ?)";
+                    PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
+                    insertStmt.setInt(1, SessionManager.getInstance().getUserId());
+                    insertStmt.setString(2, bookCurrent.getIsbn());
+                    insertStmt.executeUpdate();
+                    
+                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Added",
+                            "The book \"" + bookCurrent.getTitle()
+                                    + "\" has been added to your favorites.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
