@@ -868,5 +868,117 @@ public class BookService {
         };
     }
 
+    public Task<ObservableList<Favor>> fetchFavorFromDB() {
+        return new Task<>() {
+            @Override
+            protected ObservableList<Favor> call() throws Exception {
+                ObservableList<Favor> favorList = FXCollections.observableArrayList();
+                Database connection = new Database();
+                int userID = SessionManager.getInstance().getUserId();
+                try (Connection conDB = connection.getConnection()) {
+                    String query =
+                            "SELECT favors.*, books.title, books.author, books.category, books.image_url " +
+                                    "FROM favors " +
+                                    "JOIN books ON favors.book_id = books.ISBN " +
+                                    "WHERE favors.user_id = ?";
+                    PreparedStatement preparedStatement = conDB.prepareStatement(query);
+                    preparedStatement.setInt(1, userID);
+
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        int favorID = resultSet.getInt("id");
+                        String isbn = resultSet.getString("book_id");
+                        String title = resultSet.getString("title");
+                        String author = resultSet.getString("author");
+                        String category = resultSet.getString("category");
+                        String image = resultSet.getString("image_url");
+
+                        Favor favor = new Favor(favorID, isbn, title, author, category, image);
+                        favorList.add(favor);
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error fetching favor from database: " + e.getMessage());
+                    throw new Exception("Database query failed", e);
+                }
+
+                return favorList;
+            }
+        };
+    }
+
+    public boolean addBookToFavorites(Book book) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String insertQuery = "INSERT INTO favors (user_id, book_id, title, author, image_url) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(insertQuery);
+            stmt.setInt(1, SessionManager.getInstance().getUserId());
+            stmt.setString(2, book.getIsbn());
+            stmt.setString(3, book.getTitle());
+            stmt.setString(4, book.getAuthor());
+            stmt.setString(5, book.getImageUrl());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean isFavorite(Book book) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+             String query = "SELECT 1 FROM favors WHERE user_id = ? AND book_id = ?";
+             PreparedStatement stmt = conn.prepareStatement(query);
+
+            int userId = SessionManager.getInstance().getUserId();
+
+            stmt.setInt(1, userId);
+            stmt.setString(2, book.getIsbn());
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                return resultSet.next();
+            }
+        } catch (Exception e) {
+            System.err.println("Error in isFavorite(Book book): " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean removeBookFromFavoritesByID(int favorId) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String deleteQuery = "DELETE FROM favors WHERE id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+            deleteStmt.setInt(1, favorId);
+
+            int rowsAffected = deleteStmt.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeBookFromFavoritesByBookIDAndUserID(Book book) {
+        Database dbConnection = new Database();
+        try (Connection conn = dbConnection.getConnection()) {
+            String deleteQuery = "DELETE FROM favors WHERE user_id = ? AND book_id = ?";
+            PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+
+            int userId = SessionManager.getInstance().getUserId();
+            deleteStmt.setInt(1, userId);
+            deleteStmt.setString(2, book.getIsbn());
+
+            int rowsAffected = deleteStmt.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
