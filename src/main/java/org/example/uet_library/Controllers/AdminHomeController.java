@@ -156,9 +156,9 @@ public class AdminHomeController {
                     String imageUrl = book.getImageUrl();
                     Image image;
                     if (imageUrl == null || imageUrl.isEmpty()) {
-                        image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+                        image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm(), true);
                     } else {
-                         image = new Image(book.getImageUrl());
+                         image = new Image(book.getImageUrl(), true);
                     }
                     switch (i) {
                         case 0:

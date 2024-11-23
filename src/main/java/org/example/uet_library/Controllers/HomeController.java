@@ -77,7 +77,4 @@ public class HomeController implements Initializable {
             System.out.println("Searching for " + searchText + " in category " + searchCategory);
         }
     }
-
-
-
 }
