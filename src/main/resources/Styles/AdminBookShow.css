@@ -10,9 +10,6 @@
     -fx-background-color: #651FFF;
     -fx-background-radius:14;
     -fx-background-insets: 0 0 10 0;
-
-
-
 }
 .table-view .column-header, .table-view .filler{
     -fx-size:50px;
