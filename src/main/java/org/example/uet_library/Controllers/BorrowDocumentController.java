@@ -1,6 +1,5 @@
 package org.example.uet_library.Controllers;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.animation.TranslateTransition;
@@ -106,7 +105,8 @@ public class BorrowDocumentController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books in fetchFromDB() (BorrowDocumentController.java): " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() (BorrowDocumentController.java): "
+                    + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 
@@ -221,13 +221,15 @@ public class BorrowDocumentController {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button borrowButton = new Button();
             private final Button favoriteButton = new Button();
-            private final Image favorOnImage = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm());
-            private final Image favorOffImage = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm());
+            private final Image favorOnImage = new Image(
+                getClass().getResource("/Images/Favor2.png").toExternalForm());
+            private final Image favorOffImage = new Image(
+                getClass().getResource("/Images/Favor1.png").toExternalForm());
             private final ImageView favorImageView = new ImageView();
 
             {
                 Image borrowImage = new Image(
-                        getClass().getResource("/Images/insertToCart.png").toExternalForm());
+                    getClass().getResource("/Images/insertToCart.png").toExternalForm());
                 ImageView borrowImageView = new ImageView(borrowImage);
                 borrowImageView.setFitWidth(16);
                 borrowImageView.setFitHeight(16);
@@ -236,31 +238,7 @@ public class BorrowDocumentController {
 
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
-                    Task<Void> borrowTask = new Task<>() {
-                        @Override
-                        protected Void call() {
-                            if (BookService.getInstance().isBookInRequest(selectedBook.getIsbn())) {
-                                showAlertInUI(AlertType.ERROR, "Book already in request list",
-                                        "Please check \"My Requests\" tab to see your request for this book.");
-                                return null;
-                            }
-                            if (BookService.getInstance().isBookInBorrowed(selectedBook.getIsbn())) {
-                                showAlertInUI(AlertType.ERROR,
-                                        "You are already borrowing this book",
-                                        "To borrow this book again, please return it first.");
-                                return null;
-                            }
-                            int quantityInStock = selectedBook.getQuantity();
-                            if (quantityInStock > 0) {
-                                SharedData.getInstance().addToCart(selectedBook);
-                            } else {
-                                showAlertInUI(AlertType.ERROR, "Insufficient amount of books",
-                                        "We have ran out of stock for this book. Please try again later!");
-                            }
-                            return null;
-                        }
-                    };
-                    new Thread(borrowTask).start();
+                    SharedData.getInstance().addToCart(selectedBook);
                 });
 
                 favorImageView.setFitWidth(16);
@@ -276,20 +254,23 @@ public class BorrowDocumentController {
                             String bookTitle = selectedBook.getTitle(); // Lấy tên sách
 
                             if (BookService.getInstance().isFavorite(selectedBook)) {
-                                BookService.getInstance().removeBookFromFavoritesByBookIDAndUserID(selectedBook);
+                                BookService.getInstance()
+                                    .removeBookFromFavoritesByBookIDAndUserID(selectedBook);
 
                                 Platform.runLater(() -> {
                                     updateFavorImage(favorOffImage);
-                                    showAlertInUI(AlertType.INFORMATION, "Successfully Removed",
-                                            "You have removed \"" + bookTitle + "\" from your favorites.");
+                                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Removed",
+                                        "You have removed \"" + bookTitle
+                                            + "\" from your favorites.");
                                 });
                             } else {
                                 BookService.getInstance().addBookToFavorites(selectedBook);
 
                                 Platform.runLater(() -> {
                                     updateFavorImage(favorOnImage);
-                                    showAlertInUI(AlertType.INFORMATION, "Successfully Added",
-                                            "The book \"" + bookTitle + "\" has been added to your favorites.");
+                                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Added",
+                                        "The book \"" + bookTitle
+                                            + "\" has been added to your favorites.");
                                 });
                             }
                             return null;
@@ -330,13 +311,8 @@ public class BorrowDocumentController {
             private void updateFavorImage(Image image) {
                 Platform.runLater(() -> favorImageView.setImage(image));
             }
-
-            private void showAlertInUI(AlertType type, String title, String content) {
-                Platform.runLater(() -> AlertHelper.showAlert(type, title, content));
-            }
         });
     }
-
 
 
     private void updateSelectedBooksTable() {
