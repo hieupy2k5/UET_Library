@@ -1,5 +1,6 @@
 package org.example.uet_library.services;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,7 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -986,5 +991,30 @@ public class BookService {
             return false;
         }
     }
+
+    public Set<String> fetchFavoriteBooksByUserID(int userID) {
+        Set<String> favoriteBooks = new HashSet<>();
+        String query = "SELECT book_id FROM favors WHERE user_id = ?";
+        Database dbConnection = new Database();
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, userID);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    favoriteBooks.add(resultSet.getString("book_id"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching favorite books: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return favoriteBooks;
+    }
+
+
 
 }

@@ -1,6 +1,6 @@
 package org.example.uet_library.Controllers;
 
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -80,6 +80,9 @@ public class BorrowDocumentController {
     @FXML
     private AnchorPane slidingPane;
 
+    private List<String> favoriteBooks = new ArrayList<>();
+
+
     private ObservableMap<Book, Integer> selectedBooksMap = SharedData.getInstance()
         .getSelectedBooksMap();
 
@@ -98,8 +101,9 @@ public class BorrowDocumentController {
             books = task.getValue();
             tableView.setItems(books);
             waitProgress.setVisible(false);
+            loadFavouriteBooks();
             setupSearch();
-            setupBorrowButton();
+            setupOptionButton();
             setupInformation();
         }));
 
@@ -217,89 +221,69 @@ public class BorrowDocumentController {
         tableView.setItems(sortedData);
     }
 
-    private void setupBorrowButton() {
+    private void loadFavouriteBooks() {
+        Task<Set<String>> favoriteTask = new Task<>() {
+            @Override
+            protected Set<String> call() {
+                int userID = SessionManager.getInstance().getUserId();
+                return BookService.getInstance().fetchFavoriteBooksByUserID(userID);
+            }
+        };
+
+        favoriteTask.setOnSucceeded(event -> {
+            favoriteBooks.clear();
+            favoriteBooks.addAll(favoriteTask.getValue());
+            tableView.refresh();
+        });
+
+        favoriteTask.setOnFailed(event -> {
+            System.err.println("Failed to load favorite books: " + favoriteTask.getException().getMessage());
+        });
+
+        new Thread(favoriteTask).start();
+    }
+
+    private void setupOptionButton() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button borrowButton = new Button();
             private final Button favoriteButton = new Button();
-            private final Image favorOnImage = new Image(
-                getClass().getResource("/Images/Favor2.png").toExternalForm());
-            private final Image favorOffImage = new Image(
-                getClass().getResource("/Images/Favor1.png").toExternalForm());
+            private final Image favorOnImage = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm());
+            private final Image favorOffImage = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm());
             private final ImageView favorImageView = new ImageView();
 
             {
-                Image borrowImage = new Image(
-                    getClass().getResource("/Images/insertToCart.png").toExternalForm());
+                // Set up borrowButton
+                Image borrowImage = new Image(getClass().getResource("/Images/insertToCart.png").toExternalForm());
                 ImageView borrowImageView = new ImageView(borrowImage);
                 borrowImageView.setFitWidth(16);
                 borrowImageView.setFitHeight(16);
                 borrowButton.setGraphic(borrowImageView);
                 borrowButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-
                 borrowButton.setOnAction(event -> {
                     Book selectedBook = getTableView().getItems().get(getIndex());
                     SharedData.getInstance().addToCart(selectedBook);
                 });
 
+                // Set up favoriteButton
                 favorImageView.setFitWidth(16);
                 favorImageView.setFitHeight(16);
                 favoriteButton.setGraphic(favorImageView);
                 favoriteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                favoriteButton.setOnAction(event -> toggleFavorite());
 
-                favoriteButton.setOnAction(event -> {
-                    Book selectedBook = getTableView().getItems().get(getIndex());
-                    Task<Void> favoriteTask = new Task<>() {
-                        @Override
-                        protected Void call() {
-                            String bookTitle = selectedBook.getTitle(); // Lấy tên sách
-
-                            if (BookService.getInstance().isFavorite(selectedBook)) {
-                                BookService.getInstance()
-                                    .removeBookFromFavoritesByBookIDAndUserID(selectedBook);
-
-                                Platform.runLater(() -> {
-                                    updateFavorImage(favorOffImage);
-                                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Removed",
-                                        "You have removed \"" + bookTitle
-                                            + "\" from your favorites.");
-                                });
-                            } else {
-                                BookService.getInstance().addBookToFavorites(selectedBook);
-
-                                Platform.runLater(() -> {
-                                    updateFavorImage(favorOnImage);
-                                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Added",
-                                        "The book \"" + bookTitle
-                                            + "\" has been added to your favorites.");
-                                });
-                            }
-                            return null;
-                        }
-
-                    };
-                    new Thread(favoriteTask).start();
-                });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty || getTableRow() == null) {
                     setGraphic(null);
                 } else {
                     Book currentBook = getTableView().getItems().get(getIndex());
-                    Task<Void> checkFavoriteTask = new Task<>() {
-                        @Override
-                        protected Void call() {
-                            if (BookService.getInstance().isFavorite(currentBook)) {
-                                updateFavorImage(favorOnImage);
-                            } else {
-                                updateFavorImage(favorOffImage);
-                            }
-                            return null;
-                        }
-                    };
-                    new Thread(checkFavoriteTask).start();
+                    boolean isFavorite = favoriteBooks.contains(currentBook.getIsbn());
+
+                    updateFavorImage(isFavorite ? favorOnImage : favorOffImage);
 
                     HBox hbox = new HBox(borrowButton, favoriteButton);
                     hbox.setSpacing(10);
@@ -308,10 +292,53 @@ public class BorrowDocumentController {
                 }
             }
 
+            private void toggleFavorite() {
+                Book selectedBook = getTableView().getItems().get(getIndex());
+                String isbn = selectedBook.getIsbn();
+                boolean isCurrentlyFavorite = favoriteBooks.contains(isbn);
+
+                Task<Void> favoriteTask = new Task<>() {
+                    @Override
+                    protected Void call() {
+                        String bookTitle = selectedBook.getTitle();
+                        if (isCurrentlyFavorite) {
+                            BookService.getInstance().removeBookFromFavoritesByBookIDAndUserID(selectedBook);
+                            favoriteBooks.remove(isbn);
+                            Platform.runLater(() -> {
+
+                                AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Removed",
+                                        "You have removed \"" + bookTitle + "\" from your favorites.");
+                            });
+                        } else {
+                            BookService.getInstance().addBookToFavorites(selectedBook);
+                            favoriteBooks.add(isbn);
+                            Platform.runLater(() -> {
+                                AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Added",
+                                        "The book \"" + bookTitle + "\" has been added to your favorites.");
+                            });
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void succeeded() {
+                        updateFavorImage(isCurrentlyFavorite ? favorOffImage : favorOnImage);
+                    }
+
+                    @Override
+                    protected void failed() {
+                        AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to update favorite status.");
+                    }
+                };
+
+                new Thread(favoriteTask).start();
+            }
+
             private void updateFavorImage(Image image) {
                 Platform.runLater(() -> favorImageView.setImage(image));
             }
         });
+
     }
 
 

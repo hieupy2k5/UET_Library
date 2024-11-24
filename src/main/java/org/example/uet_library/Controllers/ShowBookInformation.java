@@ -293,13 +293,14 @@ public class ShowBookInformation {
                     deleteStmt.setInt(1, SessionManager.getInstance().getUserId());
                     deleteStmt.setString(2, bookCurrent.getIsbn());
                     deleteStmt.executeUpdate();
+                    Favor.setImage(STAR_NOT_FILL);
 
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Removed",
                             "You have removed \"" + bookCurrent.getTitle()
                                     + "\" from your favorites.");
                 } else {
                     BookService.getInstance().addBookToFavorites(bookCurrent);
-
+                    Favor.setImage(STAR_FILL);
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Added",
                             "The book \"" + bookCurrent.getTitle()
                                     + "\" has been added to your favorites.");
