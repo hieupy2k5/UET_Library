@@ -2,7 +2,7 @@
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #94C3FC, #E1C2FC);
     -fx-border-width: 2px 2px 2px 2px;
     -fx-border-style: solid;
-    -fx-border-color: linear-gradient(from 0% 0% to 100% 100%, #C1E3FF, #ABC7FF);
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100%, #C1E3FF, #563A9C);
 }
 
 .Button {
@@ -62,4 +62,8 @@
     -fx-border-style: solid;
     -fx-border-color: #333A56;
     -fx-text-alignment: right;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #EECC8C, #E8B298, #BDD1C5);
 }

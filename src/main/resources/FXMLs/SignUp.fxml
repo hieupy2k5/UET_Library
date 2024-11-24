@@ -13,58 +13,61 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.SignUpController">
-  <right>
-    <AnchorPane prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-      <children>
-        <Text fill="#404040" layoutX="30.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registration" textAlignment="CENTER" wrappingWidth="244.24869537353516">
-          <font>
-            <Font name="Wingdings 3" size="27.0" />
-          </font>
-        </Text>
-        <Button fx:id="registerBtn" layoutX="114.0" layoutY="335.0" mnemonicParsing="false" onAction="#handleSignUpButton" prefHeight="32.0" prefWidth="76.0" style="-fx-background-color: #404040; -fx-background-radius: 0px;" text="Submit" textFill="WHITE">
-          <cursor>
-            <Cursor fx:constant="HAND" />
-          </cursor></Button>
-            <HBox layoutX="61.0" layoutY="373.0" prefHeight="26.0" prefWidth="182.0" spacing="3.0">
-               <children>
-                  <Label text="Already have an account?" />
-              <Text fx:id="logInBtn" fill="#0a41ff" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Log in" underline="true">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="trans" stylesheets="@../Styles/login.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.SignUpController">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+          <AnchorPane layoutX="57.0" layoutY="43.0" prefHeight="434.0" prefWidth="267.0">
+            <children>
+              <Text fill="#404040" layoutX="21.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registration" textAlignment="CENTER" wrappingWidth="244.24869537353516">
+                <font>
+                  <Font name="Wingdings 3" size="27.0" />
+                </font>
+              </Text>
+              <Button fx:id="registerBtn" layoutX="105.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleSignUpButton" prefHeight="32.0" prefWidth="76.0" stylesheets="@../Styles/login.css" text="Submit" textFill="WHITE">
                 <cursor>
                   <Cursor fx:constant="HAND" />
                 </cursor>
+                  </Button>
+                  <HBox layoutX="61.0" layoutY="373.0" prefHeight="26.0" prefWidth="182.0" spacing="3.0">
+                     <children>
+                        <Label text="Already have an account?" />
+                    <Text fx:id="logInBtn" fill="#0a41ff" onMouseClicked="#handleLogInButton" strokeType="OUTSIDE" strokeWidth="0.0" text="Log in" underline="true">
+                      <cursor>
+                        <Cursor fx:constant="HAND" />
+                      </cursor>
+                    </Text>
+                     </children>
+                  </HBox>
+                  <VBox alignment="CENTER" layoutX="10.0" layoutY="41.0" prefHeight="230.0" prefWidth="266.0" spacing="10.0">
+                     <children>
+                    <TextField fx:id="usernameFld" prefHeight="25.0" prefWidth="266.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                    <TextField fx:id="firstNameFld" prefHeight="25.0" prefWidth="202.0" promptText="First Name" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                    <TextField fx:id="lastNameFld" prefHeight="25.0" prefWidth="202.0" promptText="Last Name" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                    <PasswordField fx:id="passwordFld" prefHeight="25.0" prefWidth="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                    <PasswordField fx:id="confirmPasswordFld" prefHeight="0.0" prefWidth="266.0" promptText="Confirm Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                    <TextField fx:id="emailFld" prefHeight="25.0" prefWidth="202.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
+                        <Label text="Choose your account type:" />
+                        <ChoiceBox fx:id="choiceBox" prefHeight="9.0" prefWidth="71.0" />
+                     </children>
+                  </VBox>
+            </children>
+          </AnchorPane>
+          <AnchorPane layoutX="347.0" layoutY="34.0" prefHeight="407.0" prefWidth="329.0" styleClass="login-form" stylesheets="@../Styles/login.css">
+            <children>
+              <Text fill="WHITE" layoutX="26.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Library" textAlignment="CENTER" wrappingWidth="263.51171875">
+                <font>
+                  <Font name="System Bold" size="54.0" />
+                </font>
               </Text>
-               </children>
-            </HBox>
-            <VBox alignment="CENTER" layoutX="19.0" layoutY="46.0" prefHeight="230.0" prefWidth="266.0" spacing="10.0">
-               <children>
-              <TextField fx:id="usernameFld" prefHeight="25.0" prefWidth="266.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-              <TextField fx:id="firstNameFld" prefHeight="25.0" prefWidth="202.0" promptText="First Name" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-              <TextField fx:id="lastNameFld" prefHeight="25.0" prefWidth="202.0" promptText="Last Name" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-              <PasswordField fx:id="passwordFld" prefHeight="25.0" prefWidth="202.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-              <PasswordField fx:id="confirmPasswordFld" prefHeight="0.0" prefWidth="266.0" promptText="Confirm Password" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-              <TextField fx:id="emailFld" prefHeight="25.0" prefWidth="202.0" promptText="Email" style="-fx-background-color: transparent; -fx-border-color: #404040; -fx-border-width: 0px 0px 2px 0px;" />
-                  <Label text="Choose your account type:" />
-                  <ChoiceBox fx:id="choiceBox" prefHeight="9.0" prefWidth="71.0" />
-               </children>
-            </VBox>
-      </children>
-    </AnchorPane>
-  </right>
-   <center>
-    <AnchorPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-color: #404040;" BorderPane.alignment="CENTER">
-      <children>
-        <Text fill="WHITE" layoutX="24.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Library" textAlignment="CENTER" wrappingWidth="263.51171875">
-          <font>
-            <Font name="System Bold" size="54.0" />
-          </font>
-        </Text>
-        <Text fill="WHITE" layoutX="97.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An OOP project" textAlignment="CENTER">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Text>
-      </children>
-    </AnchorPane>
+              <Text fill="WHITE" layoutX="95.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An OOP project" textAlignment="CENTER">
+                <font>
+                  <Font size="18.0" />
+                </font>
+              </Text>
+            </children>
+          </AnchorPane>
+         </children>
+      </AnchorPane>
    </center>
 </BorderPane>

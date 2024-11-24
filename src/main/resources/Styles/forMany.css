@@ -2,11 +2,11 @@
     -fx-cursor:hand ;
 }
 .table-view {
-    -fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #FFBB94, #DC586D, #A33757);
+    -fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);
     -fx-background-radius:14;
 }
 .table-view .column-header-background{
-    -fx-background-color:  #4C1D3D;
+    -fx-background-color: #7EA1FF;
     -fx-border-radius:14;
     -fx-background-radius:14;
     -fx-background-insets: 0 0 10 0;
@@ -22,7 +22,7 @@
 }
 
 .table-row-cell {
-    -fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #FFBB94, #DC586D, #A33757);
+    -fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);
     -fx-font-family: Alata;
     -fx-border-color: #BFC4E2;
     -fx-border-width: 0 0 1 0;
@@ -38,20 +38,14 @@
     -fx-border-color: transparent;
 }
 
-.ancho {
-    -fx-border-radius: 50 0 0 100;
-    -fx-background-radius: 50 0 0 100;
-}
-
-.borrow-button {
-    -fx-background-color: #ffbb94;
+.button{
+    -fx-background-color: #C3C7F4;
     -fx-border-width: 1px;
     -fx-border-style: solid;
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
 }
 
-.borrow-button:hover {
-    -fx-background-color: #4C1D3D;
-    -fx-text-fill: white;
+.button:hover{
+    -fx-background-color: #FFBB94;
 }

@@ -10,6 +10,7 @@
 .searchButton:hover {
     -fx-background-color: #EAA08E;
     -fx-border-radius: 15 15 15 15;
+    -fx-background-radius: 15 15 15 15;
 }
 
 .searchButton {
@@ -34,8 +35,4 @@
 
 .choice-box:hover {
     -fx-background-color: #3cb371;
-}
-
-.table-view .table-row-cell {
-    -fx-background-color: pink; /* Thay đổi thành màu hồng mong muốn */
 }

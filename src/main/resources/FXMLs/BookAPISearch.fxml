@@ -62,12 +62,12 @@
             <children>
 
                 <!-- Pagination to handle book pages -->
-                <Pagination fx:id="pagination" prefHeight="581.0" prefWidth="895.0" />
+                <Pagination fx:id="pagination" prefHeight="561.0" prefWidth="895.0" />
       
               <!-- Add Book Button at the bottom -->
               <AnchorPane prefHeight="67.0" prefWidth="895.0">
                   <children>
-                      <Button layoutX="272.0" layoutY="11.0" mnemonicParsing="false" onAction="#addBookOnAction" prefHeight="51.0" prefWidth="329.0" styleClass="button_add" stylesheets="@../Styles/BookAPI.css" text=" Add this book">
+                      <Button layoutX="283.0" layoutY="10.0" mnemonicParsing="false" onAction="#addBookOnAction" prefHeight="51.0" prefWidth="329.0" styleClass="button_add" stylesheets="@../Styles/BookAPI.css" text=" Add this book">
                           <font>
                               <Font name="Alata Regular" size="18.0" />
                           </font>

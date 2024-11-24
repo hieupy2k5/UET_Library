@@ -247,7 +247,8 @@ public class UserHomeController implements Initializable {
         gridPane.setHgap(25);
         gridPane.setVgap(15);
         gridPane.setPadding(new Insets(10));
-        gridPane.setStyle("-fx-background-color: transparent;");
+        gridPane.setStyle(
+                "-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
 
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setPrefWidth(960);

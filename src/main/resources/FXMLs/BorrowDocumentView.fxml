@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
+<AnchorPane fx:id="root" prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BorrowDocumentController">
   <children>
-    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0" styleClass="table" stylesheets="@../Styles/table.css">
+      <ImageView fitHeight="40.0" fitWidth="48.0" layoutX="726.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/search_gradient.png" />
+         </image>
+      </ImageView>
+    <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0" stylesheets="@../Styles/forMany.css">
       <columns>
         <TableColumn fx:id="informationColumn" editable="false" prefWidth="347.0" text="Document Information" />
         <TableColumn fx:id="yearColumn" editable="false" minWidth="0.0" prefWidth="79.0" text="Year" />
@@ -17,19 +28,19 @@
         <TableColumn fx:id="actionColumn" editable="false" prefWidth="94.0" sortable="false" style="-fx-alignment: center;" text="Options" />
       </columns>
     </TableView>
-      <AnchorPane fx:id="slidingPane" layoutX="80.0" prefHeight="840.0" prefWidth="400.0" style="-fx-background-color: #505050;">
+      <AnchorPane fx:id="slidingPane" layoutX="80.0" prefHeight="840.0" prefWidth="400.0" style="-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #FFBB94, #DC586D, #A33757);" styleClass="ancho" stylesheets="@../Styles/table.css">
          <children>
             <Label contentDisplay="CENTER" layoutX="86.0" layoutY="60.0" text="Document Cart" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Button layoutX="173.0" layoutY="746.0" mnemonicParsing="false" onAction="#requestAllBook" text="Borrow">
+            <Button layoutX="173.0" layoutY="746.0" mnemonicParsing="false" onAction="#requestAllBook" prefHeight="34.0" prefWidth="74.0" styleClass="borrow-button" stylesheets="@../Styles/table.css" text="Borrow">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TableView fx:id="selectedBooksTable" layoutY="128.0" prefHeight="600.0" prefWidth="400.0">
+            <TableView fx:id="selectedBooksTable" layoutY="128.0" prefHeight="600.0" prefWidth="400.0" stylesheets="@../Styles/table.css">
                <columns>
                   <TableColumn fx:id="detailColumn" prefWidth="256.0" text="Detail" />
                   <TableColumn fx:id="quantityBorrowedColumn" prefWidth="110.0" style="-fx-alignment: center;" text="Quantity" />
@@ -37,9 +48,8 @@
             </TableView>
          </children>
       </AnchorPane>
-    <Button layoutX="750.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
     <ProgressIndicator fx:id="waitProgress" layoutX="444.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" rotate="45.0" />
-    <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="652.0" />
+    <TextField fx:id="searchField" layoutX="58.0" layoutY="15.0" prefHeight="27.0" prefWidth="652.0" />
       <Button layoutX="850.0" layoutY="12.0" mnemonicParsing="false" onAction="#cartButtonClicked" style="-fx-background-color: transparent;">
          <cursor>
             <Cursor fx:constant="HAND" />

@@ -2,6 +2,7 @@ package org.example.uet_library.Controllers;
 
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class BookAPISearch {
     public static MenuController menuController;
     private int currentPage = 0;
+
     private HBox selectedHBox = null;
 
     private static Parent pageCache;
@@ -47,7 +49,9 @@ public class BookAPISearch {
     private Pagination pagination;
 
     private static final int BOOKS_PER_PAGE = 10;
+
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
+
     private Book selectedBook;
 
     @FXML
@@ -129,9 +133,9 @@ public class BookAPISearch {
      */
     private HBox createBookBox(Book book) {
         HBox bookBox = new HBox(10);
-        bookBox.setStyle("-fx-padding: 10; -fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5;");
+        bookBox.setStyle("-fx-padding: 10; -fx-background-color: #E7F5DC; -fx-border-color: #728156; -fx-border-radius: 5px;");
         bookBox.setPrefHeight(100);
-
+        bookBox.setPrefWidth(870);
         // Lazy-load hình ảnh
         ImageView imageView = new ImageView();
         imageView.setFitHeight(80);
@@ -161,7 +165,7 @@ public class BookAPISearch {
         bookBox.setOnMouseClicked(event -> {
 
             if (selectedHBox != null) {
-                selectedHBox.setStyle("-fx-padding: 10; -fx-background-color: #FFFFFF; -fx-border-color: #CCCCCC; -fx-border-radius: 5;");
+                selectedHBox.setStyle("-fx-padding: 10; -fx-background-color: #E7F5DC; -fx-border-color: #728156; -fx-border-radius: 5px;");
             }
 
             selectedHBox = bookBox;

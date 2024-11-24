@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="900.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.FavorBookController">
+<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.FavorBookController">
     <children>
-        <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0">
+        <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0" stylesheets="@../Styles/forMany.css">
             <columns>
                 <TableColumn fx:id="informationColumn" editable="false" prefWidth="304.0" text="Document" />
                 <TableColumn fx:id="categoryColumn" editable="false" prefWidth="182.0" text="Category" />
                 <TableColumn fx:id="optionColumn" text="Options" />
             </columns>
         </TableView>
-        <Button layoutX="830.0" layoutY="15.0" mnemonicParsing="false" text="Search" />
         <ProgressIndicator fx:id="waitProgress" layoutX="444.0" layoutY="400.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="92.0" prefWidth="91.0" progress="-1" rotate="45.0" />
         <TextField fx:id="searchField" layoutX="50.0" layoutY="15.0" prefHeight="27.0" prefWidth="720.0" />
+      <ImageView fitHeight="45.0" fitWidth="46.0" layoutX="789.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Images/search_gradient.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
