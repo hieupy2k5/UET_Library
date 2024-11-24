@@ -1,6 +1,5 @@
 package org.example.uet_library.services;
 
-import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -841,7 +839,7 @@ public class BookService {
                         String imageUrl = resultSet.getString("image_url");
                         Book book = new Book();
                         book.setTitle(title);
-                        book.setImageLink(imageUrl);
+                        book.setImageUrl(imageUrl);
                         bookList.add(book);
                     }
                 } catch (SQLException e) {

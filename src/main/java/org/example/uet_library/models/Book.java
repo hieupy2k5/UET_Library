@@ -5,7 +5,7 @@ public class Book implements TableItem {
     private String title;
     private String author;
     private String isbn;
-    private String imageLink;
+    private String imageUrl;
     private int year;
     private int quantity;
     private String type;
@@ -38,12 +38,12 @@ public class Book implements TableItem {
         return type;
     }
 
-    public Book(String title, String author, String isbn, String imageLink, int year, String type,
+    public Book(String title, String author, String isbn, String imageUrl, int year, String type,
         String infoBookLink, String description) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.imageLink = imageLink;
+        this.imageUrl = imageUrl;
         this.year = year;
         this.type = type;
         this.quantity = 0;
@@ -52,12 +52,12 @@ public class Book implements TableItem {
         this.description = description;
     }
 
-    public Book(String title, String author, String isbn, String imageLink, int year, String type,
+    public Book(String title, String author, String isbn, String imageUrl, int year, String type,
         int quantity) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.imageLink = imageLink;
+        this.imageUrl = imageUrl;
         this.year = year;
         this.type = type;
         this.quantity = quantity;
@@ -96,15 +96,11 @@ public class Book implements TableItem {
     }
 
     public String getImageUrl() {
-        return imageLink;
+        return imageUrl;
     }
 
-    public String getImageLink() {
-        return imageLink;
-    }
-
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public int getYear() {
@@ -125,7 +121,7 @@ public class Book implements TableItem {
             "Title: " + title + "\n" +
             "Author: " + author + "\n" +
             "ISBN: " + isbn + "\n" +
-            "Image Link: " + imageLink + "\n" +
+            "Image Link: " + imageUrl + "\n" +
             "Year: " + year + "\n" +
             "Quantity: " + quantity + "\n" +
             "Type: " + type;

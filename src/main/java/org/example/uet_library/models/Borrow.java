@@ -3,30 +3,29 @@ package org.example.uet_library.models;
 public class Borrow implements TableItem {
 
     private int id;
-    private String user_id;
-    private String book_id;
+    private String bookId;
     private int quantity;
-    private String borrow_date;
-    private String return_date;
+    private String borrowDate;
+    private String returnDate;
     private String status;
     private String title;
     private String author;
     private String category;
-    private String image_url;
+    private String imageUrl;
     private boolean isRate = false;
 
-    public Borrow(int id, String book_id, String title, String author, String category, int quantity, String borrow_date,
-        String return_date, String status, String image_url) {
+    public Borrow(int id, String bookId, String title, String author, String category, int quantity, String borrowDate,
+        String returnDate, String status, String imageUrl) {
         this.id = id;
-        this.book_id = book_id;
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.category = category;
         this.quantity = quantity;
-        this.borrow_date = borrow_date;
-        this.return_date = return_date;
+        this.borrowDate = borrowDate;
+        this.returnDate = returnDate;
         this.status = status;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -50,17 +49,17 @@ public class Borrow implements TableItem {
     }
 
     public String getIsbn() {
-        return book_id;
+        return bookId;
     }
 
-    public String getImageUrl() { return image_url; }
+    public String getImageUrl() { return imageUrl; }
 
     public String getBorrowDate() {
-        return borrow_date;
+        return borrowDate;
     }
 
     public String getReturnDate() {
-        return return_date;
+        return returnDate;
     }
 
     public String getStatus() {

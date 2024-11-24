@@ -135,7 +135,7 @@ public class MyRequestsController extends TableViewController<Request> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
                     if ("accepted".equals(selectedRequest.getStatus())) {
                         BookService.getInstance()
-                            .userBorrowBook(selectedRequest.getId(), selectedRequest.getBook_id());
+                            .userBorrowBook(selectedRequest.getId(), selectedRequest.getBookId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Successful",
                             String.format("You have successfully borrowed the book %s",

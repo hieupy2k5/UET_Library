@@ -9,7 +9,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -131,8 +130,8 @@ public class UserRequestsController extends TableViewController<Request> {
                     Integer quantityInStock = BookService.getInstance()
                         .bookQuantityForRequest(selectedRequest.getId());
                     if (quantityInStock > 0) {
-                        BookService.getInstance().adminAcceptRequest(selectedRequest.getUser_id(),
-                            selectedRequest.getBook_id());
+                        BookService.getInstance().adminAcceptRequest(selectedRequest.getUserId(),
+                            selectedRequest.getBookId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION,
                             "Successfully accepted request",
@@ -155,8 +154,8 @@ public class UserRequestsController extends TableViewController<Request> {
 
                 declineButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
-                    BookService.getInstance().adminDeclineRequest(selectedRequest.getUser_id(),
-                        selectedRequest.getBook_id());
+                    BookService.getInstance().adminDeclineRequest(selectedRequest.getUserId(),
+                        selectedRequest.getBookId());
                     fetchFromDB();
                     AlertHelper.showAlert(AlertType.INFORMATION, "Successfully declined request",
                         String.format(

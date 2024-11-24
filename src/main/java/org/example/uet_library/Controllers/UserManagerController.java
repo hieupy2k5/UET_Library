@@ -62,8 +62,8 @@ public class UserManagerController {
             if (newValue == null || newValue.isEmpty()) return true;
             String lowerCaseFilter = newValue.toLowerCase();
             return user.getUsername().toLowerCase().contains(lowerCaseFilter) ||
-                    user.getFirst_name().toLowerCase().contains(lowerCaseFilter) ||
-                    user.getLast_name().toLowerCase().contains(lowerCaseFilter) ||
+                    user.getFirstName().toLowerCase().contains(lowerCaseFilter) ||
+                    user.getLastName().toLowerCase().contains(lowerCaseFilter) ||
                     user.getEmail().toLowerCase().contains(lowerCaseFilter);
         }));
         SortedList<User> sortedData = new SortedList<>(filteredData);
@@ -104,8 +104,8 @@ public class UserManagerController {
         grid.setVgap(10);
         grid.setHgap(10);
         TextField userNameField = createTextField(user.getUsername(), "Enter Username");
-        TextField firstNameField = createTextField(user.getFirst_name(), "Enter First Name");
-        TextField lastNameField = createTextField(user.getLast_name(), "Enter Last Name");
+        TextField firstNameField = createTextField(user.getFirstName(), "Enter First Name");
+        TextField lastNameField = createTextField(user.getLastName(), "Enter Last Name");
         TextField emailField = createTextField(user.getEmail(), "Enter Email");
         grid.addRow(0, userNameField);
         grid.addRow(1, firstNameField);

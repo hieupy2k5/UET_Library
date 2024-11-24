@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -139,7 +138,7 @@ public class BookAPI {
                         // Handle image link (if available)
                         String imageLink = volumeInfo.has("imageLinks") && volumeInfo.get("imageLinks").has("thumbnail")
                                 ? volumeInfo.get("imageLinks").get("thumbnail").asText() : "";
-                        book.setImageLink(imageLink);
+                        book.setImageUrl(imageLink);
                         if (volumeInfo.has("infoLink")) {
                             book.setInfoBookLink(volumeInfo.get("infoLink").asText());
                         }

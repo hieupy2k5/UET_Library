@@ -2,45 +2,45 @@ package org.example.uet_library.models;
 
 public class Request implements TableItem {
     private int id;
-    private int user_id;
-    private String book_id;
+    private int userId;
+    private String bookId;
     private String username;
     private String title;
     private String author;
     private String status;
-    private String image_url;
+    private String imageUrl;
 
-    public Request(int id, String book_id, String title, String author, String status, String image_url) {
+    public Request(int id, String bookId, String title, String author, String status, String imageUrl) {
         this.id = id;
-        this.book_id = book_id;
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.status = status;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
     }
 
-    public Request(int id, int user_id, String book_id, String username, String title,
-        String author, String status, String image_url) {
+    public Request(int id, int userId, String bookId, String username, String title,
+        String author, String status, String imageUrl) {
         this.id = id;
-        this.user_id = user_id;
-        this.book_id = book_id;
+        this.userId = userId;
+        this.bookId = bookId;
         this.username = username;
         this.title = title;
         this.author = author;
         this.status = status;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public String getBook_id() {
-        return book_id;
+    public String getBookId() {
+        return bookId;
     }
 
     public String getUsername() {
@@ -52,7 +52,7 @@ public class Request implements TableItem {
     }
 
     public String getImageUrl() {
-        return image_url;
+        return imageUrl;
     }
 
     public String getAuthor() {
