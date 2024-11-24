@@ -1,6 +1,9 @@
 package org.example.uet_library.Controllers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -26,16 +29,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
 /**
  * This is a feature for users.
  */
-public class BorrowDocumentController {
+public class BorrowDocumentController extends TableViewController<Book> {
 
     @FXML
     public TableView<Map.Entry<Book, Integer>> selectedBooksTable;
@@ -88,7 +91,7 @@ public class BorrowDocumentController {
 
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
-    public void fetchFromDB() {
+    private void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
         // Bind progress indicator to task status
@@ -104,7 +107,7 @@ public class BorrowDocumentController {
             loadFavouriteBooks();
             setupSearch();
             setupOptionButton();
-            setupInformation();
+            super.setUpInformation();
         }));
 
         task.setOnFailed(event -> Platform.runLater(() -> {
@@ -134,66 +137,9 @@ public class BorrowDocumentController {
         selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void setupInformation() {
-        informationColumn.setText("Document Information");
-        informationColumn.setCellFactory(column -> new TableCell<>() {
-            private final HBox hbox = new HBox();
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                vbox.getChildren().addAll(titleLabel, authorLabel);
-                vbox.setSpacing(5);
-                hbox.setSpacing(15);
-                hbox.getChildren().addAll(imageView, vbox);
-
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null) {
-                    setGraphic(null);
-                } else {
-                    Book book = getTableView().getItems().get(getIndex());
-
-                    titleLabel.setText(book.getTitle());
-                    authorLabel.setText(book.getAuthor());
-                    setGraphic(hbox);
-
-                    String imageUrl = book.getImageUrl();
-                    if (imageCache.containsKey(imageUrl)) {
-                        imageView.setImage(imageCache.get(imageUrl));
-                    } else {
-                        Task<Image> loadImageTask = new Task<>() {
-                            @Override
-                            protected Image call() {
-                                return new Image(book.getImageUrl(), true);
-                            }
-                        };
-
-                        loadImageTask.setOnSucceeded(
-                            event -> {
-                                Image img = loadImageTask.getValue();
-                                imageCache.put(imageUrl, img);
-                                imageView.setImage(loadImageTask.getValue());
-                            });
-                        loadImageTask.setOnFailed(event -> {
-//                        System.err.println(
-//                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                        });
-
-                        new Thread(loadImageTask).start();
-                    }
-                }
-            }
-        });
+    @Override
+    TableColumn<Book, Void> getInformationColumn() {
+        return this.informationColumn;
     }
 
     private void setupSearch() {
@@ -237,7 +183,8 @@ public class BorrowDocumentController {
         });
 
         favoriteTask.setOnFailed(event -> {
-            System.err.println("Failed to load favorite books: " + favoriteTask.getException().getMessage());
+            System.err.println(
+                "Failed to load favorite books: " + favoriteTask.getException().getMessage());
         });
 
         new Thread(favoriteTask).start();
@@ -247,13 +194,16 @@ public class BorrowDocumentController {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button borrowButton = new Button();
             private final Button favoriteButton = new Button();
-            private final Image favorOnImage = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm());
-            private final Image favorOffImage = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm());
+            private final Image favorOnImage = new Image(
+                getClass().getResource("/Images/Favor2.png").toExternalForm());
+            private final Image favorOffImage = new Image(
+                getClass().getResource("/Images/Favor1.png").toExternalForm());
             private final ImageView favorImageView = new ImageView();
 
             {
                 // Set up borrowButton
-                Image borrowImage = new Image(getClass().getResource("/Images/insertToCart.png").toExternalForm());
+                Image borrowImage = new Image(
+                    getClass().getResource("/Images/insertToCart.png").toExternalForm());
                 ImageView borrowImageView = new ImageView(borrowImage);
                 borrowImageView.setFitWidth(16);
                 borrowImageView.setFitHeight(16);
@@ -302,19 +252,21 @@ public class BorrowDocumentController {
                     protected Void call() {
                         String bookTitle = selectedBook.getTitle();
                         if (isCurrentlyFavorite) {
-                            BookService.getInstance().removeBookFromFavoritesByBookIDAndUserID(selectedBook);
+                            BookService.getInstance()
+                                .removeBookFromFavoritesByBookIDAndUserID(selectedBook);
                             favoriteBooks.remove(isbn);
                             Platform.runLater(() -> {
 
                                 AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Removed",
-                                        "You have removed \"" + bookTitle + "\" from your favorites.");
+                                    "You have removed \"" + bookTitle + "\" from your favorites.");
                             });
                         } else {
                             BookService.getInstance().addBookToFavorites(selectedBook);
                             favoriteBooks.add(isbn);
                             Platform.runLater(() -> {
                                 AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Added",
-                                        "The book \"" + bookTitle + "\" has been added to your favorites.");
+                                    "The book \"" + bookTitle
+                                        + "\" has been added to your favorites.");
                             });
                         }
                         return null;
@@ -327,7 +279,8 @@ public class BorrowDocumentController {
 
                     @Override
                     protected void failed() {
-                        AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to update favorite status.");
+                        AlertHelper.showAlert(AlertType.ERROR, "Error",
+                            "Failed to update favorite status.");
                     }
                 };
 

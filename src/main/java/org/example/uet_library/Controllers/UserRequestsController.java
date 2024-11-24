@@ -19,12 +19,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import org.example.uet_library.models.Request;
 import org.example.uet_library.services.BookService;
 import org.example.uet_library.utilities.AlertHelper;
 
-public class UserRequestsController {
+public class UserRequestsController extends TableViewController<Request> {
 
     public TableView<Request> tableView;
     public TableColumn<Request, String> usernameColumn;
@@ -43,67 +42,15 @@ public class UserRequestsController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
 
-        setupInformation();
+        super.setUpInformation();
         fetchFromDB();
     }
 
-    private void setupInformation() {
-        informationColumn.setText("Document Information");
-        informationColumn.setCellFactory(column -> new TableCell<>() {
-            private final HBox hbox = new HBox();
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                vbox.getChildren().addAll(titleLabel, authorLabel);
-                vbox.setSpacing(5);
-                hbox.setSpacing(15);
-                hbox.getChildren().addAll(imageView, vbox);
-
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null) {
-                    setGraphic(null);
-                } else {
-                    Request request = getTableView().getItems().get(getIndex());
-                    titleLabel.setText(request.getTitle());
-                    authorLabel.setText(request.getAuthor());
-                    setGraphic(hbox);
-
-                    String imageUrl = request.getImageUrl();
-                    if (imageCache.containsKey(imageUrl)) {
-                        imageView.setImage(imageCache.get(imageUrl));
-                    } else {
-                        Task<Image> loadImageTask = new Task<>() {
-                            @Override
-                            protected Image call() {
-                                return new Image(request.getImageUrl(), true);
-                            }
-                        };
-
-                        loadImageTask.setOnSucceeded(
-                            event -> {
-                                Image img = loadImageTask.getValue();
-                                imageCache.put(imageUrl, img);
-                                imageView.setImage(loadImageTask.getValue());
-                            });
-                        loadImageTask.setOnFailed(event -> imageView.setImage(null));
-
-                        new Thread(loadImageTask).start();
-                    }
-                }
-            }
-        });
+    @Override
+    TableColumn<Request, Void> getInformationColumn() {
+        return this.informationColumn;
     }
+
 
     private void fetchFromDB() {
         Task<ObservableList<Request>> task = BookService.getInstance().fetchUserRequestFromDB();
@@ -124,7 +71,8 @@ public class UserRequestsController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books in fetchFromDB() (UserRequestsController.java): " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() (UserRequestsController.java): "
+                    + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 
@@ -187,7 +135,8 @@ public class UserRequestsController {
                                 "You have granted permission for this user to borrow the book %s",
                                 selectedRequest.getTitle()));
                     } else {
-                        AlertHelper.showAlert(AlertType.ERROR, "Cannot approve request", "We have ran out of copies for this book in stock.");
+                        AlertHelper.showAlert(AlertType.ERROR, "Cannot approve request",
+                            "We have ran out of copies for this book in stock.");
                     }
                 });
 

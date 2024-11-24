@@ -1,6 +1,6 @@
 package org.example.uet_library.models;
 
-public class Favor {
+public class Favor implements TableItem {
     private int id;
     private String user_id;
     private String book_id;

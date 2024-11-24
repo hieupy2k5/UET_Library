@@ -6,16 +6,24 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import org.example.uet_library.services.BookService;
 import org.example.uet_library.models.Favor;
+import org.example.uet_library.services.BookService;
 
-public class FavorBookController {
+public class FavorBookController extends TableViewController<Favor> {
+
     public TextField searchField;
     public TableView<Favor> tableView;
     public TableColumn<Favor, String> categoryColumn;
@@ -31,7 +39,7 @@ public class FavorBookController {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         waitProgress.setVisible(true);
 
-        setupInformation();
+        super.setUpInformation();
         setupOptionColumn();
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -41,52 +49,9 @@ public class FavorBookController {
         Platform.runLater(() -> tableView.refresh());
     }
 
-    private void setupInformation() {
-        informationColumn.setText("Document Information");
-        informationColumn.setCellFactory(column -> new TableCell<>() {
-            private final HBox hbox = new HBox();
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                vbox.getChildren().addAll(titleLabel, authorLabel);
-                vbox.setSpacing(5);
-                hbox.setSpacing(15);
-                hbox.getChildren().addAll(imageView, vbox);
-
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null) {
-                    setGraphic(null);
-                } else {
-                    Favor favor = getTableView().getItems().get(getIndex());
-                    titleLabel.setText(favor.getTitle());
-                    authorLabel.setText(favor.getAuthor());
-                    setGraphic(hbox);
-
-                    Task<Image> loadImageTask = new Task<>() {
-                        @Override
-                        protected Image call() {
-                            return new Image(favor.getImageUrl(), true);
-                        }
-                    };
-
-                    loadImageTask.setOnSucceeded(event -> imageView.setImage(loadImageTask.getValue()));
-                    loadImageTask.setOnFailed(event -> imageView.setImage(null));
-
-                    new Thread(loadImageTask).start();
-                }
-            }
-        });
+    @Override
+    TableColumn<Favor, Void> getInformationColumn() {
+        return this.informationColumn;
     }
 
     private void setupOptionColumn() {
@@ -98,7 +63,8 @@ public class FavorBookController {
                 hbox.setAlignment(javafx.geometry.Pos.CENTER);
                 hbox.setSpacing(5);
 
-                Image favorImage = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm());
+                Image favorImage = new Image(
+                    getClass().getResource("/Images/Favor2.png").toExternalForm());
                 ImageView favorImageView = new ImageView(favorImage);
                 favorImageView.setFitWidth(16);
                 favorImageView.setFitHeight(16);
@@ -163,7 +129,8 @@ public class FavorBookController {
         });
 
         task.setOnFailed(event -> {
-            System.err.println("Error fetching favorite books: " + task.getException().getMessage());
+            System.err.println(
+                "Error fetching favorite books: " + task.getException().getMessage());
             waitProgress.setVisible(false);
         });
 
@@ -217,8 +184,8 @@ public class FavorBookController {
 
                 String lowerCaseFilter = newValue.toLowerCase();
                 return favorBook.getTitle().toLowerCase().contains(lowerCaseFilter)
-                        || favorBook.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                        || favorBook.getCategory().toLowerCase().contains(lowerCaseFilter);
+                    || favorBook.getAuthor().toLowerCase().contains(lowerCaseFilter)
+                    || favorBook.getCategory().toLowerCase().contains(lowerCaseFilter);
             });
         });
 

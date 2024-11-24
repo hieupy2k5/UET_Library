@@ -1,5 +1,7 @@
 package org.example.uet_library.models;
-public class Book {
+
+public class Book implements TableItem {
+
     private String title;
     private String author;
     private String isbn;
@@ -36,7 +38,8 @@ public class Book {
         return type;
     }
 
-    public Book(String title, String author, String isbn, String imageLink, int year, String type, String infoBookLink, String description) {
+    public Book(String title, String author, String isbn, String imageLink, int year, String type,
+        String infoBookLink, String description) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -49,7 +52,8 @@ public class Book {
         this.description = description;
     }
 
-    public Book(String title, String author, String isbn, String imageLink, int year, String type, int quantity) {
+    public Book(String title, String author, String isbn, String imageLink, int year, String type,
+        int quantity) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -118,18 +122,19 @@ public class Book {
     @Override
     public String toString() {
         return "Book:\n" +
-                "Title: " + title + "\n" +
-                "Author: " + author + "\n" +
-                "ISBN: " + isbn + "\n" +
-                "Image Link: " + imageLink + "\n" +
-                "Year: " + year + "\n" +
-                "Quantity: " + quantity + "\n" +
-                "Type: " + type;
+            "Title: " + title + "\n" +
+            "Author: " + author + "\n" +
+            "ISBN: " + isbn + "\n" +
+            "Image Link: " + imageLink + "\n" +
+            "Year: " + year + "\n" +
+            "Quantity: " + quantity + "\n" +
+            "Type: " + type;
     }
 
     public byte[] getqrCode() {
         return this.qrCode;
     }
+
     public void setqrCode(byte[] qrCode) {
         this.qrCode = qrCode;
     }

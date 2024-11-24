@@ -1,8 +1,6 @@
 package org.example.uet_library.models;
 
-
-
-public class Borrow {
+public class Borrow implements TableItem {
 
     private int id;
     private String user_id;

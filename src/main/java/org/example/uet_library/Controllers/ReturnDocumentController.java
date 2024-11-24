@@ -1,13 +1,12 @@
 package org.example.uet_library.Controllers;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.io.IOException;
 import java.util.HashSet;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
@@ -19,13 +18,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.uet_library.database.Database;
@@ -36,7 +43,7 @@ import org.example.uet_library.utilities.AlertHelper;
 /**
  * This is a feature for users
  */
-public class ReturnDocumentController {
+public class ReturnDocumentController extends TableViewController<Borrow> {
 
     public TextField searchField;
     public TableView<Borrow> tableView;
@@ -55,69 +62,7 @@ public class ReturnDocumentController {
 
     private Borrow borrowSelected;
 
-    private void setupInformation() {
-        informationColumn.setText("Document Information");
-        informationColumn.setCellFactory(column -> new TableCell<>() {
-            private final HBox hbox = new HBox();
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                vbox.getChildren().addAll(titleLabel, authorLabel);
-                vbox.setSpacing(5);
-                hbox.setSpacing(15);
-                hbox.getChildren().addAll(imageView, vbox);
-
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null) {
-                    setGraphic(null);
-                } else {
-                    Borrow borrow = getTableView().getItems().get(getIndex());
-
-                    titleLabel.setText(borrow.getTitle());
-                    authorLabel.setText(borrow.getAuthor());
-                    setGraphic(hbox);
-
-                    String imageUrl = borrow.getImageUrl();
-                    if (imageCache.containsKey(imageUrl)) {
-                        imageView.setImage(imageCache.get(imageUrl));
-                    } else {
-                        Task<Image> loadImageTask = new Task<>() {
-                            @Override
-                            protected Image call() {
-                                return new Image(borrow.getImageUrl(), true);
-                            }
-                        };
-
-                        loadImageTask.setOnSucceeded(
-                            event -> {
-                                Image img = loadImageTask.getValue();
-                                imageCache.put(imageUrl, img);
-                                imageView.setImage(loadImageTask.getValue());
-                            });
-                        loadImageTask.setOnFailed(event -> {
-//                        System.err.println(
-//                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                        });
-
-                        new Thread(loadImageTask).start();
-                    }
-                }
-            }
-        });
-    }
-
-    public void fetchFromDB() {
+    private void fetchFromDB() {
         Task<ObservableList<Borrow>> task = BookService.getInstance().fetchBorrowFromDB();
 
         // Bind progress indicator to task status
@@ -163,12 +108,17 @@ public class ReturnDocumentController {
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         waitProgress.setVisible(true);
 
-        setupInformation();
+        super.setUpInformation();
         tableView.getSortOrder().add(returnDateColumn);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         fetchFromDB();
         Platform.runLater(() -> tableView.refresh());
+    }
+
+    @Override
+    TableColumn<Borrow, Void> getInformationColumn() {
+        return this.informationColumn;
     }
 
     private void setupSearch() {
@@ -201,6 +151,7 @@ public class ReturnDocumentController {
             private final Button returnButton = new Button();
             private final Button ratingBook = new Button();
             private final HBox hbox = new HBox();
+
             {
                 Image returnImage = new Image(
                     getClass().getResource("/Images/returnBook.png").toExternalForm());
@@ -307,8 +258,9 @@ public class ReturnDocumentController {
     }
 
     private void showRatingDialog(Borrow borrowedBook, String type) {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/RatingBookDialog.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/FXMLs/RatingBookDialog.fxml"));
             Parent root = loader.load();
             RatingDialogController ratingDialogController = loader.getController();
             ratingDialogController.setData(borrowedBook);
@@ -326,24 +278,24 @@ public class ReturnDocumentController {
 
     private Task<HashSet<String>> rateBook() {
         return new Task<>() {
-          @Override
-          protected HashSet<String> call() {
-              HashSet<String> resultQuery = new HashSet<>();
-              Database database = new Database();
-              try {
-                  Connection connection = database.getConnection();
-                  String query = "SELECT ISBN FROM Ratings WHERE user_name = ?";
-                  PreparedStatement preparedStatement = connection.prepareStatement(query);
-                  preparedStatement.setString(1, RatingDialogController.userName);
-                  ResultSet resultSet = preparedStatement.executeQuery();
-                  while (resultSet.next()) {
-                      resultQuery.add(resultSet.getString(1));
-                  }
-              } catch (SQLException e) {
-                  throw new RuntimeException(e);
-              }
-              return resultQuery;
-          }
+            @Override
+            protected HashSet<String> call() {
+                HashSet<String> resultQuery = new HashSet<>();
+                Database database = new Database();
+                try {
+                    Connection connection = database.getConnection();
+                    String query = "SELECT ISBN FROM Ratings WHERE user_name = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+                    preparedStatement.setString(1, RatingDialogController.userName);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        resultQuery.add(resultSet.getString(1));
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                return resultQuery;
+            }
         };
     }
 

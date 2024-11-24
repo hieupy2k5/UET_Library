@@ -20,12 +20,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import org.example.uet_library.utilities.AlertHelper;
-import org.example.uet_library.services.BookService;
 import org.example.uet_library.models.Request;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.AlertHelper;
 
-public class MyRequestsController {
+public class MyRequestsController extends TableViewController<Request> {
 
     public TableView<Request> tableView;
     public TableColumn<Request, String> statusColumn;
@@ -43,76 +42,19 @@ public class MyRequestsController {
         tableView.setPlaceholder(new Label("Your request list is empty..."));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
-        setupInformation();
+        super.setUpInformation();
 
         fetchFromDB();
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void setupInformation() {
-        informationColumn.setText("Document Information");
-        informationColumn.setCellFactory(column -> new TableCell<>() {
-            private final HBox hbox = new HBox();
-            private final VBox vbox = new VBox();
-            private final ImageView imageView = new ImageView();
-            private final Label titleLabel = new Label();
-            private final Label authorLabel = new Label();
-
-            {
-                vbox.getChildren().addAll(titleLabel, authorLabel);
-                vbox.setSpacing(5);
-                hbox.setSpacing(15);
-                hbox.getChildren().addAll(imageView, vbox);
-
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                authorLabel.setStyle("-fx-font-style: italic;");
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null) {
-                    setGraphic(null);
-                } else {
-                    Request request = getTableView().getItems().get(getIndex());
-
-                    titleLabel.setText(request.getTitle());
-                    authorLabel.setText(request.getAuthor());
-                    setGraphic(hbox);
-
-                    String imageUrl = request.getImageUrl();
-                    if (imageCache.containsKey(imageUrl)) {
-                        imageView.setImage(imageCache.get(imageUrl));
-                    } else {
-                        Task<Image> loadImageTask = new Task<>() {
-                            @Override
-                            protected Image call() {
-                                return new Image(request.getImageUrl(), true);
-                            }
-                        };
-
-                        loadImageTask.setOnSucceeded(
-                            event -> {
-                                Image img = loadImageTask.getValue();
-                                imageCache.put(imageUrl, img);
-                                imageView.setImage(loadImageTask.getValue());
-                            });
-                        loadImageTask.setOnFailed(event -> {
-//                        System.err.println(
-//                            "Failed to load image: " + loadImageTask.getException().getMessage());
-                        });
-
-                        new Thread(loadImageTask).start();
-                    }
-                }
-            }
-        });
+    @Override
+    TableColumn<Request, Void> getInformationColumn() {
+        return this.informationColumn;
     }
 
     private void fetchFromDB() {
-        Task<ObservableList<Request>> task = BookService.getInstance(). fetchMyRequestFromDB();
+        Task<ObservableList<Request>> task = BookService.getInstance().fetchMyRequestFromDB();
 
         // Bind progress indicator to task status
         task.setOnRunning(event -> Platform.runLater(() -> {
@@ -130,7 +72,8 @@ public class MyRequestsController {
 
         task.setOnFailed(event -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching books in fetchFromDB() in MyRequestsController.java: " + task.getException().getMessage());
+                "Error fetching books in fetchFromDB() in MyRequestsController.java: "
+                    + task.getException().getMessage());
             waitProgress.setVisible(false);
         }));
 
@@ -178,7 +121,8 @@ public class MyRequestsController {
                 actionButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
                     if ("accepted".equals(selectedRequest.getStatus())) {
-                        BookService.getInstance().userBorrowBook(selectedRequest.getId(), selectedRequest.getBook_id());
+                        BookService.getInstance()
+                            .userBorrowBook(selectedRequest.getId(), selectedRequest.getBook_id());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Successful",
                             String.format("You have successfully borrowed the book %s",

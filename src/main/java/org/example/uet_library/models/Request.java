@@ -1,7 +1,6 @@
 package org.example.uet_library.models;
 
-public class Request {
-
+public class Request implements TableItem {
     private int id;
     private int user_id;
     private String book_id;
