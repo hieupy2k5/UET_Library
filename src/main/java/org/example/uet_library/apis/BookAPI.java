@@ -1,5 +1,6 @@
 package org.example.uet_library.apis;
 
+import java.nio.charset.StandardCharsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -43,22 +44,13 @@ public class BookAPI {
      * @return the query with filter
      */
     private static String buildSearchQuery(String query, String filter) {
-        String searchQuery = "";
+        String searchQuery = switch (filter.toLowerCase()) {
+            case "isbn" -> "isbn:" + query;
+            case "title" -> "intitle:" + query;
+            case "author" -> "inauthor:" + query;
+            default -> query;
+        };
 
-        switch (filter.toLowerCase()) {
-            case "isbn":
-                searchQuery = "isbn:" + query;
-                break;
-            case "title":
-                searchQuery = "intitle:" + query;
-                break;
-            case "author":
-                searchQuery = "inauthor:" + query;
-                break;
-            default:
-                searchQuery = query;
-                break;
-        }
         return encodeQuery(searchQuery);
     }
 
@@ -116,7 +108,7 @@ public class BookAPI {
                         if (volumeInfo.has("industryIdentifiers")) {
                             StringBuilder isbnList = new StringBuilder();
                             for (JsonNode identifierNode : volumeInfo.get("industryIdentifiers")) {
-                                if (isbnList.length() > 0) {
+                                if (!isbnList.isEmpty()) {
                                     isbnList.append(", ");
                                 }
                                 isbnList.append(identifierNode.get("identifier").asText());
@@ -169,12 +161,7 @@ public class BookAPI {
 
     /** This code will fix error search with space and Vietnamese */
     private static String encodeQuery(String query) {
-        try {
-            return URLEncoder.encode(query, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return query;
-        }
+        return URLEncoder.encode(query, StandardCharsets.UTF_8);
     }
 
 }

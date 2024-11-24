@@ -16,21 +16,19 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import org.example.uet_library.models.Book;
-import org.example.uet_library.apis.BookAPI;
-import org.example.uet_library.models.Borrow;
-import org.example.uet_library.database.Database;
-import org.example.uet_library.models.Favor;
 import org.example.uet_library.apis.QRGenerateAPI;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.models.Borrow;
+import org.example.uet_library.models.Favor;
 import org.example.uet_library.models.Request;
-import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.models.User;
+import org.example.uet_library.utilities.SessionManager;
 
 
 public class BookService {
 
     private static BookService instance;
-    private final BookAPI bookAPI = new BookAPI();
 
     private BookService() {
     }
@@ -133,7 +131,9 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books in fetchBookFromDB() (BookService.java): " + e.getMessage());
+                    System.err.println(
+                        "Error fetching books in fetchBookFromDB() (BookService.java): "
+                            + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
@@ -171,7 +171,9 @@ public class BookService {
 
                 } catch (SQLException e) {
                     // Log the specific SQL exception for better debugging
-                    System.err.println("Error fetching books in fetchBookFromDB(String ISBN) (BookService.java): " + e.getMessage());
+                    System.err.println(
+                        "Error fetching books in fetchBookFromDB(String ISBN) (BookService.java): "
+                            + e.getMessage());
                     throw new Exception("Database query failed",
                         e); // Re-throw with cause for chaining
                 }
@@ -219,10 +221,12 @@ public class BookService {
 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         String formattedBorrowDate = sdf.format(borrowTimestamp);
-                        String formattedReturnDate = (returnTimestamp != null)  ? sdf.format(returnTimestamp) : "N/A";
+                        String formattedReturnDate =
+                            (returnTimestamp != null) ? sdf.format(returnTimestamp) : "N/A";
 
                         String status = resultSet.getString("status");
-                        Borrow borrow = new Borrow(borrowID, isbn, title, author, category, quantity,
+                        Borrow borrow = new Borrow(borrowID, isbn, title, author, category,
+                            quantity,
                             formattedBorrowDate, formattedReturnDate, status, image);
                         borrowList.add(borrow);
                     }
@@ -781,7 +785,7 @@ public class BookService {
                 try (Connection connection = db.getConnection()) {
                     String query = "SELECT COUNT(*) FROM users";
                     try (PreparedStatement ps = connection.prepareStatement(query);
-                         ResultSet resultSet = ps.executeQuery()) {
+                        ResultSet resultSet = ps.executeQuery()) {
                         if (resultSet.next()) {
                             return resultSet.getInt("COUNT(*)");
                         }
@@ -824,12 +828,12 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     String query = "SELECT books.title, image_url, COUNT(ISBN) AS TONG\n" +
-                            "from books\n" +
-                            "INNER JOIN borrow\n" +
-                            "ON books.ISBN = borrow.book_id\n" +
-                            "GROUP BY ISBN\n" +
-                            "ORDER BY TONG DESC\n" +
-                            "LIMIT 6;";
+                        "from books\n" +
+                        "INNER JOIN borrow\n" +
+                        "ON books.ISBN = borrow.book_id\n" +
+                        "GROUP BY ISBN\n" +
+                        "ORDER BY TONG DESC\n" +
+                        "LIMIT 6;";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
@@ -856,12 +860,12 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     String query = "SELECT U.id,U.username,U.email,SUM(quantity) AS TONG\n" +
-                            "FROM users U\n" +
-                            "INNER JOIN borrow B\n" +
-                            "ON U.id = B.user_id\n" +
-                            "GROUP BY user_id\n" +
-                            "ORDER BY TONG DESC\n" +
-                            "LIMIT 5;\n";
+                        "FROM users U\n" +
+                        "INNER JOIN borrow B\n" +
+                        "ON U.id = B.user_id\n" +
+                        "GROUP BY user_id\n" +
+                        "ORDER BY TONG DESC\n" +
+                        "LIMIT 5;\n";
                     Statement statement = conDB.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
@@ -869,7 +873,7 @@ public class BookService {
                         String username = resultSet.getString("username");
                         String email = resultSet.getString("email");
                         int sumOfBookBorrowed = resultSet.getInt("TONG");
-                        User user = new User(username, "","",email);
+                        User user = new User(username, "", "", email);
                         user.setNumberOfBookBorrowed(sumOfBookBorrowed);
                         userList.add(user);
                     }
@@ -888,10 +892,11 @@ public class BookService {
                 int userID = SessionManager.getInstance().getUserId();
                 try (Connection conDB = connection.getConnection()) {
                     String query =
-                            "SELECT favors.*, books.title, books.author, books.category, books.image_url " +
-                                    "FROM favors " +
-                                    "JOIN books ON favors.book_id = books.ISBN " +
-                                    "WHERE favors.user_id = ?";
+                        "SELECT favors.*, books.title, books.author, books.category, books.image_url "
+                            +
+                            "FROM favors " +
+                            "JOIN books ON favors.book_id = books.ISBN " +
+                            "WHERE favors.user_id = ?";
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
                     preparedStatement.setInt(1, userID);
 
@@ -920,7 +925,8 @@ public class BookService {
     public boolean addBookToFavorites(Book book) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            String insertQuery = "INSERT INTO favors (user_id, book_id, title, author, image_url) " +
+            String insertQuery =
+                "INSERT INTO favors (user_id, book_id, title, author, image_url) " +
                     "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(insertQuery);
             stmt.setInt(1, SessionManager.getInstance().getUserId());
@@ -940,8 +946,8 @@ public class BookService {
     public boolean isFavorite(Book book) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-             String query = "SELECT 1 FROM favors WHERE user_id = ? AND book_id = ?";
-             PreparedStatement stmt = conn.prepareStatement(query);
+            String query = "SELECT 1 FROM favors WHERE user_id = ? AND book_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
 
             int userId = SessionManager.getInstance().getUserId();
 

@@ -19,7 +19,7 @@ public class QRGenerateAPI {
     }
 
     public byte[] generateQRCode(String text) throws IOException {
-        text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
+        text = URLEncoder.encode(text, StandardCharsets.UTF_8);
         String url = "https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + text;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
