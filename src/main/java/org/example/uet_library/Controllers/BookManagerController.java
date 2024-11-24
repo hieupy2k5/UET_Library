@@ -195,14 +195,7 @@ public class BookManagerController {
                 alert.setTitle("Notion");
                 alert.setHeaderText(null);
                 alert.setContentText("Book deleted successfully");
-                AuthorEdit.setText(null);
-                ISBNEdit.setText(null);
-                titleEdit.setText(null);
-                ISBNEdit.setText(null);
-                QuantityEdit.setText(null);
-                ISBNSearch.setText(null);
-                yearOfPublication.setText(null);
-                categoryBook.setText(null);
+                setFieldsToNull();
                 alert.showAndWait();
                 handleCancel();
             } else {
@@ -219,6 +212,17 @@ public class BookManagerController {
         new Thread(task).start();
     }
 
+    private void setFieldsToNull() {
+        AuthorEdit.setText(null);
+        ISBNEdit.setText(null);
+        titleEdit.setText(null);
+        ISBNEdit.setText(null);
+        QuantityEdit.setText(null);
+        ISBNSearch.setText(null);
+        yearOfPublication.setText(null);
+        categoryBook.setText(null);
+    }
+
     public void SaveBookOnAction(ActionEvent eventT) {
         bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageLink(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
         Task<Void> edit = BookService.getInstance().editBook(bookSelected);
@@ -228,14 +232,7 @@ public class BookManagerController {
             alert.setHeaderText(null);
             alert.setContentText("Book edited successfully");
             alert.showAndWait();
-            AuthorEdit.setText(null);
-            ISBNEdit.setText(null);
-            titleEdit.setText(null);
-            ISBNEdit.setText(null);
-            QuantityEdit.setText(null);
-            ISBNSearch.setText(null);
-            yearOfPublication.setText(null);
-            categoryBook.setText(null);
+            setFieldsToNull();
             URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
 
             if (imageUrl != null) {
