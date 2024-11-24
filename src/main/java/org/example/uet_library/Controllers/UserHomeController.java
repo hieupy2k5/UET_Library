@@ -324,7 +324,7 @@ public class UserHomeController implements Initializable {
         Parent root = fxmlLoader.load();
 
         ShowBookInformation showBookInformation = fxmlLoader.getController();
-        showBookInformation.setDate(book);
+        showBookInformation.setData(book);
         showBookInformation.setUserHomeController(this);
 
         if (isPush) {

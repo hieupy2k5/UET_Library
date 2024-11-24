@@ -1,4 +1,4 @@
-package org.example.uet_library.main;
+package org.example.uet_library;
 
 import java.sql.Connection;
 import javafx.application.Application;

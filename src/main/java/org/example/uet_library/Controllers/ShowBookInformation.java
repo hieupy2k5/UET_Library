@@ -30,8 +30,8 @@ import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
 public class ShowBookInformation {
-    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/favor1.png").toExternalForm(),40,40,false, true);
-    private final Image STAR_FILL = new Image(getClass().getResource("/Images/favor2.png").toExternalForm(),40,40,false, true);
+    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm(),40,40,true, true);
+    private final Image STAR_FILL = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm(),40,40,true, true);
 
     private boolean checkFetchback = false;
 
@@ -117,7 +117,7 @@ public class ShowBookInformation {
             }
         };
     }
-    public void setDate(Book book) {
+    public void setData(Book book) {
         this.bookCurrent = book;
         description.setText(book.getDescription());
         description.setTextAlignment(TextAlignment.JUSTIFY);
@@ -126,9 +126,9 @@ public class ShowBookInformation {
         String url = book.getImageUrl();
         Image image;
         if (url == null || url.equals("")) {
-            image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+            image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm(), true);
         } else {
-            image = new Image(url);
+            image = new Image(url, true);
         }
         imageBook.setImage(image);
         byte[] qrCode = new byte[1];
@@ -272,11 +272,13 @@ public class ShowBookInformation {
                 } else {
                     Favor.setImage(STAR_NOT_FILL);
                 }
+
+                return isFavorite;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 
@@ -296,12 +298,8 @@ public class ShowBookInformation {
                             "You have removed \"" + bookCurrent.getTitle()
                                     + "\" from your favorites.");
                 } else {
-                    String insertQuery = "INSERT INTO favors (user_id, book_id) VALUES (?, ?)";
-                    PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-                    insertStmt.setInt(1, SessionManager.getInstance().getUserId());
-                    insertStmt.setString(2, bookCurrent.getIsbn());
-                    insertStmt.executeUpdate();
-                    
+                    BookService.getInstance().addBookToFavorites(bookCurrent);
+
                     AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Added",
                             "The book \"" + bookCurrent.getTitle()
                                     + "\" has been added to your favorites.");
