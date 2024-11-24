@@ -4,16 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -31,7 +28,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.example.uet_library.*;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.models.Borrow;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.AlertHelper;
 
 /**
  * This is a feature for users

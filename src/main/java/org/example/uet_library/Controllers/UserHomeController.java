@@ -26,8 +26,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
 
 public class UserHomeController implements Initializable {
 

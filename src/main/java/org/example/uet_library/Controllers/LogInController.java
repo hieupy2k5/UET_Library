@@ -18,8 +18,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.SessionManager;
+import org.example.uet_library.utilities.AlertHelper;
+import org.example.uet_library.utilities.SessionManager;
 
 public class LogInController implements Initializable {
     public TextField usernameFld;

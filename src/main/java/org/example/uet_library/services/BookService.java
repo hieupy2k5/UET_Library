@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import org.json.JSONArray;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.apis.BookAPI;
+import org.example.uet_library.models.Borrow;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.models.Favor;
+import org.example.uet_library.apis.QRGenerateAPI;
+import org.example.uet_library.models.Request;
+import org.example.uet_library.utilities.SessionManager;
+import org.example.uet_library.models.User;
 
 
 public class BookService {

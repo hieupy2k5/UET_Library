@@ -1,7 +1,6 @@
 package org.example.uet_library.Controllers;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Binding;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,12 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
-import org.example.uet_library.Database;
-import org.example.uet_library.User;
-
-import java.sql.*;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.models.User;
 
 public class AdminHomeController {
     private ObservableList<Book> bookTop6 = FXCollections.observableArrayList();

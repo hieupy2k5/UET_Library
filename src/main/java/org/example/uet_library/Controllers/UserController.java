@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javafx.util.Pair;
-import org.example.uet_library.Database;
+import org.example.uet_library.database.Database;
 import org.example.uet_library.enums.SignUpResult;
 
 public class UserController {

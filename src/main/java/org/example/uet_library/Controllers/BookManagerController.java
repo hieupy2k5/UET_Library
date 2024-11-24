@@ -9,11 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import javafx.event.ActionEvent;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 

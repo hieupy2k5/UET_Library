@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.main;
 
 import java.sql.Connection;
 import javafx.application.Application;
@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.example.uet_library.Controllers.LogInController;
+import org.example.uet_library.database.Database;
 
 public class App extends Application {
     Connection connection = new Database().getConnection();

@@ -1,10 +1,12 @@
-package org.example.uet_library;
+package org.example.uet_library.utilities;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
 
 public class SharedData {
 

@@ -26,11 +26,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
-import org.example.uet_library.SessionManager;
-import org.example.uet_library.SharedData;
+import org.example.uet_library.utilities.AlertHelper;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.SessionManager;
+import org.example.uet_library.utilities.SharedData;
 
 /**
  * This is a feature for users.

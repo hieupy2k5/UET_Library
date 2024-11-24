@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

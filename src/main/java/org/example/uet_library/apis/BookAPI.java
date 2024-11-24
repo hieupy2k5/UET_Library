@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.apis;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.uet_library.models.Book;
 
 public class BookAPI {
 

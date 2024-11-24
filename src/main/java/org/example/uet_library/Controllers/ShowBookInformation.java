@@ -15,13 +15,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
-import org.example.uet_library.*;
 import javafx.scene.text.Text;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookRating;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.AlertHelper;
+import org.example.uet_library.utilities.SessionManager;
+import org.example.uet_library.utilities.SharedData;
 
 public class ShowBookInformation {
     private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/favor1.png").toExternalForm(),40,40,false, true);

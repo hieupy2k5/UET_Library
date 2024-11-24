@@ -9,8 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookService;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.services.BookService;
 
 import java.io.IOException;
 

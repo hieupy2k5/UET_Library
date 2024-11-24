@@ -11,8 +11,8 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import javafx.scene.control.TextInputDialog;
-import org.example.uet_library.Database;
-import org.example.uet_library.SessionManager;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.utilities.SessionManager;
 
 public class SettingsController {
 

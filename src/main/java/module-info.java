@@ -13,8 +13,18 @@ module org.example.uet_library {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;
 
-    opens org.example.uet_library to javafx.fxml;
-    exports org.example.uet_library;
     exports org.example.uet_library.Controllers;
     opens org.example.uet_library.Controllers to javafx.fxml;
+    exports org.example.uet_library.main;
+    opens org.example.uet_library.main to javafx.fxml;
+    exports org.example.uet_library.services;
+    opens org.example.uet_library.services to javafx.fxml;
+    exports org.example.uet_library.apis;
+    opens org.example.uet_library.apis to javafx.fxml;
+    exports org.example.uet_library.database;
+    opens org.example.uet_library.database to javafx.fxml;
+    exports org.example.uet_library.utilities;
+    opens org.example.uet_library.utilities to javafx.fxml;
+    exports org.example.uet_library.models;
+    opens org.example.uet_library.models to javafx.fxml;
 }

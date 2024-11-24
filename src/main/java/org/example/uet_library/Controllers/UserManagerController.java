@@ -1,6 +1,5 @@
 package org.example.uet_library.Controllers;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -12,12 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import org.example.uet_library.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Optional;
+import org.example.uet_library.database.Database;
+import org.example.uet_library.models.User;
+import org.example.uet_library.services.BookService;
 
 public class UserManagerController {
 

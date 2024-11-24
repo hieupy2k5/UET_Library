@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.models;
 
 public abstract class Account {
     private int id;

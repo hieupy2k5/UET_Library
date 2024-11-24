@@ -3,20 +3,17 @@ package org.example.uet_library.Controllers;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import org.example.uet_library.BookRating;
-import org.example.uet_library.Borrow;
-import org.example.uet_library.Database;
+import org.example.uet_library.models.Borrow;
+import org.example.uet_library.database.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class RatingDialogController {
     @FXML

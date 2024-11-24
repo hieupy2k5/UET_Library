@@ -9,7 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import org.example.uet_library.AlertHelper;
+import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.enums.SignUpResult;
 
 public class SignUpController implements Initializable {

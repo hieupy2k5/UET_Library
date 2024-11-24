@@ -12,8 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.example.uet_library.BookService;
-import org.example.uet_library.Favor;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.models.Favor;
 
 public class FavorBookController {
     public TextField searchField;

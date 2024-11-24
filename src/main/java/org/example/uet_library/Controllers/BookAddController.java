@@ -4,21 +4,19 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.example.uet_library.BookService;
+import org.example.uet_library.services.BookService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import org.example.uet_library.Book;
+import org.example.uet_library.models.Book;
 public class BookAddController {
     private MenuController menuController = BookAPISearch.menuController;
     private Book newBook;

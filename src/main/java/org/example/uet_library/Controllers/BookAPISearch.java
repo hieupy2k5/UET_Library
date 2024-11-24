@@ -1,8 +1,5 @@
 package org.example.uet_library.Controllers;
 
-import javafx.animation.PathTransition;
-import javafx.animation.ScaleTransition;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -20,11 +17,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
-import org.example.uet_library.AlertHelper;
-import org.example.uet_library.Book;
-import org.example.uet_library.BookAPI;
-import java.util.Stack;
+import org.example.uet_library.utilities.AlertHelper;
+import org.example.uet_library.models.Book;
+import org.example.uet_library.apis.BookAPI;
 import java.io.IOException;
 
 public class BookAPISearch {

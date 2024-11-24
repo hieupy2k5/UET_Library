@@ -1,4 +1,4 @@
-package org.example.uet_library;
+package org.example.uet_library.services;
 
 public class BookRating {
     private String ISBN;
