@@ -91,7 +91,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
 
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
-    private void fetchFromDB() {
+    public void fetchFromDB() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
         // Bind progress indicator to task status
@@ -107,7 +107,6 @@ public class BorrowDocumentController extends TableViewController<Book> {
             loadFavouriteBooks();
             setupSearch();
             setupOptionButton();
-            super.setUpInformation();
         }));
 
         task.setOnFailed(event -> Platform.runLater(() -> {
@@ -121,25 +120,31 @@ public class BorrowDocumentController extends TableViewController<Book> {
         new Thread(task).start();
     }
 
-    public void initialize() {
-        tableView.setPlaceholder(new Label("Your borrow list is empty..."));
+    public void setUpColumns() {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        waitProgress.setVisible(true);
-
-        fetchFromDB();
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        slidingPane.setTranslateX(900);
-        slidingPane.setTranslateY(60);
-
-        selectedBooksTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     @Override
     TableColumn<Book, Void> getInformationColumn() {
         return this.informationColumn;
+    }
+
+    @Override
+    TableView<Book> getTableView() {
+        return this.tableView;
+    }
+
+    @Override
+    ProgressIndicator getWaitProgress() {
+        return this.waitProgress;
+    }
+
+    @Override
+    public void setUpSlidingPane() {
+        slidingPane.setTranslateX(900);
+        slidingPane.setTranslateY(60);
     }
 
     private void setupSearch() {

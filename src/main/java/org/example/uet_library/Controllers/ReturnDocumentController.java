@@ -62,7 +62,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
 
     private Borrow borrowSelected;
 
-    private void fetchFromDB() {
+    public void fetchFromDB() {
         Task<ObservableList<Borrow>> task = BookService.getInstance().fetchBorrowFromDB();
 
         // Bind progress indicator to task status
@@ -101,24 +101,30 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
         new Thread(task).start();
     }
 
-    public void initialize() {
-        tableView.setPlaceholder(new Label("Your return list is empty..."));
+    public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
         returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-        waitProgress.setVisible(true);
-
-        super.setUpInformation();
-        tableView.getSortOrder().add(returnDateColumn);
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        fetchFromDB();
-        Platform.runLater(() -> tableView.refresh());
     }
 
     @Override
     TableColumn<Borrow, Void> getInformationColumn() {
         return this.informationColumn;
+    }
+
+    @Override
+    TableView<Borrow> getTableView() {
+        return this.tableView;
+    }
+
+    @Override
+    ProgressIndicator getWaitProgress() {
+        return this.waitProgress;
+    }
+
+    @Override
+    public void setUpSortOrder() {
+        tableView.getSortOrder().add(returnDateColumn);
     }
 
     private void setupSearch() {

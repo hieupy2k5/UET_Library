@@ -36,7 +36,6 @@ public class FavorBookController extends TableViewController<Favor> {
 
     public void initialize() {
         tableView.setPlaceholder(new Label("Your favorite list is empty..."));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         waitProgress.setVisible(true);
 
         super.setUpInformation();
@@ -49,9 +48,24 @@ public class FavorBookController extends TableViewController<Favor> {
         Platform.runLater(() -> tableView.refresh());
     }
 
+    public void setUpColumns() {
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+
+    }
+
     @Override
     TableColumn<Favor, Void> getInformationColumn() {
         return this.informationColumn;
+    }
+
+    @Override
+    TableView<Favor> getTableView() {
+        return this.tableView;
+    }
+
+    @Override
+    ProgressIndicator getWaitProgress() {
+        return this.waitProgress;
     }
 
     private void setupOptionColumn() {

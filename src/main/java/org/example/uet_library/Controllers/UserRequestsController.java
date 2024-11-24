@@ -36,14 +36,9 @@ public class UserRequestsController extends TableViewController<Request> {
 
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
-    public void initialize() {
-        tableView.setPlaceholder(new Label("There is no request here..."));
+    public void setUpColumns() {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        waitProgress.setVisible(true);
-
-        super.setUpInformation();
-        fetchFromDB();
     }
 
     @Override
@@ -51,8 +46,18 @@ public class UserRequestsController extends TableViewController<Request> {
         return this.informationColumn;
     }
 
+    @Override
+    TableView<Request> getTableView() {
+        return this.tableView;
+    }
 
-    private void fetchFromDB() {
+    @Override
+    ProgressIndicator getWaitProgress() {
+        return this.waitProgress;
+    }
+
+
+    public void fetchFromDB() {
         Task<ObservableList<Request>> task = BookService.getInstance().fetchUserRequestFromDB();
 
         // Bind progress indicator to task status

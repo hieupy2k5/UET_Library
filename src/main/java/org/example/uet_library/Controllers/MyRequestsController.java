@@ -40,7 +40,6 @@ public class MyRequestsController extends TableViewController<Request> {
 
     public void initialize() {
         tableView.setPlaceholder(new Label("Your request list is empty..."));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         waitProgress.setVisible(true);
         super.setUpInformation();
 
@@ -48,12 +47,26 @@ public class MyRequestsController extends TableViewController<Request> {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
+    public void setUpColumns() {
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
     @Override
     TableColumn<Request, Void> getInformationColumn() {
         return this.informationColumn;
     }
 
-    private void fetchFromDB() {
+    @Override
+    TableView<Request> getTableView() {
+        return this.tableView;
+    }
+
+    @Override
+    ProgressIndicator getWaitProgress() {
+        return this.waitProgress;
+    }
+
+    public void fetchFromDB() {
         Task<ObservableList<Request>> task = BookService.getInstance().fetchMyRequestFromDB();
 
         // Bind progress indicator to task status

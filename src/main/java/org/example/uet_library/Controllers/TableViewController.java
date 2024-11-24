@@ -19,25 +19,28 @@ import org.jetbrains.annotations.NotNull;
 abstract class TableViewController<T extends TableItem> {
 
     public TextField searchField;
-    public TableView<T> tableView;
-    public TableColumn<TableItem, Void> xxx;
-    public ProgressIndicator waitProgress;
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
     private String tableName = "";
 
     public void initialize() {
-        tableView.setPlaceholder(new Label("The " + this.getTableName() + " is empty..."));
-//        setUpColumns();
-        waitProgress.setVisible(true);
+        this.getTableView().setPlaceholder(new Label("The list is empty..."));
+        setUpColumns();
+        this.getWaitProgress().setVisible(true);
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        setUpInformation();
+        fetchFromDB();
+
+        setUpSlidingPane();     // Hook for BorrowDocumentController
+        setUpSortOrder();       // Hook for ReturnDocumentController
+
+        this.getTableView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void setUpInformation() {
-        
+
         this.getInformationColumn().setText("Document Information");
-        this.getInformationColumn().setCellFactory(column -> new TableCell<>() {
+        this.getInformationColumn().setCellFactory(_ -> new TableCell<>() {
             private final HBox hbox = new HBox();
             private final VBox vbox = new VBox();
             private final ImageView imageView = new ImageView();
@@ -62,7 +65,7 @@ abstract class TableViewController<T extends TableItem> {
                 if (empty || getTableRow() == null) {
                     setGraphic(null);
                 } else {
-                    TableItem tableItem = (TableItem) getTableView().getItems().get(getIndex());
+                    TableItem tableItem = getTableView().getItems().get(getIndex());
                     titleLabel.setText(tableItem.getTitle());
                     setGraphic(hbox);
 
@@ -87,18 +90,23 @@ abstract class TableViewController<T extends TableItem> {
                 };
 
                 loadImageTask.setOnSucceeded(
-                    event -> {
+                    _ -> {
                         Image img = loadImageTask.getValue();
                         imageCache.put(imageUrl, img);
                         imageView.setImage(loadImageTask.getValue());
                     });
-                loadImageTask.setOnFailed(event -> imageView.setImage(null));
+                loadImageTask.setOnFailed(_ -> imageView.setImage(null));
                 return loadImageTask;
             }
         });
     }
 
-//    abstract void setUpColumns();
+    public void fetchFromDB() {
+    }
+
+    ;
+
+    abstract void setUpColumns();
 
     public String getTableName() {
         return tableName;
@@ -108,5 +116,15 @@ abstract class TableViewController<T extends TableItem> {
         this.tableName = tableName;
     }
 
+    public void setUpSlidingPane() {
+    }
+
+    public void setUpSortOrder() {
+    }
+
     abstract TableColumn<T, Void> getInformationColumn();
+
+    abstract TableView<T> getTableView();
+
+    abstract ProgressIndicator getWaitProgress();
 }
