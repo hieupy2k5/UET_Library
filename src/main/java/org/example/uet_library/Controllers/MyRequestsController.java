@@ -10,7 +10,6 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -57,35 +56,22 @@ public class MyRequestsController extends TableViewController<Request> {
         return this.waitProgress;
     }
 
-    public void fetchFromDB() {
-        Task<ObservableList<Request>> task = BookService.getInstance().fetchMyRequestFromDB();
-
-        // Bind progress indicator to task status
-        task.setOnRunning(event -> Platform.runLater(() -> {
-            waitProgress.setVisible(true);
-            waitProgress.setProgress(-1);
-        }));
-
-        task.setOnSucceeded(event -> Platform.runLater(() -> {
-            myRequestsList = task.getValue();
-            tableView.setItems(myRequestsList);
-            waitProgress.setVisible(false);
-            setupSearch();
-            setUpActionButton();
-        }));
-
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            System.err.println(
-                "Error fetching books in fetchFromDB() in MyRequestsController.java: "
-                    + task.getException().getMessage());
-            waitProgress.setVisible(false);
-        }));
-
-        // Start the task on a new thread
-        new Thread(task).start();
+    @Override
+    Task<ObservableList<Request>> getTaskFromDB() {
+        return BookService.getInstance().fetchMyRequestFromDB();
     }
 
-    private void setupSearch() {
+    @Override
+    ObservableList<Request> getObservableList() {
+        return myRequestsList;
+    }
+
+    @Override
+    void setObservableList(ObservableList<Request> list) {
+        myRequestsList = list;
+    }
+
+    public void setupSearch() {
         if (myRequestsList == null || myRequestsList.isEmpty()) {
             System.err.println("List is empty");
             return;
@@ -110,7 +96,7 @@ public class MyRequestsController extends TableViewController<Request> {
         tableView.setItems(sortedData);
     }
 
-    private void setUpActionButton() {
+    public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(col -> new TableCell<>() {
             private final Button actionButton = new Button();
 

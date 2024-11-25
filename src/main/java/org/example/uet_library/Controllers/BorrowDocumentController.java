@@ -91,35 +91,6 @@ public class BorrowDocumentController extends TableViewController<Book> {
 
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
-    public void fetchFromDB() {
-        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
-
-        // Bind progress indicator to task status
-        task.setOnRunning(event -> Platform.runLater(() -> {
-            waitProgress.setVisible(true);
-            waitProgress.setProgress(-1);
-        }));
-
-        task.setOnSucceeded(event -> Platform.runLater(() -> {
-            books = task.getValue();
-            tableView.setItems(books);
-            waitProgress.setVisible(false);
-            loadFavouriteBooks();
-            setupSearch();
-            setupOptionButton();
-        }));
-
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            System.err.println(
-                "Error fetching books in fetchFromDB() (BorrowDocumentController.java): "
-                    + task.getException().getMessage());
-            waitProgress.setVisible(false);
-        }));
-
-        // Start the task on a new thread
-        new Thread(task).start();
-    }
-
     public void setUpColumns() {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -142,12 +113,27 @@ public class BorrowDocumentController extends TableViewController<Book> {
     }
 
     @Override
+    Task<ObservableList<Book>> getTaskFromDB() {
+        return BookService.getInstance().fetchBookFromDB();
+    }
+
+    @Override
+    ObservableList<Book> getObservableList() {
+        return books;
+    }
+
+    @Override
+    void setObservableList(ObservableList<Book> list) {
+        books = list;
+    }
+
+    @Override
     public void setUpSlidingPane() {
         slidingPane.setTranslateX(900);
         slidingPane.setTranslateY(60);
     }
 
-    private void setupSearch() {
+    public void setupSearch() {
         if (books == null || books.isEmpty()) {
             System.err.println("Book list is empty or null, cannot set up search.");
             return;
@@ -172,7 +158,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
         tableView.setItems(sortedData);
     }
 
-    private void loadFavouriteBooks() {
+    public void loadFavouriteBooks() {
         Task<Set<String>> favoriteTask = new Task<>() {
             @Override
             protected Set<String> call() {
@@ -195,7 +181,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
         new Thread(favoriteTask).start();
     }
 
-    private void setupOptionButton() {
+    public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button borrowButton = new Button();
             private final Button favoriteButton = new Button();

@@ -2,6 +2,8 @@ package org.example.uet_library.Controllers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -103,7 +105,38 @@ abstract class TableViewController<T extends TableItem> {
     }
 
     public void fetchFromDB() {
+        Task<ObservableList<T>> task = getTaskFromDB();
+
+        task.setOnRunning(_ -> Platform.runLater(() -> {
+            this.getWaitProgress().setVisible(true);
+            this.getWaitProgress().setProgress(-1);
+        }));
+
+        task.setOnSucceeded(_ -> Platform.runLater(() -> {
+            this.setObservableList(task.getValue());
+
+            fetchRating();
+
+            this.setObservableList(sortObservableList(this.getObservableList()));
+            this.getTableView().setItems(this.getObservableList());
+            this.getWaitProgress().setVisible(false);
+
+            loadFavouriteBooks();
+            setupSearch();
+            setUpAdditionalButtons();
+        }));
+
+        task.setOnFailed(_ -> Platform.runLater(() -> {
+            System.err.println(
+                "Error fetching from DB in " + getClass().getSimpleName()
+                    + task.getException().getMessage());
+            this.getWaitProgress().setVisible(false);
+        }));
+
+        new Thread(task).start();
     }
+
+
 
     abstract void setUpColumns();
 
@@ -126,4 +159,26 @@ abstract class TableViewController<T extends TableItem> {
     abstract TableView<T> getTableView();
 
     abstract ProgressIndicator getWaitProgress();
+
+    abstract Task<ObservableList<T>> getTaskFromDB();
+
+    abstract ObservableList<T> getObservableList();
+
+    abstract void setObservableList(ObservableList<T> list);
+
+    public void fetchRating() {
+    }
+
+    public void loadFavouriteBooks() {
+    }
+
+    public void setupSearch() {
+    }
+
+    public void setUpAdditionalButtons() {
+    }
+
+    public ObservableList<T> sortObservableList(ObservableList<T> observableList) {
+        return observableList;
+    }
 }

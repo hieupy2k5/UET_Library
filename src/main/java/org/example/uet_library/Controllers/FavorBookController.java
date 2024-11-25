@@ -55,6 +55,28 @@ public class FavorBookController extends TableViewController<Favor> {
         return this.waitProgress;
     }
 
+    @Override
+    Task<ObservableList<Favor>> getTaskFromDB() {
+        return BookService.getInstance().fetchFavorFromDB();
+    }
+
+    @Override
+    ObservableList<Favor> getObservableList() {
+        return favoriteBooks;
+    }
+
+    @Override
+    void setObservableList(ObservableList<Favor> list) {
+        favoriteBooks = list;
+    }
+
+    @Override
+    public ObservableList<Favor> sortObservableList(ObservableList<Favor> observableList) {
+        SortedList<Favor> sortedFavoriteBooks = new SortedList<>(observableList);
+        sortedFavoriteBooks.comparatorProperty().bind(tableView.comparatorProperty());
+        return sortedFavoriteBooks;
+    }
+
     private void setupOptionColumn() {
         optionColumn.setCellFactory(column -> new TableCell<>() {
             private final HBox hbox = new HBox();
@@ -110,34 +132,6 @@ public class FavorBookController extends TableViewController<Favor> {
         });
     }
 
-    public void fetchFromDB() {
-        Task<ObservableList<Favor>> task = BookService.getInstance().fetchFavorFromDB();
-
-        task.setOnRunning(event -> {
-            waitProgress.setVisible(true);
-            waitProgress.setProgress(-1);
-        });
-
-        task.setOnSucceeded(event -> {
-            favoriteBooks = task.getValue();
-            setupSearch();
-
-            SortedList<Favor> sortedFavoriteBooks = new SortedList<>(favoriteBooks);
-            sortedFavoriteBooks.comparatorProperty().bind(tableView.comparatorProperty());
-
-            tableView.setItems(sortedFavoriteBooks);
-            waitProgress.setVisible(false);
-        });
-
-        task.setOnFailed(event -> {
-            System.err.println(
-                "Error fetching favorite books: " + task.getException().getMessage());
-            waitProgress.setVisible(false);
-        });
-
-        new Thread(task).start();
-    }
-
     private void removeFromFavorite(Favor favor) {
         Task<Boolean> removeTask = new Task<>() {
             @Override
@@ -171,7 +165,7 @@ public class FavorBookController extends TableViewController<Favor> {
         new Thread(removeTask).start();
     }
 
-    private void setupSearch() {
+    public void setupSearch() {
         if (favoriteBooks == null || favoriteBooks.isEmpty()) {
             return;
         }

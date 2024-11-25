@@ -55,37 +55,22 @@ public class UserRequestsController extends TableViewController<Request> {
         return this.waitProgress;
     }
 
-
-    public void fetchFromDB() {
-        Task<ObservableList<Request>> task = BookService.getInstance().fetchUserRequestFromDB();
-
-        // Bind progress indicator to task status
-        task.setOnRunning(event -> Platform.runLater(() -> {
-            waitProgress.setVisible(true);
-            waitProgress.setProgress(-1);
-        }));
-
-        task.setOnSucceeded(event -> Platform.runLater(() -> {
-            userRequestsList = task.getValue();
-            tableView.setItems(userRequestsList);
-            waitProgress.setVisible(false);
-            setupSearch();
-            setupActionButtons();
-        }));
-
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            System.err.println(
-                "Error fetching books in fetchFromDB() (UserRequestsController.java): "
-                    + task.getException().getMessage());
-            waitProgress.setVisible(false);
-        }));
-
-        // Start the task on a new thread
-        new Thread(task).start();
-
+    @Override
+    Task<ObservableList<Request>> getTaskFromDB() {
+        return BookService.getInstance().fetchUserRequestFromDB();
     }
 
-    private void setupSearch() {
+    @Override
+    ObservableList<Request> getObservableList() {
+        return userRequestsList;
+    }
+
+    @Override
+    void setObservableList(ObservableList<Request> list) {
+        userRequestsList = list;
+    }
+
+    public void setupSearch() {
         if (userRequestsList == null || userRequestsList.isEmpty()) {
             System.err.println("List is empty");
             return;
@@ -111,7 +96,7 @@ public class UserRequestsController extends TableViewController<Request> {
         tableView.setItems(sortedData);
     }
 
-    private void setupActionButtons() {
+    public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button acceptButton = new Button();
             private final Button declineButton = new Button();

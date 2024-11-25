@@ -23,7 +23,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -62,45 +61,6 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
 
     private Borrow borrowSelected;
 
-    public void fetchFromDB() {
-        Task<ObservableList<Borrow>> task = BookService.getInstance().fetchBorrowFromDB();
-
-        // Bind progress indicator to task status
-        task.setOnRunning(_ -> Platform.runLater(() -> {
-            waitProgress.setVisible(true);
-            waitProgress.setProgress(-1);
-        }));
-
-        task.setOnSucceeded(_ -> Platform.runLater(() -> {
-            borrowedBooks = task.getValue();
-            this.fetchRating();
-            SortedList<Borrow> sortedBorrowedBooks = new SortedList<>(borrowedBooks);
-
-            sortedBorrowedBooks.setComparator((b1, b2) -> {
-                if (b1.getReturnDate() == null && b2.getReturnDate() != null) {
-                    return -1;
-                } else if (b1.getReturnDate() != null && b2.getReturnDate() == null) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-            tableView.setItems(sortedBorrowedBooks);
-            waitProgress.setVisible(false);
-            setupSearch();
-            setUpReturnButton();
-        }));
-
-        task.setOnFailed(event -> Platform.runLater(() -> {
-            System.err.println(
-                "Error fetching books from database: " + task.getException().getMessage());
-            waitProgress.setVisible(false);
-        }));
-
-        // Start the task on a new thread
-        new Thread(task).start();
-    }
-
     public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
@@ -123,11 +83,32 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
     }
 
     @Override
+    Task<ObservableList<Borrow>> getTaskFromDB() {
+        return BookService.getInstance().fetchBorrowFromDB();
+    }
+
+    @Override
+    ObservableList<Borrow> getObservableList() {
+        return borrowedBooks;
+    }
+
+    @Override
+    void setObservableList(ObservableList<Borrow> list) {
+        borrowedBooks = list;
+    }
+
+    @Override
+    public ObservableList<Borrow> sortObservableList(ObservableList<Borrow> observableList) {
+
+        return new SortedList<>(observableList);
+    }
+
+    @Override
     public void setUpSortOrder() {
         tableView.getSortOrder().add(returnDateColumn);
     }
 
-    private void setupSearch() {
+    public void setupSearch() {
         if (borrowedBooks == null || borrowedBooks.isEmpty()) {
             System.err.println("Book list is empty or null, cannot set up search.");
             return;
@@ -152,7 +133,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
         tableView.setItems(sortedData);
     }
 
-    private void setUpReturnButton() {
+    public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button returnButton = new Button();
             private final Button ratingBook = new Button();
@@ -305,6 +286,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
         };
     }
 
+    @Override
     public void fetchRating() {
         Task<HashSet<String>> task = rateBook();
         task.setOnSucceeded(event -> {
