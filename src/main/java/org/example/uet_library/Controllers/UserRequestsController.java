@@ -2,10 +2,7 @@ package org.example.uet_library.Controllers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -66,34 +63,21 @@ public class UserRequestsController extends TableViewController<Request> {
     }
 
     @Override
+    TextField getSearchField() {
+        return searchField;
+    }
+
+    @Override
     void setObservableList(ObservableList<Request> list) {
         userRequestsList = list;
     }
 
-    public void setupSearch() {
-        if (userRequestsList == null || userRequestsList.isEmpty()) {
-            System.err.println("List is empty");
-            return;
-        }
-        FilteredList<Request> filteredData = new FilteredList<>(userRequestsList, b -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(request -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-                return request.getUsername().toLowerCase().contains(lowerCaseFilter)
-                    || request.getTitle().toLowerCase().contains(lowerCaseFilter)
-                    || request.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                    || request.getStatus().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<Request> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
+    @Override
+    final boolean searchPredicate(Request request, String query) {
+        return request.getUsername().toLowerCase().contains(query)
+            || request.getTitle().toLowerCase().contains(query)
+            || request.getAuthor().toLowerCase().contains(query)
+            || request.getStatus().toLowerCase().contains(query);
     }
 
     public void setUpAdditionalButtons() {

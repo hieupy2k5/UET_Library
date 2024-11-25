@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -93,6 +92,11 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
     }
 
     @Override
+    TextField getSearchField() {
+        return searchField;
+    }
+
+    @Override
     void setObservableList(ObservableList<Borrow> list) {
         borrowedBooks = list;
     }
@@ -108,29 +112,11 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
         tableView.getSortOrder().add(returnDateColumn);
     }
 
-    public void setupSearch() {
-        if (borrowedBooks == null || borrowedBooks.isEmpty()) {
-            System.err.println("Book list is empty or null, cannot set up search.");
-            return;
-        }
-        FilteredList<Borrow> filteredData = new FilteredList<>(borrowedBooks, b -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(borrowedBook -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-                return borrowedBook.getTitle().toLowerCase().contains(lowerCaseFilter)
-                    || borrowedBook.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                    || borrowedBook.getCategory().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<Borrow> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
+    @Override
+    final boolean searchPredicate(Borrow borrow, String query) {
+        return borrow.getTitle().toLowerCase().contains(query)
+            || borrow.getAuthor().toLowerCase().contains(query)
+            || borrow.getCategory().toLowerCase().contains(query);
     }
 
     public void setUpAdditionalButtons() {

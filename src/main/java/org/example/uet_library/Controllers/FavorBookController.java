@@ -64,6 +64,11 @@ public class FavorBookController extends TableViewController<Favor> {
     }
 
     @Override
+    TextField getSearchField() {
+        return searchField;
+    }
+
+    @Override
     void setObservableList(ObservableList<Favor> list) {
         favoriteBooks = list;
     }
@@ -163,27 +168,10 @@ public class FavorBookController extends TableViewController<Favor> {
         new Thread(removeTask).start();
     }
 
-    public void setupSearch() {
-        if (favoriteBooks == null || favoriteBooks.isEmpty()) {
-            return;
-        }
-
-        FilteredList<Favor> filteredData = new FilteredList<>(favoriteBooks, b -> true);
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(favorBook -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-                return favorBook.getTitle().toLowerCase().contains(lowerCaseFilter)
-                    || favorBook.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                    || favorBook.getCategory().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<Favor> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
+    @Override
+    final boolean searchPredicate(Favor favorBook, String query) {
+        return favorBook.getTitle().toLowerCase().contains(query)
+            || favorBook.getAuthor().toLowerCase().contains(query)
+            || favorBook.getCategory().toLowerCase().contains(query);
     }
 }

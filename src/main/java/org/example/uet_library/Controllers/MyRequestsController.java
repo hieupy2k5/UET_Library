@@ -67,33 +67,20 @@ public class MyRequestsController extends TableViewController<Request> {
     }
 
     @Override
+    TextField getSearchField() {
+        return searchField;
+    }
+
+    @Override
     void setObservableList(ObservableList<Request> list) {
         myRequestsList = list;
     }
 
-    public void setupSearch() {
-        if (myRequestsList == null || myRequestsList.isEmpty()) {
-            System.err.println("List is empty");
-            return;
-        }
-        FilteredList<Request> filteredData = new FilteredList<>(myRequestsList, b -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(request -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-                return request.getTitle().toLowerCase().contains(lowerCaseFilter)
-                    || request.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                    || request.getStatus().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<Request> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
+    @Override
+    final boolean searchPredicate(Request request, String query) {
+        return request.getTitle().toLowerCase().contains(query)
+            || request.getAuthor().toLowerCase().contains(query)
+            || request.getStatus().toLowerCase().contains(query);
     }
 
     public void setUpAdditionalButtons() {

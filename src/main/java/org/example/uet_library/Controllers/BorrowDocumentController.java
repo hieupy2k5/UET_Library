@@ -123,6 +123,11 @@ public class BorrowDocumentController extends TableViewController<Book> {
     }
 
     @Override
+    TextField getSearchField() {
+        return searchField;
+    }
+
+    @Override
     void setObservableList(ObservableList<Book> list) {
         books = list;
     }
@@ -133,29 +138,11 @@ public class BorrowDocumentController extends TableViewController<Book> {
         slidingPane.setTranslateY(60);
     }
 
-    public void setupSearch() {
-        if (books == null || books.isEmpty()) {
-            System.err.println("Book list is empty or null, cannot set up search.");
-            return;
-        }
-        FilteredList<Book> filteredData = new FilteredList<>(books, b -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(book -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-                return book.getTitle().toLowerCase().contains(lowerCaseFilter)
-                    || book.getAuthor().toLowerCase().contains(lowerCaseFilter)
-                    || book.getIsbn().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<Book> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(tableView.comparatorProperty());
-        tableView.setItems(sortedData);
+    @Override
+    final boolean searchPredicate(Book book, String query) {
+        return book.getTitle().toLowerCase().contains(query)
+            || book.getAuthor().toLowerCase().contains(query)
+            || book.getIsbn().toLowerCase().contains(query);
     }
 
     public void loadFavouriteBooks() {

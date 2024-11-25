@@ -23,19 +23,18 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class TableViewController<T extends TableItem> {
 
-    public TextField searchField;
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
     @FXML
     public final void initialize() {
         this.getTableView().setPlaceholder(new Label("The list is empty..."));
-        setUpColumns();
+        this.setUpColumns();
         this.getWaitProgress().setVisible(true);
 
-        setUpInformation();
-        fetchFromDB();
+        this.setUpInformation();
+        this.fetchFromDB();
 
-        postInitialize();
+        this.postInitialize();
 
         this.getTableView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
@@ -139,8 +138,28 @@ abstract class TableViewController<T extends TableItem> {
         new Thread(task).start();
     }
 
-    public void setupSearch() {
+    public final void setupSearch() {
+        if (this.getObservableList() == null || this.getObservableList().isEmpty()) {
+            return;
+        }
+        FilteredList<T> filteredData = new FilteredList<>(this.getObservableList(), b -> true);
+
+        this.getSearchField().textProperty().addListener((_, _, query) -> {
+            filteredData.setPredicate(tableItem -> {
+                if (query == null || query.isEmpty()) {
+                    return true;
+                }
+
+                return searchPredicate(tableItem, query.toLowerCase());
+            });
+        });
+
+        SortedList<T> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(this.getTableView().comparatorProperty());
+        this.getTableView().setItems(sortedData);
     }
+
+    abstract boolean searchPredicate(T tableItem, String query);
 
     abstract void setUpColumns();
 
@@ -153,6 +172,8 @@ abstract class TableViewController<T extends TableItem> {
     abstract Task<ObservableList<T>> getTaskFromDB();
 
     abstract ObservableList<T> getObservableList();
+
+    abstract TextField getSearchField();
 
     abstract void setObservableList(ObservableList<T> list);
 
