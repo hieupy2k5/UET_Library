@@ -139,7 +139,7 @@ public class BookAPISearch {
         Task<Image> imageTask = new Task<>() {
             @Override
             protected Image call() {
-                return new Image(book.getImageLink(), 80, 80, true, true, true);
+                return new Image(book.getImageUrl(), 80, 80, true, true, true);
             }
         };
         imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));

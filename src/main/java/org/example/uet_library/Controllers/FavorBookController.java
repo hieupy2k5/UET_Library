@@ -50,7 +50,6 @@ public class FavorBookController extends TableViewController<Favor> {
 
     public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-
     }
 
     @Override

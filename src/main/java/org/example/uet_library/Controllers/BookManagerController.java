@@ -224,7 +224,7 @@ public class BookManagerController {
     }
 
     public void SaveBookOnAction(ActionEvent eventT) {
-        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageLink(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
+        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageUrl(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
         Task<Void> edit = BookService.getInstance().editBook(bookSelected);
         edit.setOnSucceeded(event->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
