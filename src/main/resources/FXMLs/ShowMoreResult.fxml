@@ -16,7 +16,7 @@
          </children>
       </VBox>
       <TextField fx:id="searchTextField" layoutX="108.0" layoutY="26.0" prefHeight="35.0" prefWidth="630.0" styleClass="setting_textField" stylesheets="@../Styles/Menu.css" />
-      <Button layoutX="32.0" layoutY="26.0" mnemonicParsing="false" onAction="#goBack" text="Button" />
+      <Button layoutX="32.0" layoutY="26.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
       <Button layoutX="767.0" layoutY="15.0" mnemonicParsing="false" onAction="#searchBookOnAction">
          <graphic>
             <ImageView fitHeight="49.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
