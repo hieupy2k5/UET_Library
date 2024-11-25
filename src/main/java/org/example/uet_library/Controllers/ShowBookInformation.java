@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
@@ -76,6 +77,11 @@ public class ShowBookInformation {
     private Book bookCurrent;
 
     private UserHomeController userHomeController;
+    private ShowMoreResultController showMoreResultController;
+
+    public void setShowMoreResultController(ShowMoreResultController showMoreResultController) {
+        this.showMoreResultController = showMoreResultController;
+    }
 
     private ObservableList<BookRating> feedback = FXCollections.observableArrayList();
 
@@ -90,6 +96,8 @@ public class ShowBookInformation {
     void BackOnAction(ActionEvent event) throws IOException {
         if (userHomeController != null) {
             userHomeController.goBack();
+        } else if (this.showMoreResultController != null) {
+            this.showMoreResultController.goToSearchPage();
         }
     }
 
@@ -165,6 +173,7 @@ public class ShowBookInformation {
 
                     CardController card = fxmlloader.getController();
                     card.setUserHomeController(this.userHomeController);
+                    card.setShowMoreResultController(this.showMoreResultController);
                     card.setData(book);
                     cardLayout.getChildren().add(cardBox);
                 } catch (IOException e) {
@@ -327,6 +336,9 @@ public class ShowBookInformation {
     private void goPreviousBook(ActionEvent event) throws IOException {
         if(userHomeController!=null) {
             userHomeController.goPreviousBook();
+        } else if (this.showMoreResultController != null) {
+            showMoreResultController.goToPreviousBook();
         }
     }
+
 }

@@ -35,15 +35,20 @@ public class CardController {
         this.userHomeController = userHomeController;
     }
 
+    private ShowMoreResultController showMoreResultController;
+
+    public  void setShowMoreResultController(ShowMoreResultController showMoreResultController) {
+        this.showMoreResultController = showMoreResultController;
+    }
+
     @FXML
     private HBox bookBox;
 
-    private Stage previousStage;
-    private int pageIndex;
 
     private String[] colors = {"#B9E5FF","#BDB2FE", "#FB9AA8", "#FF5056"};
 
-    Book book;
+    private Book book;
+
     public void setData(Book book) {
         this.book = book;
         String url = book.getImageUrl();
@@ -70,10 +75,13 @@ public class CardController {
     }
 
 
+    @FXML
     public void latestBookButtonOnAction(ActionEvent event) throws IOException {
         try {
             if (userHomeController != null && book != null) {
                 userHomeController.openBookDetails(book);
+            } else if (showMoreResultController != null) {
+                showMoreResultController.showBookDetail(book);
             }
         } catch (Exception e) {
             e.printStackTrace();

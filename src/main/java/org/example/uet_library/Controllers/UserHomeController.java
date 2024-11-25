@@ -21,15 +21,17 @@ import javafx.scene.control.Pagination;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import net.bytebuddy.asm.Advice;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.BookService;
 
-public class UserHomeController implements Initializable {
+public class UserHomeController extends Parent implements Initializable {
 
     private static final int ITEMS_PER_PAGE = 8;
     private static final int COLUMNS = 4;
@@ -41,8 +43,12 @@ public class UserHomeController implements Initializable {
 
     private Stack<Parent> sceneStack = new Stack<>(); // Storing previous scenes
     private Stack<Parent> bookStack = new Stack<>();
+    private Stack<Parent> showMoreStack = new Stack<>();
+
+    private boolean checkShowMore = true;
 
     private Stage stage;
+
     private int countToBack = 0;
     @FXML
     private ProgressIndicator progressIndicator;
@@ -137,28 +143,60 @@ public class UserHomeController implements Initializable {
         if (books.size() > 1) {
             Label showAll = new Label("Show all results");
             showAll.setOnMouseClicked(event -> {
-                openAllSearchResults(searchField.getText());
+                try {
+                    openAllSearchResults();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 searchPopup.hide();
             });
             listView.getItems().add(showAll.getText()); // Spacer for "Show all results"
         }
 
-        listView.setOnMouseClicked(event -> {
-            if (!listView.getSelectionModel().isEmpty()) {
-                int selectedIndex = listView.getSelectionModel().getSelectedIndex();
-                Book selectedBook = books.get(selectedIndex);
+        listView.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
                 try {
-                    openBookDetails(selectedBook);
+                    openAllSearchResults();
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                searchPopup.hide();
+
             }
+        });
+
+        listView.setOnMouseClicked(event -> {
+            int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+            System.out.println("Selected Index: " + selectedIndex);
+
+            if (selectedIndex >= books.size()) {
+                System.out.println("Opening all search results");
+                try {
+                    openAllSearchResults();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                searchPopup.hide();
+                return;
+            }
+
+            Book selectedBook = books.get(selectedIndex);
+            System.out.println("Selected Book: " + selectedBook.getTitle());
+
+            try {
+                openBookDetails(selectedBook);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            searchPopup.hide();
         });
 
         searchPopup.getContent().clear();
         searchPopup.getContent().add(listView);
+
+        if (searchField.getScene() == null) {
+            return;
+        }
 
         if (!searchPopup.isShowing()) {
             double xPosition =
@@ -176,8 +214,18 @@ public class UserHomeController implements Initializable {
 
     }
 
-    private void openAllSearchResults(String query) {
-        System.out.println("Show all search results for: " + query);
+    private void openAllSearchResults() throws IOException {
+        if (checkShowMore) {
+            showMoreStack.push(this.menuController.getContent());
+            checkShowMore = false;
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/ShowMoreResult.fxml"));
+        Parent root = loader.load();
+        ShowMoreResultController showMoreResultController = loader.getController();
+        showMoreResultController.setBookResults(searchBooks);
+        showMoreResultController.setMenuController(this.menuController);
+        showMoreResultController.setUserHomeController(UserHomeController.this);
+        this.menuController.setContent(root);
     }
 
     public void setUpPagination() {
@@ -340,6 +388,7 @@ public class UserHomeController implements Initializable {
         if (!sceneStack.isEmpty()) {
             this.menuController.setContent(sceneStack.pop());
             this.bookStack.clear();
+            this.showMoreStack.clear();
             isPush = true;
             countToBack = 0;
         }
@@ -351,4 +400,13 @@ public class UserHomeController implements Initializable {
             countToBack--;
         }
     }
+
+    public void goBackShowMore() throws IOException {
+        if (!showMoreStack.isEmpty()) {
+            this.menuController.setContent(this.showMoreStack.pop());
+            this.showMoreStack.clear();
+            checkShowMore = true;
+        }
+    }
+
 }

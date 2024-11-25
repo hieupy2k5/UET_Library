@@ -12,6 +12,7 @@ module org.example.uet_library {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;
+    requires net.bytebuddy;
 
     exports org.example.uet_library.Controllers;
     opens org.example.uet_library.Controllers to javafx.fxml;
