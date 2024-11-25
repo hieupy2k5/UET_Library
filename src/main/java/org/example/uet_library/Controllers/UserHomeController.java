@@ -40,9 +40,10 @@ public class UserHomeController implements Initializable {
 
 
     private Stack<Parent> sceneStack = new Stack<>(); // Storing previous scenes
+    private Stack<Parent> bookStack = new Stack<>();
 
     private Stage stage;
-
+    private int countToBack = 0;
     @FXML
     private ProgressIndicator progressIndicator;
 
@@ -133,7 +134,7 @@ public class UserHomeController implements Initializable {
             listView.getItems().add(book.getTitle());
         }
 
-        if (books.size() > 3) {
+        if (books.size() > 1) {
             Label showAll = new Label("Show all results");
             showAll.setOnMouseClicked(event -> {
                 openAllSearchResults(searchField.getText());
@@ -331,13 +332,23 @@ public class UserHomeController implements Initializable {
             sceneStack.push(menuController.getContent());
             isPush = false;
         }
+        bookStack.push(menuController.getContent());
         this.menuController.setContent(root);
     }
 
     public void goBack() throws IOException {
         if (!sceneStack.isEmpty()) {
             this.menuController.setContent(sceneStack.pop());
+            this.bookStack.clear();
             isPush = true;
+            countToBack = 0;
+        }
+    }
+
+    public void goPreviousBook() throws IOException {
+        if (bookStack.size() >= 2) {
+            this.menuController.setContent(bookStack.pop());
+            countToBack--;
         }
     }
 }

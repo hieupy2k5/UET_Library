@@ -25,6 +25,9 @@
 .table-row-cell {
     -fx-background-color: #F3CEC6;
     -fx-font-family: Alata;
+    -fx-border-color: #BFC4E2;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
 }
 
 .table-row-cell:hover {
@@ -33,4 +36,9 @@
 
 .grid-pane {
     -fx-background-color: #000;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }

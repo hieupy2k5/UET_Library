@@ -36,6 +36,12 @@ public class ShowBookInformation {
     private boolean checkFetchback = false;
 
     @FXML
+    private Text available;
+
+    @FXML
+    private Text unavailable;
+
+    @FXML
     Button showAllButton;
 
     @FXML
@@ -131,6 +137,13 @@ public class ShowBookInformation {
             image = new Image(url, true);
         }
         imageBook.setImage(image);
+        if (book.getQuantity() == 0) {
+            available.setVisible(false);
+            unavailable.setVisible(true);
+        } else {
+            available.setVisible(true);
+            unavailable.setVisible(false);
+        }
         byte[] qrCode = new byte[1];
         qrCode = book.getqrCode();
         ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
@@ -310,4 +323,10 @@ public class ShowBookInformation {
         }
     }
 
+    @FXML
+    private void goPreviousBook(ActionEvent event) throws IOException {
+        if(userHomeController!=null) {
+            userHomeController.goPreviousBook();
+        }
+    }
 }
