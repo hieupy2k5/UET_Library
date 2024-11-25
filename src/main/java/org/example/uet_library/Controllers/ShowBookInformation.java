@@ -1,5 +1,6 @@
 package org.example.uet_library.Controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -284,31 +285,50 @@ public class ShowBookInformation {
 
     @FXML
     public void handleHeartIcon() {
-        try {
-            Database db = new Database();
-            try (Connection conn = db.getConnection()) {
-                if (checkIfFavorite()) {
-                    String deleteQuery = "DELETE FROM favors WHERE user_id = ? AND book_id = ?";
-                    PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
-                    deleteStmt.setInt(1, SessionManager.getInstance().getUserId());
-                    deleteStmt.setString(2, bookCurrent.getIsbn());
-                    deleteStmt.executeUpdate();
-                    Favor.setImage(STAR_NOT_FILL);
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                Database db = new Database();
+                try (Connection conn = db.getConnection()) {
+                    if (checkIfFavorite()) {
+                        String deleteQuery = "DELETE FROM favors WHERE user_id = ? AND book_id = ?";
+                        PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
+                        deleteStmt.setInt(1, SessionManager.getInstance().getUserId());
+                        deleteStmt.setString(2, bookCurrent.getIsbn());
+                        deleteStmt.executeUpdate();
 
-                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Removed",
-                            "You have removed \"" + bookCurrent.getTitle()
-                                    + "\" from your favorites.");
-                } else {
-                    BookService.getInstance().addBookToFavorites(bookCurrent);
-                    Favor.setImage(STAR_FILL);
-                    AlertHelper.showAlert(Alert.AlertType.INFORMATION, "Successfully Added",
-                            "The book \"" + bookCurrent.getTitle()
-                                    + "\" has been added to your favorites.");
+                        Platform.runLater(() -> Favor.setImage(STAR_NOT_FILL));
+
+                        Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.INFORMATION,
+                                "Successfully Removed",
+                                "You have removed \"" + bookCurrent.getTitle()
+                                        + "\" from your favorites."));
+                    } else {
+                        BookService.getInstance().addBookToFavorites(bookCurrent);
+
+                        Platform.runLater(() -> Favor.setImage(STAR_FILL));
+
+                        Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.INFORMATION,
+                                "Successfully Added",
+                                "The book \"" + bookCurrent.getTitle()
+                                        + "\" has been added to your favorites."));
+                    }
                 }
+                return null;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                Throwable exception = getException();
+                Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.ERROR,
+                        "Error",
+                        "An error occurred while updating the favorites: " + exception.getMessage()));
+            }
+        };
+
+        new Thread(task).start();
     }
+
 
 }
