@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -37,7 +36,6 @@ public class FavorBookController extends TableViewController<Favor> {
 
     public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        setupOptionColumn();
     }
 
     @Override
@@ -77,7 +75,7 @@ public class FavorBookController extends TableViewController<Favor> {
         return sortedFavoriteBooks;
     }
 
-    private void setupOptionColumn() {
+    public void setUpAdditionalButtons() {
         optionColumn.setCellFactory(column -> new TableCell<>() {
             private final HBox hbox = new HBox();
             private final Button favorButton = new Button();

@@ -171,8 +171,8 @@ public class RatingDialogController {
             alert.setHeaderText(null);
             alert.setContentText("Your rating has been saved");
             alert.showAndWait();
-            this.borrow.setRate(true);
-            returnDocumentController.fetchRating();
+            this.borrow.setIsRated(true);
+            returnDocumentController.fetchBookRating();
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
         });

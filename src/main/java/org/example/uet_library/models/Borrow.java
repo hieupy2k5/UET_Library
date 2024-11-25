@@ -12,7 +12,7 @@ public class Borrow implements TableItem {
     private String author;
     private String category;
     private String imageUrl;
-    private boolean isRate = false;
+    private boolean isRated = false;
 
     public Borrow(int id, String bookId, String title, String author, String category, int quantity, String borrowDate,
         String returnDate, String status, String imageUrl) {
@@ -66,11 +66,11 @@ public class Borrow implements TableItem {
         return status;
     }
 
-    public boolean isRate() {
-        return isRate;
+    public boolean isRated() {
+        return isRated;
     }
 
-    public void setRate(boolean isRate) {
-        this.isRate = isRate;
+    public void setIsRated(boolean isRated) {
+        this.isRated = isRated;
     }
 }

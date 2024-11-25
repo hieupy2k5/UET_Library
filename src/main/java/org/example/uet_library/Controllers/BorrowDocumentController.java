@@ -128,7 +128,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
     }
 
     @Override
-    public void setUpSlidingPane() {
+    public void postInitialize() {
         slidingPane.setTranslateX(900);
         slidingPane.setTranslateY(60);
     }

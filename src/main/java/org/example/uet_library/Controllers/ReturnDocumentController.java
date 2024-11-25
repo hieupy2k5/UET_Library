@@ -104,7 +104,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
     }
 
     @Override
-    public void setUpSortOrder() {
+    public void postInitialize() {
         tableView.getSortOrder().add(returnDateColumn);
     }
 
@@ -231,14 +231,13 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
                         String.format("You have returned %s", borrowedBook.getTitle()));
                 });
             } else {
-                Platform.runLater(() -> AlertHelper.showAlert(AlertType.ERROR, "Error",
-                    "Database Error"));
+                Platform.runLater(
+                    () -> AlertHelper.showAlert(AlertType.ERROR, "Error", "Database Error"));
             }
         });
 
         returnTask.setOnFailed(event -> Platform.runLater(() -> {
-            AlertHelper.showAlert(AlertType.ERROR, "Error",
-                "Failed to connect to the database.");
+            AlertHelper.showAlert(AlertType.ERROR, "Error", "Failed to connect to the database.");
         }));
 
         new Thread(returnTask).start();
@@ -287,20 +286,16 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
     }
 
     @Override
-    public void fetchRating() {
+    public void fetchBookRating() {
         Task<HashSet<String>> task = rateBook();
-        task.setOnSucceeded(event -> {
+        task.setOnSucceeded(_ -> {
             this.isRatedBooks = task.getValue();
             for (Borrow x : borrowedBooks) {
-                if (isRatedBooks.contains(x.getIsbn())) {
-                    x.setRate(true);
-                } else {
-                    x.setRate(false);
-                }
+                x.setIsRated(isRatedBooks.contains(x.getIsbn()));
             }
             Platform.runLater(() -> tableView.refresh());
         });
-        task.setOnFailed(event -> {
+        task.setOnFailed(_ -> {
 
         });
         new Thread(task).start();
@@ -309,7 +304,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
     public void updateTableWithRating() {
         for (Borrow x : borrowedBooks) {
             if (isRatedBooks.contains(x.getIsbn())) {
-                x.setRate(true);
+                x.setIsRated(true);
                 break;
             }
         }

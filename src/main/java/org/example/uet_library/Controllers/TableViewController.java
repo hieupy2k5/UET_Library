@@ -4,7 +4,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableCell;
@@ -23,9 +26,8 @@ abstract class TableViewController<T extends TableItem> {
     public TextField searchField;
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
-    private String tableName = "";
-
-    public void initialize() {
+    @FXML
+    public final void initialize() {
         this.getTableView().setPlaceholder(new Label("The list is empty..."));
         setUpColumns();
         this.getWaitProgress().setVisible(true);
@@ -33,13 +35,15 @@ abstract class TableViewController<T extends TableItem> {
         setUpInformation();
         fetchFromDB();
 
-        setUpSlidingPane();     // Hook for BorrowDocumentController
-        setUpSortOrder();       // Hook for ReturnDocumentController
+        postInitialize();
 
         this.getTableView().setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    public void setUpInformation() {
+    protected void postInitialize() {
+    }
+
+    private void setUpInformation() {
 
         this.getInformationColumn().setText("Document Information");
         this.getInformationColumn().setCellFactory(_ -> new TableCell<>() {
@@ -92,19 +96,18 @@ abstract class TableViewController<T extends TableItem> {
                     }
                 };
 
-                loadImageTask.setOnSucceeded(
-                    _ -> {
-                        Image img = loadImageTask.getValue();
-                        imageCache.put(imageUrl, img);
-                        imageView.setImage(loadImageTask.getValue());
-                    });
+                loadImageTask.setOnSucceeded(_ -> {
+                    Image img = loadImageTask.getValue();
+                    imageCache.put(imageUrl, img);
+                    imageView.setImage(loadImageTask.getValue());
+                });
                 loadImageTask.setOnFailed(_ -> imageView.setImage(null));
                 return loadImageTask;
             }
         });
     }
 
-    public void fetchFromDB() {
+    protected void fetchFromDB() {
         Task<ObservableList<T>> task = getTaskFromDB();
 
         task.setOnRunning(_ -> Platform.runLater(() -> {
@@ -115,7 +118,7 @@ abstract class TableViewController<T extends TableItem> {
         task.setOnSucceeded(_ -> Platform.runLater(() -> {
             this.setObservableList(task.getValue());
 
-            fetchRating();
+            fetchBookRating();
 
             this.setObservableList(sortObservableList(this.getObservableList()));
             this.getTableView().setItems(this.getObservableList());
@@ -128,31 +131,18 @@ abstract class TableViewController<T extends TableItem> {
 
         task.setOnFailed(_ -> Platform.runLater(() -> {
             System.err.println(
-                "Error fetching from DB in " + getClass().getSimpleName()
-                    + task.getException().getMessage());
+                "Error fetching from DB in " + getClass().getSimpleName() + task.getException()
+                    .getMessage());
             this.getWaitProgress().setVisible(false);
         }));
 
         new Thread(task).start();
     }
 
-
+    public void setupSearch() {
+    }
 
     abstract void setUpColumns();
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public void setUpSlidingPane() {
-    }
-
-    public void setUpSortOrder() {
-    }
 
     abstract TableColumn<T, Void> getInformationColumn();
 
@@ -166,13 +156,10 @@ abstract class TableViewController<T extends TableItem> {
 
     abstract void setObservableList(ObservableList<T> list);
 
-    public void fetchRating() {
+    public void fetchBookRating() {
     }
 
     public void loadFavouriteBooks() {
-    }
-
-    public void setupSearch() {
     }
 
     public void setUpAdditionalButtons() {
