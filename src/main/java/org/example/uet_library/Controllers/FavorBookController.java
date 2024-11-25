@@ -20,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.uet_library.models.Favor;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 
 public class FavorBookController extends TableViewController<Favor> {
 
@@ -55,7 +56,7 @@ public class FavorBookController extends TableViewController<Favor> {
 
     @Override
     Task<ObservableList<Favor>> getTaskFromDB() {
-        return BookService.getInstance().fetchFavorFromDB();
+        return UserService.getInstance().fetchFavorFromDB();
     }
 
     @Override

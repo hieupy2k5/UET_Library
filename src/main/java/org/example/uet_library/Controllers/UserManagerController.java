@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.models.User;
+import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 
 public class UserManagerController {
@@ -42,7 +43,7 @@ public class UserManagerController {
     }
 
     public void fetchFromDB() {
-        Task<ObservableList<User>> task = BookService.getInstance().fetchUserFromDB();
+        Task<ObservableList<User>> task = AdminService.getInstance().fetchUserFromDB();
         task.setOnRunning(event -> Platform.runLater(() -> waitProgress.setVisible(true)));
         task.setOnSucceeded(event -> Platform.runLater(() -> {
             userObservableList = task.getValue();
@@ -149,7 +150,7 @@ public class UserManagerController {
         alert.setContentText("Are you sure you want to delete user " + user.getUsername() + "?");
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                if (BookService.getInstance().deleteUser(user.getId())) {
+                if (AdminService.getInstance().deleteUser(user.getId())) {
                     userObservableList.remove(user);
                     fetchFromDB();
                 }

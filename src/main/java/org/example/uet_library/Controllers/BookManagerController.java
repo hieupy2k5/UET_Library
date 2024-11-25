@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import javafx.event.ActionEvent;
 import org.example.uet_library.models.Book;
+import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 
 import java.net.URL;
@@ -78,7 +79,7 @@ public class BookManagerController {
             if(newValue == null || newValue.isEmpty()) {
                 listViewTable.setItems(FXCollections.observableArrayList());
             } else {
-                Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB(newValue);
+                Task<ObservableList<Book>> task = AdminService.getInstance().fetchBookFromDB(newValue);
                 task.setOnSucceeded(event -> {
                     listViewTable.setItems(task.getValue());
                 });
@@ -187,8 +188,8 @@ public class BookManagerController {
     }
 
     private void removeBook(String isbn) {
-        Task<Boolean> task = BookService.getInstance().deleteBook(isbn);
-        task.setOnSucceeded(event -> {
+        Task<Boolean> task = AdminService.getInstance().deleteBook(isbn);
+        task.setOnSucceeded(_ -> {
             if(task.getValue()) {
                 this.resetImage();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -206,7 +207,7 @@ public class BookManagerController {
                 alert.showAndWait();
             }
         });
-        task.setOnFailed(event->{
+        task.setOnFailed(_ ->{
             System.err.println("Error");
         });
         new Thread(task).start();
@@ -225,7 +226,7 @@ public class BookManagerController {
 
     public void SaveBookOnAction(ActionEvent eventT) {
         bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageUrl(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
-        Task<Void> edit = BookService.getInstance().editBook(bookSelected);
+        Task<Void> edit = AdminService.getInstance().editBook(bookSelected);
         edit.setOnSucceeded(event->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");

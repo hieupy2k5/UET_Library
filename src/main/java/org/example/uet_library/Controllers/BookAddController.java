@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 
 import java.io.IOException;
@@ -129,7 +130,7 @@ public class BookAddController {
             alert.setContentText("Please choice OK or Cancel");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                if(BookService.getInstance().isExitsBook(newBook.getIsbn())){
+                if(AdminService.getInstance().isBookExisting(newBook.getIsbn())){
                     Alert a =  new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Error");
                     a.setHeaderText(null);
@@ -149,7 +150,7 @@ public class BookAddController {
     }
 
     public void saveBookTask(Book book) throws IOException {
-        Task<Void> task = BookService.getInstance().addBook(book);
+        Task<Void> task = AdminService.getInstance().addBook(book);
 
         task.setOnSucceeded(event->{
         });

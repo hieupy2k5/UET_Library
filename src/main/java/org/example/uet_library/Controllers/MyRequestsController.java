@@ -2,10 +2,7 @@ package org.example.uet_library.Controllers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -20,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.uet_library.models.Request;
-import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 import org.example.uet_library.utilities.AlertHelper;
 
 public class MyRequestsController extends TableViewController<Request> {
@@ -58,7 +55,7 @@ public class MyRequestsController extends TableViewController<Request> {
 
     @Override
     Task<ObservableList<Request>> getTaskFromDB() {
-        return BookService.getInstance().fetchMyRequestFromDB();
+        return UserService.getInstance().fetchMyRequestFromDB();
     }
 
     @Override
@@ -98,14 +95,14 @@ public class MyRequestsController extends TableViewController<Request> {
                 actionButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
                     if ("accepted".equals(selectedRequest.getStatus())) {
-                        BookService.getInstance()
-                            .userBorrowBook(selectedRequest.getId(), selectedRequest.getBookId());
+                        UserService.getInstance()
+                            .borrowBook(selectedRequest.getId(), selectedRequest.getBookId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Borrow Successful",
                             String.format("You have successfully borrowed the book %s",
                                 selectedRequest.getTitle()));
-                    } else if ("declined".equals(selectedRequest.getStatus())) {
-                        BookService.getInstance().userTryAgain(selectedRequest.getId());
+                    } else if ("denied".equals(selectedRequest.getStatus())) {
+                        UserService.getInstance().tryAgain(selectedRequest.getId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Successfully requested again",
                             "Now you need to wait for admins to approve your request.");

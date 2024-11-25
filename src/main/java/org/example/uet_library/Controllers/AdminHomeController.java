@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.example.uet_library.models.Book;
+import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 import org.example.uet_library.models.User;
 
@@ -101,7 +102,7 @@ public class AdminHomeController {
 
 
     private void loadNumberOfUser() {
-        Task<Integer> task = BookService.getInstance().loadNumberOfUser();
+        Task<Integer> task = AdminService.getInstance().loadNumberOfUser();
         task.setOnSucceeded(e -> Platform.runLater(() -> {
             numeberOfUser.setText(task.getValue().toString());
         }));
@@ -113,7 +114,7 @@ public class AdminHomeController {
     }
 
     private void loadIssuedBook() {
-        Task<Integer> task = BookService.getInstance().fetchNumberOfBookBorrowed();
+        Task<Integer> task = AdminService.getInstance().fetchNumberOfBookBorrowed();
 
         task.setOnSucceeded(e -> Platform.runLater(() -> {
             this.numberOfBookBorrowed = task.getValue().intValue();
@@ -142,7 +143,7 @@ public class AdminHomeController {
 
 
     public void loadTopBorrowedBook() {
-            Task<ObservableList<Book>> task = BookService.getInstance().top6BookMostBorrowed();
+            Task<ObservableList<Book>> task = AdminService.getInstance().top6BookMostBorrowed();
 
             task.setOnSucceeded(e -> Platform.runLater(() -> {
                 bookTop6 = task.getValue();
@@ -201,7 +202,7 @@ public class AdminHomeController {
         header.setStyle("-fx-background-color: #A4ABEE");
         tableOfTopBorrower.getChildren().add(header);
 
-        Task<ObservableList<User>> task = BookService.getInstance().fetchTop5Borrower();
+        Task<ObservableList<User>> task = AdminService.getInstance().fetchTop5Borrower();
         task.setOnSucceeded(e -> Platform.runLater(() -> {
             this.top5Users = task.getValue();
             tableOfTopBorrower.setPrefHeight(10*top5Users.size());

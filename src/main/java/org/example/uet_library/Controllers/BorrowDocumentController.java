@@ -31,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
@@ -239,7 +240,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
                                     "You have removed \"" + bookTitle + "\" from your favorites.");
                             });
                         } else {
-                            BookService.getInstance().addBookToFavorites(selectedBook);
+                            UserService.getInstance().addBookToFavorites(selectedBook);
                             favoriteBooks.add(isbn);
                             Platform.runLater(() -> {
                                 AlertHelper.showAlert(AlertType.INFORMATION, "Successfully Added",
@@ -356,7 +357,7 @@ public class BorrowDocumentController extends TableViewController<Book> {
                     Book book = entry.getKey();
 
                     if (book.getQuantity() > 0) {
-                        boolean success = BookService.getInstance()
+                        boolean success = UserService.getInstance()
                             .requestBook(userID, book.getIsbn(), 1);
 
                         if (!success) {

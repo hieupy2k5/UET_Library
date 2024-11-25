@@ -24,8 +24,9 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.models.Book;
-import org.example.uet_library.services.BookRating;
+import org.example.uet_library.models.Rating;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
@@ -72,7 +73,7 @@ public class ShowBookInformation {
 
     private UserHomeController userHomeController;
 
-    private ObservableList<BookRating> feedback = FXCollections.observableArrayList();
+    private ObservableList<Rating> feedback = FXCollections.observableArrayList();
 
     public void setUserHomeController(UserHomeController userHomeController) {
         this.userHomeController = userHomeController;
@@ -88,12 +89,12 @@ public class ShowBookInformation {
         }
     }
 
-    public Task<ObservableList<BookRating>> getFeedBack() {
-        return new Task<ObservableList<BookRating>>() {
+    public Task<ObservableList<Rating>> getFeedBack() {
+        return new Task<ObservableList<Rating>>() {
             @Override
-            protected ObservableList<BookRating> call() throws Exception {
+            protected ObservableList<Rating> call() throws Exception {
                 Database db = new Database();
-                ObservableList<BookRating> feedback = FXCollections.observableArrayList();
+                ObservableList<Rating> feedback = FXCollections.observableArrayList();
                 try (Connection conn = db.getConnection()) {
                     String query = "SELECT * FROM Ratings where ISBN = ? order by comment_at desc";
                     PreparedStatement ps = conn.prepareStatement(query);
@@ -106,7 +107,7 @@ public class ShowBookInformation {
                         Timestamp commentAt = rs.getTimestamp("comment_at");
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String formattedCommentAt = sdf.format(commentAt);
-                        BookRating bookRating = new BookRating("", rating, username, comment, formattedCommentAt);
+                        Rating bookRating = new Rating("", rating, username, comment, formattedCommentAt);
                         bookRating.setComment(comment);
                         feedback.add(bookRating);
                     }
@@ -174,7 +175,7 @@ public class ShowBookInformation {
     }
 
     private void setCommentBook() {
-        Task<ObservableList<BookRating>> task = getFeedBack();
+        Task<ObservableList<Rating>> task = getFeedBack();
 
         task.setOnSucceeded(event -> {
             this.checkFetchback = false;
@@ -202,7 +203,7 @@ public class ShowBookInformation {
         int count = showAll ? feedback.size() : Math.min(feedback.size(), 5);
 
         for (int i = 0; i < count; i++) {
-            BookRating bookRating = feedback.get(i);
+            Rating bookRating = feedback.get(i);
 
             VBox commentBox = new VBox();
             commentBox.setSpacing(10);
@@ -304,7 +305,7 @@ public class ShowBookInformation {
                                 "You have removed \"" + bookCurrent.getTitle()
                                         + "\" from your favorites."));
                     } else {
-                        BookService.getInstance().addBookToFavorites(bookCurrent);
+                        UserService.getInstance().addBookToFavorites(bookCurrent);
 
                         Platform.runLater(() -> Favor.setImage(STAR_FILL));
 

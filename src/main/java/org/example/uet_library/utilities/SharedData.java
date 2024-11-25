@@ -8,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import org.example.uet_library.enums.BookCheckResult;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 
 public class SharedData {
 
@@ -29,7 +30,7 @@ public class SharedData {
     }
 
     public void addToCart(Book book) {
-        BookCheckResult bookCheckResult = BookService.getInstance().isBookBorrowedOrRequested(book.getIsbn());
+        BookCheckResult bookCheckResult = UserService.getInstance().isBookBorrowedOrRequested(book.getIsbn());
         if (bookCheckResult == BookCheckResult.ALREADY_REQUESTED) {
             AlertHelper.showAlert(AlertType.ERROR, "Book already in request list",
                 "Please check \"My Requests\" tab to see your request for this book.");

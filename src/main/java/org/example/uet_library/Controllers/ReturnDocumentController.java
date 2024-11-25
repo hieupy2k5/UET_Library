@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.models.Borrow;
 import org.example.uet_library.services.BookService;
+import org.example.uet_library.services.UserService;
 import org.example.uet_library.utilities.AlertHelper;
 
 /**
@@ -83,7 +84,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
 
     @Override
     Task<ObservableList<Borrow>> getTaskFromDB() {
-        return BookService.getInstance().fetchBorrowFromDB();
+        return UserService.getInstance().fetchBorrowFromDB();
     }
 
     @Override
@@ -204,7 +205,7 @@ public class ReturnDocumentController extends TableViewController<Borrow> {
         Task<Boolean> returnTask = new Task<>() {
             @Override
             protected Boolean call() {
-                return BookService.getInstance()
+                return UserService.getInstance()
                     .returnBook(borrowedBook.getId(), borrowedBook.getIsbn());
             }
         };

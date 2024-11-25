@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import org.example.uet_library.models.Request;
+import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 import org.example.uet_library.utilities.AlertHelper;
 
@@ -54,7 +55,7 @@ public class UserRequestsController extends TableViewController<Request> {
 
     @Override
     Task<ObservableList<Request>> getTaskFromDB() {
-        return BookService.getInstance().fetchUserRequestFromDB();
+        return AdminService.getInstance().fetchUserRequestFromDB();
     }
 
     @Override
@@ -83,7 +84,7 @@ public class UserRequestsController extends TableViewController<Request> {
     public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button acceptButton = new Button();
-            private final Button declineButton = new Button();
+            private final Button denyButton = new Button();
 
             {
                 Image borrowImage = new Image(
@@ -96,10 +97,10 @@ public class UserRequestsController extends TableViewController<Request> {
 
                 acceptButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
-                    Integer quantityInStock = BookService.getInstance()
+                    Integer quantityInStock = AdminService.getInstance()
                         .bookQuantityForRequest(selectedRequest.getId());
                     if (quantityInStock > 0) {
-                        BookService.getInstance().adminAcceptRequest(selectedRequest.getUserId(),
+                        AdminService.getInstance().acceptRequest(selectedRequest.getUserId(),
                             selectedRequest.getBookId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION,
@@ -118,15 +119,15 @@ public class UserRequestsController extends TableViewController<Request> {
                 ImageView returnImageView = new ImageView(returnImage);
                 returnImageView.setFitWidth(32);
                 returnImageView.setFitHeight(32);
-                declineButton.setGraphic(returnImageView);
-                declineButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; ");
+                denyButton.setGraphic(returnImageView);
+                denyButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; ");
 
-                declineButton.setOnAction(event -> {
+                denyButton.setOnAction(event -> {
                     Request selectedRequest = getTableView().getItems().get(getIndex());
-                    BookService.getInstance().adminDeclineRequest(selectedRequest.getUserId(),
+                    AdminService.getInstance().denyRequest(selectedRequest.getUserId(),
                         selectedRequest.getBookId());
                     fetchFromDB();
-                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully declined request",
+                    AlertHelper.showAlert(AlertType.INFORMATION, "Successfully denied request",
                         String.format(
                             "You have rejected this user's request to borrow the book %s",
                             selectedRequest.getTitle()));
@@ -140,7 +141,7 @@ public class UserRequestsController extends TableViewController<Request> {
                     setGraphic(null);
                 } else {
                     HBox hbox = new HBox(10, acceptButton,
-                        declineButton); // Add spacing between buttons
+                        denyButton); // Add spacing between buttons
                     hbox.setStyle("-fx-alignment: center;");
                     setGraphic(hbox);
                 }
