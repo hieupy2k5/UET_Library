@@ -144,9 +144,9 @@ public class BookAPI {
                         }
                         // Add the book to the list
                         if (volumeInfo.has("categories")) {
-                            book.setType(volumeInfo.get("categories").get(0).asText());
+                            book.setCategory(volumeInfo.get("categories").get(0).asText());
                         } else {
-                            book.setType("");
+                            book.setCategory("");
                         }
                         books.add(book);
                     }

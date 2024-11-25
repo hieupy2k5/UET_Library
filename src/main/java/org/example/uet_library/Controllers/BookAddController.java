@@ -44,10 +44,10 @@ public class BookAddController {
             }
             isbnBook.setText(newBook.getIsbn());
             titleadd.setText(newBook.getTitle());
-            if (newBook.getType() == null || newBook.getType().equals("")) {
+            if (newBook.getCategory() == null || newBook.getCategory().equals("")) {
                 typeBook.setText("No type");
             } else {
-                typeBook.setText(newBook.getType());
+                typeBook.setText(newBook.getCategory());
             }
             yearBook.setText(newBook.getYear()+"");
             if (newBook.getImageUrl() == null || newBook.getImageUrl().isEmpty()) {

@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
@@ -164,7 +163,7 @@ public class BookInformationController {
     }
 
     public void fetchBookForRecommendBook() {
-        Task<ObservableList<Book>> task = BookService.getInstance().fetchBookForPage(this.bookCurrent);
+        Task<ObservableList<Book>> task = BookService.getInstance().fetchRecommendations(this.bookCurrent);
         task.setOnSucceeded(event -> {
             recommendBooks = task.getValue();
             for(Book book : recommendBooks) {

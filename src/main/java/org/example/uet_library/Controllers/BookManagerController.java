@@ -11,7 +11,6 @@ import javafx.util.Callback;
 import javafx.event.ActionEvent;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.AdminService;
-import org.example.uet_library.services.BookService;
 
 import java.net.URL;
 import java.util.Optional;
@@ -128,7 +127,7 @@ public class BookManagerController {
             ISBNEdit.setText(bookSelected.getIsbn());
             yearOfPublication.setText(bookSelected.getYear()+"");
             QuantityEdit.setText(String.valueOf(bookSelected.getQuantity()));
-            categoryBook.setText(bookSelected.getType());
+            categoryBook.setText(bookSelected.getCategory());
             handleCancel();
         }
     }

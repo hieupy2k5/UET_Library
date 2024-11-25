@@ -8,7 +8,7 @@ public class Book implements TableItem {
     private String imageUrl;
     private int year;
     private int quantity;
-    private String type;
+    private String category;
     private byte[] qrCode;
     private String infoBookLink;
     private String description;
@@ -30,36 +30,36 @@ public class Book implements TableItem {
         this.infoBookLink = link;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getType() {
-        return type;
+    public String getCategory() {
+        return category;
     }
 
-    public Book(String title, String author, String isbn, String imageUrl, int year, String type,
+    public Book(String title, String author, String isbn, String imageUrl, int year, String category,
         String infoBookLink, String description) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.imageUrl = imageUrl;
         this.year = year;
-        this.type = type;
+        this.category = category;
         this.quantity = 0;
         this.qrCode = null;
         this.infoBookLink = infoBookLink;
         this.description = description;
     }
 
-    public Book(String title, String author, String isbn, String imageUrl, int year, String type,
+    public Book(String title, String author, String isbn, String imageUrl, int year, String category,
         int quantity) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.imageUrl = imageUrl;
         this.year = year;
-        this.type = type;
+        this.category = category;
         this.quantity = quantity;
     }
 
@@ -124,7 +124,7 @@ public class Book implements TableItem {
             "Image Link: " + imageUrl + "\n" +
             "Year: " + year + "\n" +
             "Quantity: " + quantity + "\n" +
-            "Type: " + type;
+            "Type: " + category;
     }
 
     public byte[] getqrCode() {

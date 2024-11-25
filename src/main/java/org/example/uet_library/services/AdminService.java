@@ -44,7 +44,7 @@ public class AdminService {
                     ps.setInt(4, book.getYear());
                     ps.setString(5, book.getImageUrl());
                     ps.setInt(6, book.getQuantity());
-                    ps.setString(7, book.getType());
+                    ps.setString(7, book.getCategory());
                     ps.setBytes(8, qr);
                     ps.setString(9, book.getInfoBookLink());
                     ps.setString(10, book.getDescription());
@@ -109,7 +109,7 @@ public class AdminService {
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published");
                         String isbn = resultSet.getString("ISBN");
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
@@ -229,7 +229,7 @@ public class AdminService {
                     preparedStatement.setString(2, book.getAuthor());
                     preparedStatement.setInt(3, book.getQuantity());
                     preparedStatement.setString(4, book.getYear() + "");
-                    preparedStatement.setString(5, book.getType());
+                    preparedStatement.setString(5, book.getCategory());
                     preparedStatement.setString(6, book.getIsbn());
                     preparedStatement.execute();
                 } catch (SQLException e) {

@@ -4,22 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.example.uet_library.database.Database;
-import org.example.uet_library.enums.BookCheckResult;
 import org.example.uet_library.models.Book;
-import org.example.uet_library.models.Borrow;
-import org.example.uet_library.models.Favor;
-import org.example.uet_library.models.Request;
-import org.example.uet_library.models.User;
 import org.example.uet_library.utilities.SessionManager;
 
 
@@ -53,7 +44,7 @@ public class BookService {
                     while (resultSet.next()) {
                         String title = resultSet.getString("title");
                         String author = resultSet.getString("author");
-                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published");
                         String isbn = resultSet.getString("isbn");
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
@@ -94,7 +85,7 @@ public class BookService {
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published");
                         String isbn = resultSet.getString("ISBN");
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
@@ -132,24 +123,46 @@ public class BookService {
         };
     }
 
-    public Task<ObservableList<Book>> fetchBookForPage(Book bookCurrent) {
+    public Task<ObservableList<Book>> fetchRecommendations(Book bookCurrent) {
         return new Task<>() {
             @Override
             public ObservableList<Book> call() throws Exception {
-                ObservableList<Book> bookList = FXCollections.observableArrayList();
+                ObservableList<Book> recommendedList = FXCollections.observableArrayList();
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
-                    // Use PreparedStatement for protection against SQL injection
-                    String query = "SELECT * FROM books WHERE category = ? OR author = ? OR title LIKE ?";
+                    String query = "SELECT * FROM books WHERE ISBN != ? AND " +
+                        "(category = ?" +
+                        "OR author = ? " +
+                        "OR (Title LIKE ? OR Title LIKE ? OR Title LIKE ?)) " +
+                        "LIMIT 4";
+
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
-                    preparedStatement.setString(1, "%" + bookCurrent + "%");
-                    preparedStatement.setString(2, "%" + bookCurrent.getAuthor() + "%");
-                    preparedStatement.setString(3, "%" + bookCurrent.getTitle() + "%");
+
+                    // Extract keywords from the current book's title for partial matches
+                    String[] titleKeywords = bookCurrent.getTitle().split(" ");
+                    String keyword1 = "%" + (titleKeywords.length > 0 ? titleKeywords[0] : "") + "%";
+                    String keyword2 = "%" + (titleKeywords.length > 1 ? titleKeywords[1] : "") + "%";
+                    String keyword3 = "%" + (titleKeywords.length > 2 ? titleKeywords[2] : "") + "%";
+
+                    // Set the parameters
+                    preparedStatement.setString(1, bookCurrent.getIsbn()); // Exclude the current book ID
+                    preparedStatement.setString(2, bookCurrent.getCategory());
+                    preparedStatement.setString(3, bookCurrent.getAuthor()); // Exact author name
+                    preparedStatement.setString(4, keyword1);            // First word from title
+                    preparedStatement.setString(5, keyword2);            // Second word from title
+                    preparedStatement.setString(6, keyword3);            // Third word from title
                     ResultSet resultSet = preparedStatement.executeQuery();
+
+                    System.out.println("Current book:");
+                    System.out.println("ISBN: " + bookCurrent.getIsbn());
+                    System.out.println("Title: " + bookCurrent.getTitle());
+                    System.out.println("Author: " + bookCurrent.getAuthor());
+                    System.out.println("\n");
+                    System.out.println("Fetched books:");
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
-                        int year = resultSet.getInt("year_published"); // Use alias for clarity
+                        int year = resultSet.getInt("year_published");
                         String isbn = resultSet.getString("ISBN");
                         String imageUrl = resultSet.getString("image_url");
                         int quantity = resultSet.getInt("quantity");
@@ -158,13 +171,18 @@ public class BookService {
                         Book book = new Book(title, author, isbn, imageUrl, year, type, quantity);
                         book.setDescription(description);
                         book.setqrCode(resultSet.getBytes("qrcode"));
-                        bookList.add(book);
+                        recommendedList.add(book);
+
+                        System.out.println("ISBN: " + resultSet.getString("ISBN"));
+                        System.out.println("Title: " + resultSet.getString("title"));
+                        System.out.println("Author: " + resultSet.getString("Author") + "\n");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                return bookList;
+                return recommendedList;
             }
+
         };
     }
 
