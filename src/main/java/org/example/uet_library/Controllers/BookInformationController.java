@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
@@ -36,6 +37,12 @@ public class BookInformationController {
     private final Image STAR_FILL = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm(),40,40,true, true);
 
     private boolean checkFetchback = false;
+
+    @FXML
+    private Text available;
+
+    @FXML
+    private Text unavailable;
 
     @FXML
     Button showAllButton;
@@ -72,6 +79,11 @@ public class BookInformationController {
     private Book bookCurrent;
 
     private UserHomeController userHomeController;
+    private ShowMoreResultController showMoreResultController;
+
+    public void setShowMoreResultController(ShowMoreResultController showMoreResultController) {
+        this.showMoreResultController = showMoreResultController;
+    }
 
     private ObservableList<Rating> feedback = FXCollections.observableArrayList();
 
@@ -86,6 +98,8 @@ public class BookInformationController {
     void BackOnAction(ActionEvent event) throws IOException {
         if (userHomeController != null) {
             userHomeController.goBack();
+        } else if (this.showMoreResultController != null) {
+            this.showMoreResultController.goToSearchPage();
         }
     }
 
@@ -133,6 +147,13 @@ public class BookInformationController {
             image = new Image(url, true);
         }
         imageBook.setImage(image);
+        if (book.getQuantity() == 0) {
+            available.setVisible(false);
+            unavailable.setVisible(true);
+        } else {
+            available.setVisible(true);
+            unavailable.setVisible(false);
+        }
         byte[] qrCode = new byte[1];
         qrCode = book.getqrCode();
         ByteArrayInputStream bis = new ByteArrayInputStream(qrCode);
@@ -154,6 +175,7 @@ public class BookInformationController {
 
                     CardController card = fxmlloader.getController();
                     card.setUserHomeController(this.userHomeController);
+                    card.setShowMoreResultController(this.showMoreResultController);
                     card.setData(book);
                     cardLayout.getChildren().add(cardBox);
                 } catch (IOException e) {
@@ -331,5 +353,13 @@ public class BookInformationController {
         new Thread(task).start();
     }
 
+    @FXML
+    private void goPreviousBook(ActionEvent event) throws IOException {
+        if(userHomeController!=null) {
+            userHomeController.goPreviousBook();
+        } else if (this.showMoreResultController != null) {
+            showMoreResultController.goToPreviousBook();
+        }
+    }
 
 }

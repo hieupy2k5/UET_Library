@@ -50,7 +50,7 @@
 .setting_textField {
     -fx-border-width: 0 0 1 0;
     -fx-border-color: #858585;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-font-size: 14px;
     -fx-background-color: transparent;
 }

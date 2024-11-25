@@ -29,6 +29,8 @@ public class BookCardController {
 
     private UserHomeController userHomeController;
 
+    private ShowMoreResultController showMoreResultController;
+
     public void setUserHomeController(UserHomeController userHomeController) {
         this.userHomeController = userHomeController;
     }
