@@ -323,9 +323,9 @@ public class UserHomeController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
         Parent root = fxmlLoader.load();
 
-        ShowBookInformation showBookInformation = fxmlLoader.getController();
-        showBookInformation.setData(book);
-        showBookInformation.setUserHomeController(this);
+        BookInformationController bookInformationController = fxmlLoader.getController();
+        bookInformationController.setData(book);
+        bookInformationController.setUserHomeController(this);
 
         if (isPush) {
             sceneStack.push(menuController.getContent());

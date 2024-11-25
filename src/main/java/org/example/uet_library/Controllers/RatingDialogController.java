@@ -66,10 +66,10 @@ public class RatingDialogController {
     private final Image starEmpty = new Image(getClass().getResource("/Images/star.png").toExternalForm());
     private final Image starFilled = new Image(getClass().getResource("/Images/star_color.png").toExternalForm());
 
-    private ReturnDocumentController returnDocumentController;
+    private ReturnBookController returnBookController;
 
-    public void setReturnDocumentController(ReturnDocumentController returnDocumentController) {
-        this.returnDocumentController = returnDocumentController;
+    public void setReturnDocumentController(ReturnBookController returnBookController) {
+        this.returnBookController = returnBookController;
     }
     private Borrow borrow;
 
@@ -172,7 +172,7 @@ public class RatingDialogController {
             alert.setContentText("Your rating has been saved");
             alert.showAndWait();
             this.borrow.setIsRated(true);
-            returnDocumentController.fetchBookRating();
+            returnBookController.fetchBookRating();
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.close();
         });

@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.uet_library.services.AdminService;
-import org.example.uet_library.services.BookService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,7 +18,7 @@ import java.util.Optional;
 
 import org.example.uet_library.models.Book;
 public class BookAddController {
-    private MenuController menuController = BookAPISearch.menuController;
+    private MenuController menuController = BookAPISearchController.menuController;
     private Book newBook;
     private ObservableList<Book> bookListToBack;
     private int pageIndex = 0;
@@ -28,10 +27,10 @@ public class BookAddController {
         this.menuController = menuController;
     }
 
-    private BookAPISearch bookAPISearch;
+    private BookAPISearchController bookAPISearchController;
 
-    public void setBookAPISearch(BookAPISearch bookAPISearch) {
-        this.bookAPISearch = bookAPISearch;
+    public void setBookAPISearch(BookAPISearchController bookAPISearchController) {
+        this.bookAPISearchController = bookAPISearchController;
     }
 
 
@@ -161,7 +160,7 @@ public class BookAddController {
 
         task.setOnRunning(event -> {
             try {
-                BookAPISearch.setBack();
+                BookAPISearchController.setBack();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -198,8 +197,8 @@ public class BookAddController {
 
     @FXML
     public void BackOnAction(ActionEvent event) throws IOException {
-        if (this.bookAPISearch != null) {
-            BookAPISearch.setBack();
+        if (this.bookAPISearchController != null) {
+            BookAPISearchController.setBack();
         }
     }
 

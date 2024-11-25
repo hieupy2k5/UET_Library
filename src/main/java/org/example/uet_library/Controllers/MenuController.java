@@ -163,7 +163,7 @@ public class MenuController {
     @FXML
     public void loadBookAPISearchView() {
         loadView("/FXMLs/BookAPISearch.fxml");
-        BookAPISearch.menuController = this;
+        BookAPISearchController.menuController = this;
     }
 
     @FXML

@@ -31,7 +31,7 @@ import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
-public class ShowBookInformation {
+public class BookInformationController {
     private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm(),40,40,true, true);
     private final Image STAR_FILL = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm(),40,40,true, true);
 

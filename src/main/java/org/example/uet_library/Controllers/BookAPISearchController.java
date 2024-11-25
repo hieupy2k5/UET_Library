@@ -22,7 +22,7 @@ import org.example.uet_library.models.Book;
 import org.example.uet_library.apis.BookAPI;
 import java.io.IOException;
 
-public class BookAPISearch {
+public class BookAPISearchController {
     public static MenuController menuController;
     private int currentPage = 0;
 

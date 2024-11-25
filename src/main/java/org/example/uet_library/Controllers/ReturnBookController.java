@@ -35,14 +35,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.models.Borrow;
-import org.example.uet_library.services.BookService;
 import org.example.uet_library.services.UserService;
 import org.example.uet_library.utilities.AlertHelper;
 
 /**
  * This is a feature for users
  */
-public class ReturnDocumentController extends TableViewController<Borrow> {
+public class ReturnBookController extends TableViewController<Borrow> {
 
     public TextField searchField;
     public TableView<Borrow> tableView;

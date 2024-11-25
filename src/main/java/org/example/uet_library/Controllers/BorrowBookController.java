@@ -10,8 +10,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -39,7 +37,7 @@ import org.example.uet_library.utilities.SharedData;
 /**
  * This is a feature for users.
  */
-public class BorrowDocumentController extends TableViewController<Book> {
+public class BorrowBookController extends TableViewController<Book> {
 
     @FXML
     public TableView<Map.Entry<Book, Integer>> selectedBooksTable;
