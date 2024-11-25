@@ -22,6 +22,7 @@ import org.example.uet_library.models.Favor;
 import org.example.uet_library.models.Request;
 import org.example.uet_library.models.User;
 import org.example.uet_library.utilities.SessionManager;
+import org.jetbrains.annotations.NotNull;
 
 
 public class BookService {
@@ -539,13 +540,7 @@ public class BookService {
         try (Connection conn = dbConnection.getConnection()) {
             int userID = SessionManager.getInstance().getUserId();
             String query = "SELECT COUNT(*) FROM requests WHERE book_id = ? AND user_id = ?";
-            PreparedStatement queryStmt = conn.prepareStatement(query);
-            queryStmt.setString(1, bookId);
-            queryStmt.setInt(2, userID);
-            ResultSet rs = queryStmt.executeQuery();
-            rs.next();
-            int count = rs.getInt(1);
-            return count > 0;
+            return queryIfExists(bookId, conn, userID, query);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -557,17 +552,23 @@ public class BookService {
         try (Connection conn = dbConnection.getConnection()) {
             int userID = SessionManager.getInstance().getUserId();
             String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'";
-            PreparedStatement queryStmt = conn.prepareStatement(query);
-            queryStmt.setString(1, bookId);
-            queryStmt.setInt(2, userID);
-            ResultSet rs = queryStmt.executeQuery();
-            rs.next();
-            int count = rs.getInt(1);
-            return count > 0;
+            return queryIfExists(bookId, conn, userID, query);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @NotNull
+    private Boolean queryIfExists(String bookId, Connection conn, int userID, String query)
+        throws SQLException {
+        PreparedStatement queryStmt = conn.prepareStatement(query);
+        queryStmt.setString(1, bookId);
+        queryStmt.setInt(2, userID);
+        ResultSet rs = queryStmt.executeQuery();
+        rs.next();
+        int count = rs.getInt(1);
+        return count > 0;
     }
 
     public boolean userTryAgain(int requestId) {
