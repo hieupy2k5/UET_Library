@@ -34,22 +34,10 @@ public class FavorBookController extends TableViewController<Favor> {
     public ProgressIndicator waitProgress;
     private ObservableList<Favor> favoriteBooks;
 
-    public void initialize() {
-        tableView.setPlaceholder(new Label("Your favorite list is empty..."));
-        waitProgress.setVisible(true);
-
-        super.setUpInformation();
-        setupOptionColumn();
-
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        fetchFromDB();
-
-        Platform.runLater(() -> tableView.refresh());
-    }
 
     public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        setupOptionColumn();
     }
 
     @Override

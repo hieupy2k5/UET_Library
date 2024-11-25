@@ -34,8 +34,8 @@ public class UserManagerController {
     public void initialize() {
         tableView.setPlaceholder(new Label("No user? So sad..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("first_name"));
-        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("last_name"));
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         waitProgress.setVisible(true);
         fetchFromDB();

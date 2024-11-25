@@ -38,15 +38,6 @@ public class MyRequestsController extends TableViewController<Request> {
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
 
-    public void initialize() {
-        tableView.setPlaceholder(new Label("Your request list is empty..."));
-        waitProgress.setVisible(true);
-        super.setUpInformation();
-
-        fetchFromDB();
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-    }
-
     public void setUpColumns() {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
