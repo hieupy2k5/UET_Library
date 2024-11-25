@@ -98,7 +98,7 @@ public class ShowMoreResultController {
         Task<Image> imageTask = new Task<>() {
             @Override
             protected Image call() throws Exception {
-                return new Image(book.getImageLink(), 80,80, true, true, true);
+                return new Image(book.getImageUrl(), 80,80, true, true, true);
             }
         };
         imageTask.setOnSucceeded(e -> {
@@ -145,9 +145,9 @@ public class ShowMoreResultController {
         }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
         Parent root = loader.load();
-        ShowBookInformation showBookInformation = loader.getController();
-        showBookInformation.setData(book);
-        showBookInformation.setShowMoreResultController(this);
+        BookInformationController bookInformationController = loader.getController();
+        bookInformationController.setData(book);
+        bookInformationController.setShowMoreResultController(this);
         this.menuController.setContent(root);
     }
 
