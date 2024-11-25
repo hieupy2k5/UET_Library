@@ -26,6 +26,8 @@ module org.example.uet_library {
     opens org.example.uet_library.utilities to javafx.fxml;
     exports org.example.uet_library.models;
     opens org.example.uet_library.models to javafx.fxml;
+    exports org.example.uet_library.enums;
+    opens org.example.uet_library.enums to javafx.fxml;
     exports org.example.uet_library;
     opens org.example.uet_library to javafx.fxml;
 }

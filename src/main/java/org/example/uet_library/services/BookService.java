@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.example.uet_library.apis.QRGenerateAPI;
 import org.example.uet_library.database.Database;
+import org.example.uet_library.enums.BookCheckResult;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.models.Borrow;
 import org.example.uet_library.models.Favor;
@@ -535,41 +536,73 @@ public class BookService {
         }
     }
 
-    public Boolean isBookInRequest(String bookId) {
-        Database dbConnection = new Database();
-        try (Connection conn = dbConnection.getConnection()) {
-            int userID = SessionManager.getInstance().getUserId();
-            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ? AND user_id = ?";
-            return queryIfExists(bookId, conn, userID, query);
+//    public Boolean isBookInRequest(String bookId) {
+//        Database dbConnection = new Database();
+//        try (Connection conn = dbConnection.getConnection()) {
+//            int userID = SessionManager.getInstance().getUserId();
+//            String query = "SELECT COUNT(*) FROM requests WHERE book_id = ? AND user_id = ?";
+//            return queryIfExists(bookId, conn, userID, query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+//
+//    public Boolean isBookInBorrowed(String bookId) {
+//        Database dbConnection = new Database();
+//        try (Connection conn = dbConnection.getConnection()) {
+//            int userID = SessionManager.getInstance().getUserId();
+//            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'";
+//            return queryIfExists(bookId, conn, userID, query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+
+    public BookCheckResult isBookBorrowedOrRequested(String bookId) {
+        Database db = new Database();
+        try (Connection conn = db.getConnection()) {
+            int userId = SessionManager.getInstance().getUserId();
+            String query = """
+                SELECT 'requested' AS status FROM requests WHERE book_id = ? AND user_id = ?
+                UNION
+                SELECT 'borrowed' AS status FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'
+                """;
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userId);
+            queryStmt.setString(3, bookId);
+            queryStmt.setString(4, bookId);
+            queryStmt.executeQuery();
+
+            ResultSet rs = queryStmt.executeQuery();
+            while (rs.next()) {
+                if (rs.getString("status").equals("requested")) {
+                    return BookCheckResult.ALREADY_REQUESTED;
+                } else if (rs.getString("status").equals("borrowed")) {
+                    return BookCheckResult.ALREADY_BORROWED;
+                }
+            }
+
+            return BookCheckResult.CAN_BE_REQUESTED;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return BookCheckResult.ERROR;
         }
     }
 
-    public Boolean isBookInBorrowed(String bookId) {
-        Database dbConnection = new Database();
-        try (Connection conn = dbConnection.getConnection()) {
-            int userID = SessionManager.getInstance().getUserId();
-            String query = "SELECT COUNT(*) FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'";
-            return queryIfExists(bookId, conn, userID, query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @NotNull
-    private Boolean queryIfExists(String bookId, Connection conn, int userID, String query)
-        throws SQLException {
-        PreparedStatement queryStmt = conn.prepareStatement(query);
-        queryStmt.setString(1, bookId);
-        queryStmt.setInt(2, userID);
-        ResultSet rs = queryStmt.executeQuery();
-        rs.next();
-        int count = rs.getInt(1);
-        return count > 0;
-    }
+//    @NotNull
+//    private Boolean queryIfExists(String bookId, Connection conn, int userID, String query)
+//        throws SQLException {
+//        PreparedStatement queryStmt = conn.prepareStatement(query);
+//        queryStmt.setString(1, bookId);
+//        queryStmt.setInt(2, userID);
+//        ResultSet rs = queryStmt.executeQuery();
+//        rs.next();
+//        int count = rs.getInt(1);
+//        return count > 0;
+//    }
 
     public boolean userTryAgain(int requestId) {
         Database dbConnection = new Database();
