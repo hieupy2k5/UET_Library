@@ -105,8 +105,6 @@ abstract class TableViewController<T extends TableItem> {
     public void fetchFromDB() {
     }
 
-    ;
-
     abstract void setUpColumns();
 
     public String getTableName() {
