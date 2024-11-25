@@ -131,26 +131,35 @@ public class BookService {
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
                     String query = "SELECT * FROM books WHERE ISBN != ? AND " +
-                        "(category = ?" +
-                        "OR author = ? " +
+                        "(category = ? OR author = ? " +
                         "OR (Title LIKE ? OR Title LIKE ? OR Title LIKE ?)) " +
+                        "ORDER BY " +
+                        "(author = ?) DESC, " +
+                        "(category = ?) DESC, " +
+                        "(Title LIKE ? OR Title LIKE ? OR Title LIKE ?) DESC " +
                         "LIMIT 4";
-
                     PreparedStatement preparedStatement = conDB.prepareStatement(query);
 
-                    // Extract keywords from the current book's title for partial matches
                     String[] titleKeywords = bookCurrent.getTitle().split(" ");
-                    String keyword1 = "%" + (titleKeywords.length > 0 ? titleKeywords[0] : "") + "%";
-                    String keyword2 = "%" + (titleKeywords.length > 1 ? titleKeywords[1] : "") + "%";
-                    String keyword3 = "%" + (titleKeywords.length > 2 ? titleKeywords[2] : "") + "%";
+                    String keyword1 =
+                        "%" + (titleKeywords.length > 0 ? titleKeywords[0] : "") + "%";
+                    String keyword2 =
+                        "%" + (titleKeywords.length > 1 ? titleKeywords[1] : "") + "%";
+                    String keyword3 =
+                        "%" + (titleKeywords.length > 2 ? titleKeywords[2] : "") + "%";
 
                     // Set the parameters
-                    preparedStatement.setString(1, bookCurrent.getIsbn()); // Exclude the current book ID
+                    preparedStatement.setString(1, bookCurrent.getIsbn());
                     preparedStatement.setString(2, bookCurrent.getCategory());
-                    preparedStatement.setString(3, bookCurrent.getAuthor()); // Exact author name
-                    preparedStatement.setString(4, keyword1);            // First word from title
-                    preparedStatement.setString(5, keyword2);            // Second word from title
-                    preparedStatement.setString(6, keyword3);            // Third word from title
+                    preparedStatement.setString(3, bookCurrent.getAuthor());
+                    preparedStatement.setString(4, keyword1);
+                    preparedStatement.setString(5, keyword2);
+                    preparedStatement.setString(6, keyword3);
+                    preparedStatement.setString(7, bookCurrent.getAuthor());
+                    preparedStatement.setString(8, bookCurrent.getCategory());
+                    preparedStatement.setString(9, keyword1);
+                    preparedStatement.setString(10, keyword2);
+                    preparedStatement.setString(11, keyword3);
                     ResultSet resultSet = preparedStatement.executeQuery();
 
                     System.out.println("Current book:");
