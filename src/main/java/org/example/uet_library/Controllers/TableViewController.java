@@ -67,6 +67,7 @@ abstract class TableViewController<T extends TableItem> {
                 } else {
                     TableItem tableItem = getTableView().getItems().get(getIndex());
                     titleLabel.setText(tableItem.getTitle());
+                    authorLabel.setText(tableItem.getAuthor());
                     setGraphic(hbox);
 
                     String imageUrl = tableItem.getImageUrl();
