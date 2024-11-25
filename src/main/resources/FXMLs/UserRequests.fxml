@@ -8,7 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="980.0" style="-fx-background-color: #F89D7B;" stylesheets="@../Styles/AdminBookShow.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.UserRequestsController">
+<AnchorPane prefHeight="800.0" prefWidth="980.0" style="-fx-background-color: #F89D7B;" stylesheets="@../Styles/AdminBookShow.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.UserRequestsController">
    <children>
       <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="60.0" prefHeight="800.0" prefWidth="960.0" stylesheets="@../Styles/AdminBookShow.css">
          <columns>

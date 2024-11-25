@@ -1,4 +1,4 @@
-package org.example.uet_library.Controllers;
+package org.example.uet_library.controllers;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.models.User;
 import org.example.uet_library.services.AdminService;
-import org.example.uet_library.services.BookService;
 
 public class UserManagerController {
 

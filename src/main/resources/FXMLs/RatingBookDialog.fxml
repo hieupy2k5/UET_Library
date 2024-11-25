@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="400.0" spacing="15" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.RatingDialogController">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="400.0" spacing="15" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.RatingDialogController">
    <AnchorPane prefHeight="265.0" prefWidth="400.0">
       <children>
           <!-- Header Text -->

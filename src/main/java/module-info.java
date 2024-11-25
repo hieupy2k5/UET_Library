@@ -15,8 +15,8 @@ module org.example.uet_library {
     requires net.bytebuddy;
     requires annotations;
 
-    exports org.example.uet_library.Controllers;
-    opens org.example.uet_library.Controllers to javafx.fxml;
+    exports org.example.uet_library.controllers;
+    opens org.example.uet_library.controllers to javafx.fxml;
     exports org.example.uet_library.services;
     opens org.example.uet_library.services to javafx.fxml;
     exports org.example.uet_library.apis;

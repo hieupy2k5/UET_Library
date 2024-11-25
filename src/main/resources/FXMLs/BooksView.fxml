@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: #F89D7B;" stylesheets="@../Styles/AdminBookShow.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.DocumentsController">
+<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: #F89D7B;" stylesheets="@../Styles/AdminBookShow.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.DocumentsController">
     <children>
         <TableView fx:id="tableView" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutY="67.0" prefHeight="733.0" prefWidth="949.0" stylesheets="@../Styles/AdminBookShow.css">
             <columns>

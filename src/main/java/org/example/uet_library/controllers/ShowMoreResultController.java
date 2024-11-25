@@ -1,6 +1,5 @@
-package org.example.uet_library.Controllers;
+package org.example.uet_library.controllers;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -14,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import org.example.uet_library.apis.BookAPI;
 import org.example.uet_library.models.Book;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

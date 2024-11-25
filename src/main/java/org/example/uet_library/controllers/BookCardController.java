@@ -1,4 +1,4 @@
-package org.example.uet_library.Controllers;
+package org.example.uet_library.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

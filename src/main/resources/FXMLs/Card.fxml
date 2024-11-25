@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="bookBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="325.0" styleClass="card" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.CardController">
+<HBox fx:id="bookBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="325.0" styleClass="card" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.CardController">
    <children>
       <Button fx:id="button" mnemonicParsing="false" onAction="#latestBookButtonOnAction" prefHeight="175.0" prefWidth="325.0" stylesheets="@../Styles/card.css" text="Button">
          <graphic>

@@ -1,4 +1,4 @@
-package org.example.uet_library.Controllers;
+package org.example.uet_library.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;

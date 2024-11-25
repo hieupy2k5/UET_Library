@@ -11,7 +11,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="300.0" maxWidth="180.0" minHeight="291.0" minWidth="180.0" prefHeight="291.0" prefWidth="163.0" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.Controllers.BookCardController">
+<VBox maxHeight="300.0" maxWidth="180.0" minHeight="291.0" minWidth="180.0" prefHeight="291.0" prefWidth="163.0" stylesheets="@../Styles/card.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.BookCardController">
    <children>
       <Button mnemonicParsing="false" onAction="#bookButtonClicked" prefHeight="261.0" prefWidth="165.0" stylesheets="@../Styles/card.css">
          <graphic>

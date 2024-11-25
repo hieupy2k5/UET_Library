@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.example.uet_library.Controllers.LogInController;
+import org.example.uet_library.controllers.LogInController;
 import org.example.uet_library.database.Database;
 
 public class App extends Application {

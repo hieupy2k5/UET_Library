@@ -1,4 +1,4 @@
-package org.example.uet_library.Controllers;
+package org.example.uet_library.controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import javafx.fxml.FXML;
