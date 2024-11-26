@@ -111,7 +111,7 @@ public class BookInformationController {
                 Database db = new Database();
                 ObservableList<Rating> feedback = FXCollections.observableArrayList();
                 try (Connection conn = db.getConnection()) {
-                    String query = "SELECT * FROM Ratings where ISBN = ? order by comment_at desc";
+                    String query = "SELECT * FROM ratings where ISBN = ? order by comment_at desc";
                     PreparedStatement ps = conn.prepareStatement(query);
                     ps.setString(1, bookCurrent.getIsbn());
                     ResultSet rs = ps.executeQuery();
