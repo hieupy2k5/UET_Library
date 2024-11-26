@@ -32,8 +32,10 @@ import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
 public class BookInformationController {
-    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm(),40,40,true, true);
-    private final Image STAR_FILL = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm(),40,40,true, true);
+    private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/star.png").toExternalForm(),40,40,true, true);
+    private final Image STAR_FILL = new Image(getClass().getResource("/Images/star_color.png").toExternalForm(),40,40,true, true);
+    private final Image LOVE_BOOK = new Image(getClass().getResource("/Images/Favor2.png").toExternalForm(),40,40,true, true);
+    private final Image UNLOVEBOOK = new Image(getClass().getResource("/Images/Favor1.png").toExternalForm(),40,40,true, true);
 
     private boolean checkFetchback = false;
 
@@ -222,7 +224,7 @@ public class BookInformationController {
     private void displayFeedBack(boolean showAll) {
         commentBook.getChildren().clear();
         int count = showAll ? feedback.size() : Math.min(feedback.size(), 5);
-
+        commentBook.setStyle("-fx-border-color: #000");
         for (int i = 0; i < count; i++) {
             Rating bookRating = feedback.get(i);
 
@@ -291,9 +293,10 @@ public class BookInformationController {
                 boolean isFavorite = rs.getInt(1) > 0;
 
                 if (isFavorite) {
-                    Favor.setImage(STAR_FILL);
+                    Favor.setImage(LOVE_BOOK);
                 } else {
-                    Favor.setImage(STAR_NOT_FILL);
+                    Favor.setImage(UNLOVEBOOK
+                    );
                 }
 
                 return isFavorite;
@@ -319,7 +322,7 @@ public class BookInformationController {
                         deleteStmt.setString(2, bookCurrent.getIsbn());
                         deleteStmt.executeUpdate();
 
-                        Platform.runLater(() -> Favor.setImage(STAR_NOT_FILL));
+                        Platform.runLater(() -> Favor.setImage(UNLOVEBOOK));
 
                         Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.INFORMATION,
                                 "Successfully Removed",
@@ -328,7 +331,7 @@ public class BookInformationController {
                     } else {
                         UserService.getInstance().addBookToFavorites(bookCurrent);
 
-                        Platform.runLater(() -> Favor.setImage(STAR_FILL));
+                        Platform.runLater(() -> Favor.setImage(LOVE_BOOK));
 
                         Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.INFORMATION,
                                 "Successfully Added",
