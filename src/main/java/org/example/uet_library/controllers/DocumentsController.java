@@ -41,7 +41,7 @@ public class DocumentsController {
     @FXML
     private TableColumn<Book, String> titleShow;
     @FXML
-    private TableColumn<Book, String> typeShow;
+    private TableColumn<Book, String> categoryShow;
     @FXML
     private TableColumn<Book, Integer> yearShow;
     @FXML
@@ -64,7 +64,7 @@ public class DocumentsController {
         titleShow.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorShow.setCellValueFactory(new PropertyValueFactory<>("author"));
         yearShow.setCellValueFactory(new PropertyValueFactory<>("year"));
-        typeShow.setCellValueFactory(new PropertyValueFactory<>("type"));
+        categoryShow.setCellValueFactory(new PropertyValueFactory<>("category"));
         isbnShow.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         quantityShow.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         //setupSearch();

@@ -65,7 +65,7 @@ public class BorrowBookController extends TableViewController<Book> {
     @FXML
     private TableColumn<Book, String> titleColumn;
     @FXML
-    private TableColumn<Book, String> typeColumn;
+    private TableColumn<Book, String> categoryColumn;
     @FXML
     private TableColumn<Book, Integer> yearColumn;
     @FXML
@@ -92,7 +92,7 @@ public class BorrowBookController extends TableViewController<Book> {
 
     public void setUpColumns() {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     }
 

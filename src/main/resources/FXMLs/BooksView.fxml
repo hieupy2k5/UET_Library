@@ -17,7 +17,7 @@
                 <TableColumn fx:id="isbnShow" prefWidth="120.0" text="ISBN" />
                 <TableColumn fx:id="authorShow" minWidth="0.0" prefWidth="160.0" text="Author" />
                 <TableColumn fx:id="yearShow" minWidth="0.0" text="Year" />
-                <TableColumn fx:id="typeShow" minWidth="0.0" prefWidth="92.0" text="Type" />
+                <TableColumn fx:id="categoryShow" minWidth="0.0" prefWidth="92.0" text="Category" />
                 <TableColumn fx:id="quantityShow" minWidth="0.0" prefWidth="96.00002034505212" text="Quantity" />
             </columns>
         </TableView>
