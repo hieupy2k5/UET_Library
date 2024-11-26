@@ -217,10 +217,9 @@ public class UserService {
     }
 
 
-    public void tryAgain(int requestId) {
+    public void requestAgain(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            int userId = SessionManager.getInstance().getUserId();
             String updateQuery = "UPDATE requests SET status = 'pending' WHERE id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, requestId);

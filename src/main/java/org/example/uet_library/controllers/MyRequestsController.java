@@ -102,7 +102,7 @@ public class MyRequestsController extends TableViewController<Request> {
                             String.format("You have successfully borrowed the book %s",
                                 selectedRequest.getTitle()));
                     } else if ("denied".equals(selectedRequest.getStatus())) {
-                        UserService.getInstance().tryAgain(selectedRequest.getId());
+                        UserService.getInstance().requestAgain(selectedRequest.getId());
                         fetchFromDB();
                         AlertHelper.showAlert(AlertType.INFORMATION, "Successfully requested again",
                             "Now you need to wait for admins to approve your request.");
