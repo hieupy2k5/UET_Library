@@ -79,41 +79,21 @@ public class MenuController {
 
     public void configureMenu(boolean isAdmin) {
         if (isAdmin) {
-            button_BorrowBook.setVisible(false);
-            button_BorrowBook.setManaged(false);
-
-            button_ReturnBook.setVisible(false);
-            button_ReturnBook.setManaged(false);
-
-            button_Home_User.setVisible(false);
-            button_Home_User.setManaged(false);
-
-            button_MyRequests.setVisible(false);
-            button_MyRequests.setManaged(false);
-
-            button_MyFavorite.setVisible(false);
-            button_MyFavorite.setManaged(false);
+            hideButtons(button_BorrowBook, button_ReturnBook, button_Home_User, button_MyRequests,
+                button_MyFavorite);
         } else {
-            button_AddBook.setVisible(false);
-            button_AddBook.setManaged(false);
-
-            button_ManagerBook.setVisible(false);
-            button_ManagerBook.setManaged(false);
-
-            button_Home_Ad.setVisible(false);
-            button_Home_Ad.setManaged(false);
-
-            button_UserManage.setVisible(false);
-            button_UserManage.setManaged(false);
-
-            button_BookShow.setVisible(false);
-            button_BookShow.setManaged(false);
-
-            button_UserRequests.setVisible(false);
-            button_UserRequests.setManaged(false);
+            hideButtons(button_AddBook, button_ManagerBook, button_Home_Ad, button_UserManage,
+                button_BookShow, button_UserRequests);
         }
 
         this.setAdmin(isAdmin);
+    }
+
+    private void hideButtons(Button... buttons) {
+        for (Button button : buttons) {
+            button.setVisible(false);
+            button.setManaged(false);
+        }
     }
 
     public void loadClock() {
@@ -149,7 +129,7 @@ public class MenuController {
 
     @FXML
     public void loadMyRequests(ActionEvent actionEvent) {
-       loadView("/FXMLs/MyRequests.fxml");
+        loadView("/FXMLs/MyRequests.fxml");
     }
 
     @FXML
@@ -158,7 +138,9 @@ public class MenuController {
     }
 
     @FXML
-    public void loadMyFavorites(ActionEvent actionEvent) { loadView("/FXMLs/UserFavorites.fxml"); }
+    public void loadMyFavorites(ActionEvent actionEvent) {
+        loadView("/FXMLs/UserFavorites.fxml");
+    }
 
     @FXML
     public void loadBookAPISearchView() {
