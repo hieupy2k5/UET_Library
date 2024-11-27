@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.SettingsController">
+<AnchorPane prefHeight="900.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #C3C7F4, #F4E7FB);" styleClass="label" stylesheets="@../Styles/Setting.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.uet_library.controllers.SettingsController">
    <children>
       <VBox alignment="CENTER" prefHeight="900.0" prefWidth="980.0" spacing="50.0">
          <children>
@@ -34,9 +34,9 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-text-fill: #858585;" text="First Name" textFill="#858585">
+                        <Label prefHeight="20.0" prefWidth="126.0" text="First Name" textFill="#858585">
                            <font>
-                              <Font name="Alata Regular" size="14.0" />
+                              <Font name="Alata Regular" size="16.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -78,9 +78,9 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-text-fill: #858585; -fx-font-family: alata;" text="Last Name" textFill="#858585">
+                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-font-family: alata;" text="Last Name" textFill="#858585">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="16.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -122,9 +122,9 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="127.0" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-text-fill: #858585; -fx-font-family: alata;" text="Email" textFill="WHITE">
+                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-font-family: alata;" text="Email" textFill="#332b2b">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="16.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -168,7 +168,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="139.0" prefWidth="876.0" spacing="30.0">
                <children>
-                  <Label style="-fx-text-fill: #858585;" text="Account" textFill="WHITE">
+                  <Label text="Account" textFill="#332b2b">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -178,9 +178,9 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" style="-fx-font-family: alata;">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-text-fill: #858585; -fx-font-family: alata;" text="Username" textFill="WHITE">
+                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-font-family: alata;" text="Username" textFill="WHITE">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="16.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" />
@@ -222,9 +222,9 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="45.0" prefHeight="100.0" prefWidth="200.0" style="-fx-text-fill: #858585;">
                      <children>
-                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-text-fill: #858585; -fx-font-family: alata;" text="Password" textFill="#858585">
+                        <Label prefHeight="20.0" prefWidth="126.0" style="-fx-font-family: alata;" text="Password" textFill="#858585">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="16.0" />
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" />

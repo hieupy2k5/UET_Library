@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -78,6 +79,9 @@ public class BookInformationController {
     private ObservableList<Book> recommendBooks;
 
     private Book bookCurrent;
+
+    @FXML
+    private ScrollPane feedBackScroll;
 
     private UserHomeController userHomeController;
     private ShowMoreResultController showMoreResultController;
@@ -208,9 +212,10 @@ public class BookInformationController {
                 commentBox.getChildren().add(new Text("No comments for this book."));
                 this.commentBook.getChildren().add(commentBox);
                 this.showAllButton.setVisible(false);
+                this.feedBackScroll.setPrefHeight(100);
             } else {
-                displayFeedBack(false);
-                showAllButton.setVisible(feedback.size() > 5);
+                 displayFeedBack(false);
+                 showAllButton.setVisible(feedback.size() >= 5);
             }
         });
 
@@ -229,8 +234,9 @@ public class BookInformationController {
             Rating bookRating = feedback.get(i);
 
             VBox commentBox = new VBox();
-            commentBox.setSpacing(10);
-            commentBox.setPrefWidth(850);
+            commentBox.setSpacing(0);
+            commentBox.setPrefWidth(950);
+            commentBox.setPrefHeight(100);
 
             commentBox.setPadding(new Insets(10, 50, 10, 50));
             HBox userInfoBox = new HBox();
@@ -249,14 +255,14 @@ public class BookInformationController {
             userInfoBox.getChildren().addAll(userName, new Text("-"), commentTime);
 
             Text commentContent = new Text(bookRating.getComment());
-            commentContent.setWrappingWidth(400);
+            commentContent.setWrappingWidth(250);
             commentContent.setStyle("-fx-font-size: 14;");
 
             Text separator = new Text("------------------------------------------------------------");
             separator.setStyle("-fx-fill: gray; -fx-font-size: 12;");
 
             HBox starRatingBox = new HBox();
-            starRatingBox.setSpacing(10);
+            starRatingBox.setSpacing(0);
 
             int rating = bookRating.getRating();
             for (int j = 0; j < 5; j++) {
@@ -268,6 +274,7 @@ public class BookInformationController {
             }
 
             commentBox.getChildren().addAll(userInfoBox,starRatingBox,commentContent, separator);
+            commentBox.getChildren().add(showAllButton);
             this.commentBook.getChildren().add(commentBox);
         }
     }
