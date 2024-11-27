@@ -76,22 +76,27 @@ Màn hình chính của người dùng sẽ hiển thị ra 2 bảng gồm nhữ
 
 ### Show book
 
+Hiện thêm tin của tất cả các sách trong thư viện với những thông tin như bìa sách, thông tin ta giả, năm phát hành, thể loại và số lượng. Bên cạnh đó,người dùng có thể thêm sách vào trong giỏ hàng để có thể gửi yêu cầu mượn sách cho quản trị viên, đồng thời cũng có thể thêm những quyển sách mà mình có hứng thú với vào trong danh sách yêu thích. Cuối cùng để gửi yêu cầu thì người dùng cần bấm vào biểu tượng giỏ hàng bên trên và xác nhận yêu cầu mượn sách của mình.
+
 ![User Borrow Book](user-attachments/UserBorrowBookView.png)
 
 ### Favorites
-Users can add books to their favorites list, making it easy to borrow them later.
+
+Ở đây, người dùng có thể xem danh sách những cuốn sách yêu thích của mình và có thể loại ra những quyển sách mà họ cho là không còn hợp lí nữa.
 
 ![User Favorites](user-attachments/UserFavoritesView.png)
 
 ### Borrow and Return Book
 
 #### User Requests
-Users can request books for borrowing.
+
+Những yêu cầu mượn sách của người dùng sẽ được hiển thị ở đây. Trạng thái của từng cuốn sẽ được hiện thị để cho người dùng biết quyển sách nào chưa được thông qua hoặc đã được chấp thuận để mượn hay đã được từ chối bởi quản trị viên. Nếu sách đã được chấp thuận thì người dùng cần thêm một thao tác nữa là nhận quyển sách để xác nhận mượn, ngược lại nếu bị từ chối, người dùng có thể gửi lại yêu cầu cho quản trị viên
 
 ![User Requests](user-attachments/UserRequestsView.png)
 
 #### User Return Book
-Users can return borrowed books to the library.
+
+Sau khi mượn thành công, những thông tin về lượt mượn sách sẽ được cập nhập về đây, người dùng có thể trả sách sau khi sử dụng xong. Khi đó người dùng sẽ có thể gửi những đánh giá về cho những người đọc khác.
 
 ![User Return Book](user-attachments/UserReturnBookView.png)
 
@@ -100,27 +105,32 @@ Users can return borrowed books to the library.
 ## Admin Features
 
 ### Home screen
-The admin's home screen displays key features for managing the library.
+
+Màn hình chính của quản trị viên sẽ bao gồm số lượng sách trong thư viện, số lượng người dùng ứng dụng, số quyển sách đang trong quá trình mượn. Hơn nữa, còn có cả best-borrower để có thể biết đường thêm số lượng và có cả ranking những người dùng tích cực nhất trong việc mượn sách.
 
 ![Admin Home](user-attachments/AdminHomeView.png)
 
 ### Show book
-Admins can view and manage available books in the system.
+
+Danh sách thông tin tất cả các quyển sách bao gồm tên sách, mã sách, tên tác giả, năm xuất bản, thể loại và số lượng của quyển đó sẽ được lưu ở đây.
 
 ![Admin Show Book](user-attachments/AdminShowBookView.png)
 
 ### Add Book
-Admins can add new books to the system.
+
+Quản trị viên có thể thêm sách dựa trên tìm kiếm bằng tên sách, tên tác giả hay bằng mã sách rồi có thể điều chỉnh các thông tin về sách một cách tùy ý.
 
 ![Admin Add Book](user-attachments/AdminAddBook.png)
 
 ### User Manager
-Admins can manage user details and access rights.
+
+Quản trị viên có thể xem danh sách các người dùng ở đây, đồng thời cũng có thể tùy chỉnh thay đổi thông tin của người dùng hoặc xóa tài khoản đó đi.
 
 ![Admin User Manager](user-attachments/AdminUserManager.png)
 
 ### User Requests
-Admins can view and manage user requests for borrowing books.
+
+Những yêu cầu mượn sách của người dùng sau khi xác nhận sẽ được trả về đây, quản trị viên sẽ có thể xác nhận cho mượn bằng cách bấm vào nút tích hoặc từ chối bằng cách bấm vào nút x.
 
 ![Admin User Requests](user-attachments/AdminUserRequest.png)
 
@@ -128,135 +138,6 @@ Admins can view and manage user requests for borrowing books.
 
 ## Setting
 
-This screen allows users to change their personal information and settings.
-
-![User Settings](user-attachments/Setting.png)
-# Table of contents
-
-* [Overview](#overview)
-* [Getting started](#getting-started)
-* [Screens and features](#screens-and-features)
-  * [LogIn](#login)
-  * [Register](#register)
-  * [Side bar](#side-bar)
-  * [User Features](#user-features)
-    * [Home screen](#user-home-screen)
-    * [Show book](#user-show-book)
-    * [Favorites](#user-favorites)
-    * [Borrow and Return Book](#user-borrow-and-return-book)
-  * [Admin Features](#admin-features)
-    * [Home screen](#admin-home-screen)
-    * [Show book](#admin-show-book)
-    * [Add Book](#admin-add-book)
-    * [User Manager](#admin-user-manager)
-    * [User Requests](#admin-user-requests)
-  * [Setting](#setting)
-
----
-
-# Overview
-
-This is an online library application designed to complement real-world libraries. Users can search and apply to borrow books, and once the request is approved, they can pick up the books from the library. If the books are unavailable, users can add them to their favorites to borrow later. The application also allows users to rate books and leave comments for authors and other readers.
-
----
-
-# Getting started
-
-To use the app, you need to:
-- Download or clone the source code from this GitHub repository.
-- Install JDK22 or later (JDK23 recommended).
-- Install MySQL and add MySQL Connector/J to the project.
-- Create a database (you can export SQL code from [DBDiagram](https://dbdiagram.io/d/OOP-6704a091fb079c7ebdabcbcb)).
-- Install the required dependencies and run the application.
-
----
-
-# Screens and features
-
-## LogIn
-
-This screen appears when you open the app. You can log in using your username and password.
-
-![Log In](user-attachments/LogIn.png)
-
----
-
-## Register
-
-If you don’t have an account, you can go to the register screen by clicking "register" at the bottom right. You can register either as a user or an admin.
-
-![Register](user-attachments/Register.png)
-
----
-
-## Side bar
-
-![Size_Bar](user-attachments/SideBar.png)
-
----
-
-## User Features
-
-### Home screen
-The home screen for users displays available books for borrowing.
-
-![User Home](user-attachments/UserHomeView.png)
-
-### Show book
-Users can view books available for borrowing from the library.
-
-![User Borrow Book](user-attachments/UserBorrowBookView.png)
-
-### Favorites
-Users can add books to their favorites list, making it easy to borrow them later.
-
-![User Favorites](user-attachments/UserFavoritesView.png)
-
-### Borrow and Return Book
-
-#### User Requests
-Users can request books for borrowing.
-
-![User Requests](user-attachments/UserRequestsView.png)
-
-#### User Return Book
-Users can return borrowed books to the library.
-
-![User Return Book](user-attachments/UserReturnBookView.png)
-
----
-
-## Admin Features
-
-### Home screen
-The admin's home screen displays key features for managing the library.
-
-![Admin Home](user-attachments/AdminHomeView.png)
-
-### Show book
-Admins can view and manage available books in the system.
-
-![Admin Show Book](user-attachments/AdminShowBookView.png)
-
-### Add Book
-Admins can add new books to the system.
-
-![Admin Add Book](user-attachments/AdminAddBook.png)
-
-### User Manager
-Admins can manage user details and access rights.
-
-![Admin User Manager](user-attachments/AdminUserManager.png)
-
-### User Requests
-Admins can view and manage user requests for borrowing books.
-
-![Admin User Requests](user-attachments/AdminUserRequest.png)
-
----
-
-## Setting
-
-This screen allows users to change their personal information and settings.
+Về phần cài đặt thông tin người dùng cũng như tài khoản, chủ sở hữu muốn thay đổi gì thì cần bấm vào cái cờ lê ở bên cạnh để bắt đầu thay đổi, rồi bấm dấu tích để xác nhận đã thay đổi xong. Cuối cùng, để xác nhận những thay đổi về thông tin của mình, chủ sở hữu sẽ bấm nút lưu lại thay đổi.
 
 ![User Settings](user-attachments/Setting.png)
