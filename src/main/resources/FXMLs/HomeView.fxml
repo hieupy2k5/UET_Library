@@ -45,7 +45,7 @@
                     <Image url="@../Images/bookIcon.png" />
                   </image>
                 </ImageView>
-                        <Text fx:id="numberOfBookField" layoutX="47.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="31.63671875">
+                        <Text fx:id="numberOfBookField" layoutX="47.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="31.63671875">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -69,7 +69,7 @@
                     <Image url="@../Images/userIcon.png" />
                   </image>
                 </ImageView>
-                        <Text fx:id="numeberOfUser" layoutX="40.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="50.0">
+                        <Text fx:id="numeberOfUser" layoutX="40.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="50.0">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -88,7 +88,7 @@
                     <Image url="@../Images/hand-book_4797819.png" />
                   </image>
                 </ImageView>
-                        <Text fx:id="issued_book" layoutX="44.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="41.07600021362302">
+                        <Text fx:id="issued_book" layoutX="44.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="41.07600021362302">
                            <font>
                               <Font size="24.0" />
                            </font>
