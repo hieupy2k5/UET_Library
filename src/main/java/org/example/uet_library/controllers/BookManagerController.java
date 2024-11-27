@@ -1,19 +1,27 @@
 package org.example.uet_library.controllers;
 
+import java.net.URL;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
-import javafx.event.ActionEvent;
+import org.example.uet_library.enums.BookCheckResult;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.services.AdminService;
-
-import java.net.URL;
-import java.util.Optional;
+import org.example.uet_library.services.BookService;
+import org.example.uet_library.utilities.AlertHelper;
 
 public class BookManagerController {
 
@@ -75,21 +83,21 @@ public class BookManagerController {
         });
 
         ISBNSearch.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            if(newValue == null || newValue.isEmpty()) {
+            if (newValue == null || newValue.isEmpty()) {
                 listViewTable.setItems(FXCollections.observableArrayList());
             } else {
-                Task<ObservableList<Book>> task = AdminService.getInstance().fetchBookFromDB(newValue);
+                Task<ObservableList<Book>> task = AdminService.getInstance()
+                    .fetchBookFromDB(newValue);
                 task.setOnSucceeded(event -> {
                     listViewTable.setItems(task.getValue());
                 });
                 task.setOnFailed(
-                        event->task.getException().printStackTrace()
+                    event -> task.getException().printStackTrace()
                 );
 
                 new Thread(task).start();
             }
         });
-
 
         listViewTable.setOnMouseClicked(event -> {
             bookSelected = listViewTable.getSelectionModel().getSelectedItem();
@@ -98,7 +106,8 @@ public class BookManagerController {
             Image image;
 
             if (imageUrl == null || imageUrl.isEmpty()) {
-                image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
+                image = new Image(
+                    getClass().getResource("/Images/imageNotFound.jpg").toExternalForm());
             } else {
                 image = new Image(imageUrl);
             }
@@ -111,7 +120,7 @@ public class BookManagerController {
             imageOfBook.setCache(true);
         });
 
-        if(listViewTable.getSelectionModel().getSelectedItem() == null || bookSelected == null) {
+        if (listViewTable.getSelectionModel().getSelectedItem() == null || bookSelected == null) {
             SaveButton.setDisable(true);
             editButton.setDisable(true);
         }
@@ -125,7 +134,7 @@ public class BookManagerController {
             AuthorEdit.setText(bookSelected.getAuthor());
             titleEdit.setText(bookSelected.getTitle());
             ISBNEdit.setText(bookSelected.getIsbn());
-            yearOfPublication.setText(bookSelected.getYear()+"");
+            yearOfPublication.setText(bookSelected.getYear() + "");
             QuantityEdit.setText(String.valueOf(bookSelected.getQuantity()));
             categoryBook.setText(bookSelected.getCategory());
             handleCancel();
@@ -189,8 +198,9 @@ public class BookManagerController {
             alert.setContentText("Are you sure you want to remove this book?");
             Optional<ButtonType> result = alert.showAndWait();
             //alert.showAndWait();
-            if(result.get() == ButtonType.OK) {
+            if (result.get() == ButtonType.OK) {
                 removeBook(isbn);
+                System.out.println(isbn);
                 listViewTable.setItems(null);
             }
         }
@@ -198,26 +208,25 @@ public class BookManagerController {
     }
 
     private void removeBook(String isbn) {
+        BookCheckResult bookCheckResult = BookService.getInstance().isBookBorrowedByAnyone(isbn);
+        System.out.println("checking availability...");
+        if (bookCheckResult == BookCheckResult.ALREADY_BORROWED) {
+            System.out.println("someone is borrowing!");
+            AlertHelper.showAlert(AlertType.ERROR, "Cannot remove book",
+                "Someone is borrowing this book.");
+
+            return;
+        }
+        System.out.println("no one is borrowing!");
         Task<Boolean> task = AdminService.getInstance().deleteBook(isbn);
         task.setOnSucceeded(_ -> {
-            if(task.getValue()) {
+            if (task.getValue()) {
                 this.resetImage();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Notion");
-                alert.setHeaderText(null);
-                alert.setContentText("Book deleted successfully");
-                setFieldsToNull();
-                alert.showAndWait();
-                this.handleNull();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Notion");
-                alert.setHeaderText(null);
-                alert.setContentText("The book cannot be deleted because it is still being borrowed by someone.");
-                alert.showAndWait();
+                AlertHelper.showAlert(AlertType.INFORMATION, "Successfully delete book",
+                    "You have deleted this book.");
             }
         });
-        task.setOnFailed(_ ->{
+        task.setOnFailed(_ -> {
             System.err.println("Error");
         });
         new Thread(task).start();
@@ -235,9 +244,11 @@ public class BookManagerController {
     }
 
     public void SaveBookOnAction(ActionEvent eventT) {
-        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(), bookSelected.getImageUrl(),Integer.parseInt(yearOfPublication.getText()),categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
+        bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(),
+            bookSelected.getImageUrl(), Integer.parseInt(yearOfPublication.getText()),
+            categoryBook.getText(), Integer.parseInt(QuantityEdit.getText()));
         Task<Void> edit = AdminService.getInstance().editBook(bookSelected);
-        edit.setOnSucceeded(event->{
+        edit.setOnSucceeded(event -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText(null);
@@ -252,8 +263,8 @@ public class BookManagerController {
                 System.out.println("Ảnh không tìm thấy hoặc đường dẫn không hợp lệ.");
             }
         });
-        edit.setOnFailed(event->{
-           System.out.println("Failed to edit book");
+        edit.setOnFailed(event -> {
+            System.out.println("Failed to edit book");
         });
         new Thread(edit).start();
     }

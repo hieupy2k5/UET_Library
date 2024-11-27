@@ -232,37 +232,6 @@ public class UserService {
     }
 
 
-    public BookCheckResult isBookBorrowedOrRequested(String bookId) {
-        Database db = new Database();
-        try (Connection conn = db.getConnection()) {
-            int userId = SessionManager.getInstance().getUserId();
-            String query = """
-                SELECT 'requested' AS status FROM requests WHERE book_id = ? AND user_id = ?
-                UNION
-                SELECT 'borrowed' AS status FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'
-                """;
-            PreparedStatement queryStmt = conn.prepareStatement(query);
-            queryStmt.setString(1, bookId);
-            queryStmt.setInt(2, userId);
-            queryStmt.setString(3, bookId);
-            queryStmt.setString(4, bookId);
-            queryStmt.executeQuery();
-
-            ResultSet rs = queryStmt.executeQuery();
-            while (rs.next()) {
-                if (rs.getString("status").equals("requested")) {
-                    return BookCheckResult.ALREADY_REQUESTED;
-                } else if (rs.getString("status").equals("borrowed")) {
-                    return BookCheckResult.ALREADY_BORROWED;
-                }
-            }
-
-            return BookCheckResult.CAN_BE_REQUESTED;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return BookCheckResult.ERROR;
-        }
-    }
 
     public Task<ObservableList<Favor>> fetchFavorFromDB() {
         return new Task<>() {
