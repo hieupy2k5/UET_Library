@@ -62,7 +62,8 @@ public class CardController {
         authorBook.setText(book.getAuthor());
         String randomColor = colors[(int)(Math.random() * colors.length)];
         String base_Style = "-fx-background-color: " + randomColor + ";"
-                + "-fx-background-radius: 20;" + "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0),10,0,0,10);";
+                + "-fx-background-radius: 20;" + "-fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0),10,0,0,10);"
+                + "-fx-font-family: Alata" ;
         bookBox.setStyle(base_Style);
         button.setStyle("-fx-background-color: transparent;" + "-fx-border-color: transparent;" + "-fx-text-fill: transparent;" + "-fx-background-insets: 0;" + "-fx-padding: 0;" + "-fx-effect: null;" + "-fx-focus-color: transparent;" + "-fx-faint-focus-color: transparent;" + "-fx-hover-base: transparent;" + "-fx-border-insets: 0;" + "-fx-background-radius: 20;" + "-fx-border-radius: 20;");
 

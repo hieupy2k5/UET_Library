@@ -28,9 +28,9 @@
                   </AnchorPane>
                   <VBox prefHeight="175.0" prefWidth="271.0">
                      <children>
-                        <Label fx:id="BookTitle" prefHeight="93.0" prefWidth="176.0" text="Rich Dad Poor Dad">
+                        <Label fx:id="BookTitle" prefHeight="93.0" prefWidth="176.0" styleClass="label-title" stylesheets="@../Styles/card.css" text="Rich Dad Poor Dad">
                            <font>
-                              <Font name="Bauhaus 93" size="18.0" />
+                              <Font name="Alata Regular" size="18.0" />
                            </font>
                         </Label>
                         <Label fx:id="authorBook" text="Author">

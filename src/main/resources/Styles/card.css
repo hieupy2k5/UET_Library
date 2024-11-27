@@ -5,6 +5,7 @@
     -fx-text-fill: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
+    -fx-font-family: "Potta One";
 }
 .boroborder_radius {
     -fx-border-radius: 15px 15px 15px 15px;
@@ -30,4 +31,10 @@
 
 .card:hover {
     -fx-background-color: #4A4E71;
+}
+
+.label-title {
+    -fx-font-family: "Potta One";
+    -fx-font-size: 12;
+    /*-fx-font-family: "Black Ops One";*/
 }
