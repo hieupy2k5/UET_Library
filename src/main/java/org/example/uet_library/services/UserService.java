@@ -178,7 +178,10 @@ public class UserService {
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, borrowId);
             updateStmt.setString(2, bookId);
-            updateStmt.executeUpdate();
+            int cnt = updateStmt.executeUpdate();
+            if (cnt == 0) {
+                return false;
+            }
 
             // Update each selected borrow entry with the return date
             String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE id = ?";

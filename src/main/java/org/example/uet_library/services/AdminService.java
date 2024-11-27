@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import org.example.uet_library.apis.QRGenerateAPI;
 import org.example.uet_library.database.Database;
+import org.example.uet_library.enums.RequestResult;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.models.Request;
 import org.example.uet_library.models.User;
@@ -240,7 +241,7 @@ public class AdminService {
         };
     }
 
-    public void acceptRequest(int userId, String bookId) {
+    public RequestResult acceptRequest(int userId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Change the request status to accepted
@@ -248,7 +249,10 @@ public class AdminService {
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, userId);
             updateStmt.setString(2, bookId);
-            updateStmt.executeUpdate();
+            int cnt = updateStmt.executeUpdate();
+            if (cnt == 0) {
+                return RequestResult.INVALID_INFO;
+            }
 
             // Decrement book amount from stock
             String decrementQuery = "UPDATE books SET quantity = books.quantity - 1 WHERE ISBN = ?";
@@ -256,12 +260,14 @@ public class AdminService {
             decrementStmt.setString(1, bookId);
             decrementStmt.executeUpdate();
 
+            return RequestResult.ACCEPTED;
         } catch (SQLException e) {
             e.printStackTrace();
+            return RequestResult.ERROR;
         }
     }
 
-    public void denyRequest(int userId, String bookId) {
+    public RequestResult denyRequest(int userId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Change the request status to denied
@@ -269,35 +275,28 @@ public class AdminService {
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, userId);
             updateStmt.setString(2, bookId);
-            updateStmt.executeUpdate();
+            int cnt = updateStmt.executeUpdate();
+            if (cnt == 0) {
+                return RequestResult.INVALID_INFO;
+            }
 
+            return RequestResult.DENIED;
         } catch (SQLException e) {
             e.printStackTrace();
+            return RequestResult.ERROR;
         }
     }
 
     public boolean deleteUser(int userId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            // Delete borrowed records of that user
-            String deleteBorrowQuery = "DELETE FROM borrow WHERE user_id = ?";
-            PreparedStatement deleteBorrowStmt = conn.prepareStatement(deleteBorrowQuery);
-            deleteBorrowStmt.setInt(1, userId);
-            deleteBorrowStmt.executeUpdate();
-
-            // Delete requested records of that user
-            String deleteRequestQuery = "DELETE FROM requests WHERE user_id = ?";
-            PreparedStatement deleteRequestStmt = conn.prepareStatement(deleteRequestQuery);
-            deleteRequestStmt.setInt(1, userId);
-            deleteRequestStmt.executeUpdate();
-
             // Delete user
             String deleteQuery = "DELETE FROM users WHERE id = ?";
             PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
             deleteStmt.setInt(1, userId);
-            deleteStmt.executeUpdate();
+            int cnt = deleteStmt.executeUpdate();
 
-            return true;
+            return cnt > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -314,8 +313,11 @@ public class AdminService {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, requestId);
             ResultSet rs = stmt.executeQuery();
-            rs.next();
-            return rs.getInt("quantity");
+            if (rs.next()) {
+                return rs.getInt("quantity");
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
