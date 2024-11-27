@@ -105,7 +105,8 @@ public class UserRequestsController extends TableViewController<Request> {
                         AlertHelper.showAlert(AlertType.INFORMATION,
                             "Successfully accepted request",
                             String.format(
-                                "You have granted permission for this user to borrow the book %s",
+                                "You have granted permission for %s to borrow the book %s",
+                                selectedRequest.getUsername(),
                                 selectedRequest.getTitle()));
                     } else {
                         AlertHelper.showAlert(AlertType.ERROR, "Cannot approve request",
@@ -128,7 +129,8 @@ public class UserRequestsController extends TableViewController<Request> {
                     fetchFromDB();
                     AlertHelper.showAlert(AlertType.INFORMATION, "Successfully denied request",
                         String.format(
-                            "You have rejected this user's request to borrow the book %s",
+                            "You have rejected %s's request to borrow the book %s",
+                            selectedRequest.getUsername(),
                             selectedRequest.getTitle()));
                 });
             }
