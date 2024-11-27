@@ -246,7 +246,7 @@ public class UserService {
             queryStmt.setString(1, bookId);
             queryStmt.setInt(2, userId);
             queryStmt.setString(3, bookId);
-            queryStmt.setString(4, bookId);
+            queryStmt.setInt(4, userId);
             queryStmt.executeQuery();
 
             ResultSet rs = queryStmt.executeQuery();
