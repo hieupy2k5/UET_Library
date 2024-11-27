@@ -219,7 +219,7 @@ public class UserService {
     }
 
 
-    public void requestAgain(int requestId) {
+    public boolean requestAgain(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             String updateQuery = "UPDATE requests SET status = 'pending' WHERE id = ?";
@@ -227,9 +227,12 @@ public class UserService {
             updateStmt.setInt(1, requestId);
             updateStmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
 
