@@ -94,9 +94,6 @@ public class BookAddController {
 
     @FXML
     private ImageView imageOfBook;
-    public void initialize() {
-
-    }
 
     public void alterNotion(String notion) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -106,9 +103,6 @@ public class BookAddController {
         alert.showAndWait();
     }
 
-    public void backToBookAdd(ActionEvent event) throws IOException {
-        ChangeSceneMachine.getInstance().changeScene("BookInfo.fxml",event,800,600);
-    }
 
     public void saveBook(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
         if(this.checkTextField()) {

@@ -131,7 +131,7 @@ public class BookAPISearchController {
         bookBox.setStyle("-fx-padding: 10; -fx-background-color: #E7F5DC; -fx-border-color: #728156; -fx-border-radius: 5px;");
         bookBox.setPrefHeight(100);
         bookBox.setPrefWidth(870);
-        // Lazy-load hình ảnh
+
         ImageView imageView = new ImageView();
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
@@ -144,8 +144,7 @@ public class BookAPISearchController {
         };
         imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));
         new Thread(imageTask).start();
-
-        // Chi tiết sách
+        
         VBox detailsBox = new VBox(5);
         detailsBox.getChildren().addAll(
                 new Text("Title: " + book.getTitle()),

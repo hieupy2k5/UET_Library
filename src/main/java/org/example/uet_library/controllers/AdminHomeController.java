@@ -62,45 +62,47 @@ public class AdminHomeController {
     private Label top6Text;
 
 
-        @FXML
-        private Text issued_book;
+    @FXML
+    private Text issued_book;
 
-        @FXML
-        private Text numberOfBookField;
+    @FXML
+    private Text numberOfBookField;
 
-        @FXML
-        private Text numberOfBookField1;
+    @FXML
+    private Text numberOfBookField1;
 
-        @FXML
-        private PieChart chartBookIssue;
+    @FXML
+    private PieChart chartBookIssue;
 
-        @FXML
-        private Text numeberOfUser;
+    @FXML
+    private Text numeberOfUser;
 
-        private int numberOfBook = 0;
+    private int numberOfBook = 0;
 
-        private int numberOfBookBorrowed = 0;
+    private int numberOfBookBorrowed = 0;
 
-        public void initialize() {
-            this.loadTopBorrower();
-            loadTopBorrowedBook();
-        }
+    public void initialize() {
+        this.loadTopBorrower();
+        loadTopBorrowedBook();
+        loadTotalBook();
+    }
 
-        private void loadTotalBook() {
-            Task<Integer> task = BookService.getInstance().fetchTotalBook();
+    // Fetch Total Book from database
+    private void loadTotalBook() {
+        Task<Integer> task = BookService.getInstance().fetchTotalBook();
 
-            task.setOnSucceeded(e -> {
-                this.numberOfBook = task.getValue();
-                loadIssuedBook();
-                numberOfBookField.setText(this.numberOfBook + "");
-            });
-            task.setOnFailed(e -> {
-                System.out.println(task.getException());
-            });
-            new Thread(task).start();
-        }
+        task.setOnSucceeded(e -> {
+            loadIssuedBook();
+            this.numberOfBook = task.getValue();
+            numberOfBookField.setText(this.numberOfBook + "");
+        });
+        task.setOnFailed(e -> {
+            System.out.println(task.getException());
+        });
+        new Thread(task).start();
+    }
 
-
+    // Fetch Total of user from database
     private void loadNumberOfUser() {
         Task<Integer> task = AdminService.getInstance().loadNumberOfUser();
         task.setOnSucceeded(e -> Platform.runLater(() -> {
@@ -136,62 +138,62 @@ public class AdminHomeController {
                 );
         pieChartData.forEach(data ->
                 data.nameProperty().bind(
-                        Bindings.concat(data.getName(), " amount: ", (int)data.getPieValue())));
+                        Bindings.concat(data.getName(), " amount: ", (int) data.getPieValue())));
 
         this.chartBookIssue.getData().addAll(pieChartData);
     }
 
 
     public void loadTopBorrowedBook() {
-            Task<ObservableList<Book>> task = AdminService.getInstance().top6BookMostBorrowed();
+        Task<ObservableList<Book>> task = AdminService.getInstance().top6BookMostBorrowed();
 
-            task.setOnSucceeded(e -> Platform.runLater(() -> {
-                bookTop6 = task.getValue();
-                for(int i = 0; i < bookTop6.size(); i++) {
-                    Book book = bookTop6.get(i);
-                    String title = book.getTitle();
-                    String imageUrl = book.getImageUrl();
-                    Image image;
-                    if (imageUrl == null || imageUrl.isEmpty()) {
-                        image = new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm(), true);
-                    } else {
-                         image = new Image(book.getImageUrl(), true);
-                    }
-                    switch (i) {
-                        case 0:
-                            imageTop1.setImage(image);
-                            top1Text.setText(title);
-                            break;
-                        case 1:
-                            ImageTop2.setImage(image);
-                            top2Text.setText(title);
-                            break;
-                        case 2:
-                            ImageTop3.setImage(image);
-                            top3Text.setText(title);
-                            break;
-                        case 3:
-                            ImageTop4.setImage(image);
-                            top4Text.setText(title);
-                            break;
-                        case 4:
-                            ImageTop5.setImage(image);
-                            top5Text.setText(title);
-                            break;
-                        case 5:
-                            ImageTop6.setImage(image);
-                            top6Text.setText(title);
-                            break;
-                        default:
-                            break;
-                    }
+        task.setOnSucceeded(e -> Platform.runLater(() -> {
+            bookTop6 = task.getValue();
+            for (int i = 0; i < bookTop6.size(); i++) {
+                Book book = bookTop6.get(i);
+                String title = book.getTitle();
+                String imageUrl = book.getImageUrl();
+                Image image;
+                ImageView imageView = null;
+                switch (i) {
+                    case 0:
+                        imageView = imageTop1;
+                        top1Text.setText(title);
+                        break;
+                    case 1:
+                        imageView = ImageTop2;
+                        top2Text.setText(title);
+                        break;
+                    case 2:
+                        imageView = ImageTop3;
+                        top3Text.setText(title);
+                        break;
+                    case 3:
+                        imageView = ImageTop4;
+                        top4Text.setText(title);
+                        break;
+                    case 4:
+                        imageView = ImageTop5;
+                        top5Text.setText(title);
+                        break;
+                    case 5:
+                        imageView = ImageTop6;
+                        top6Text.setText(title);
+                        break;
+                    default:
+                        break;
                 }
-                loadTotalBook();
-            }));
-            task.setOnFailed(e -> Platform.runLater(() -> {
-                System.out.println(task.getException());
-            }));
-            new Thread(task).start();
+                if (imageUrl == null || imageUrl.isEmpty()) {
+                    imageView.setImage(new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm(), true));
+                } else {
+                    this.loadImageAsync(imageView, imageUrl);
+                }
+            }
+        }));
+        task.setOnFailed(e -> Platform.runLater(() -> {
+            System.out.println(task.getException());
+        }));
+        new Thread(task).start();
     }
 
     public void loadTopBorrower() {
@@ -205,7 +207,7 @@ public class AdminHomeController {
         Task<ObservableList<User>> task = AdminService.getInstance().fetchTop5Borrower();
         task.setOnSucceeded(e -> Platform.runLater(() -> {
             this.top5Users = task.getValue();
-            tableOfTopBorrower.setPrefHeight(10*top5Users.size());
+            tableOfTopBorrower.setPrefHeight(10 * top5Users.size());
             for (int i = 0; i < this.top5Users.size(); i++) {
                 User user = this.top5Users.get(i);
                 HBox row = createRow(user.getUsername(), user.getEmail(), String.valueOf(user.getNumberOfBookBorrowed()));
@@ -218,30 +220,51 @@ public class AdminHomeController {
             }
         }));
 
-        task.setOnFailed(e->{
+        task.setOnFailed(e -> {
             System.err.println("Fail to create table with Vbox");
         });
         new Thread(task).start();
     }
 
     public HBox createRow(String col1, String col2, String col3) {
-            HBox row = new HBox();
-            row.setSpacing(10);
+        HBox row = new HBox();
+        row.setSpacing(10);
 
-            Label column1 = new Label(col1);
-            Label column2 = new Label(col2);
-            Label column3 = new Label(col3);
+        Label column1 = new Label(col1);
+        Label column2 = new Label(col2);
+        Label column3 = new Label(col3);
 
-            column1.setPrefWidth(100);
-            column2.setPrefWidth(150);
-            column3.setPrefWidth(200);
+        column1.setPrefWidth(100);
+        column2.setPrefWidth(150);
+        column3.setPrefWidth(200);
 
-            column1.setStyle("-fx-alignment: CENTER;");
-            column2.setStyle("-fx-alignment: CENTER;");
-            column3.setStyle("-fx-alignment: CENTER;");
+        column1.setStyle("-fx-alignment: CENTER;");
+        column2.setStyle("-fx-alignment: CENTER;");
+        column3.setStyle("-fx-alignment: CENTER;");
 
-            row.getChildren().addAll(column1, column2, column3);
-            return row;
+        row.getChildren().addAll(column1, column2, column3);
+        return row;
     }
+
+    private void loadImageAsync(ImageView imageView, String imageUrl) {
+        Task<Image> task = new Task<>() {
+            @Override
+            protected Image call() {
+                return new Image(imageUrl, true);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            imageView.setImage(task.getValue());
+        });
+
+        task.setOnFailed(e -> {
+            System.err.println("Failed to load image: " + imageUrl);
+            imageView.setImage(new Image(getClass().getResource("/Images/imageNotFound.jpg").toExternalForm(), true));
+        });
+
+        new Thread(task).start();
+    }
+
 
 }
