@@ -160,6 +160,19 @@ public class BookManagerController {
         removeBut.setDisable(true);
     }
 
+    private void handleNull() {
+        AuthorEdit.setEditable(false);
+        ISBNEdit.setEditable(false);
+        titleEdit.setEditable(false);
+        QuantityEdit.setEditable(false);
+        yearOfPublication.setEditable(false);
+        categoryBook.setEditable(false);
+
+        editButton.setDisable(true);
+        SaveButton.setDisable(true);
+        removeBut.setDisable(true);
+    }
+
     @FXML
     private void removeButton(ActionEvent event) {
         String isbn = ISBNEdit.getText();
@@ -179,8 +192,6 @@ public class BookManagerController {
             if(result.get() == ButtonType.OK) {
                 removeBook(isbn);
                 listViewTable.setItems(null);
-            } else {
-                return;
             }
         }
 
@@ -197,7 +208,7 @@ public class BookManagerController {
                 alert.setContentText("Book deleted successfully");
                 setFieldsToNull();
                 alert.showAndWait();
-                handleCancel();
+                this.handleNull();
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Notion");
@@ -234,7 +245,7 @@ public class BookManagerController {
             alert.showAndWait();
             setFieldsToNull();
             URL imageUrl = getClass().getResource("/Images/imageNotFound.jpg");
-
+            this.handleNull();
             if (imageUrl != null) {
                 this.resetImage();
             } else {
