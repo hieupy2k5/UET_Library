@@ -16,7 +16,7 @@
   <children>
     <VBox layoutX="0.0" layoutY="0.0" prefHeight="900.0" prefWidth="980.0">
       <children>
-        <AnchorPane prefHeight="134.0" prefWidth="980.0" style="-fx-background-color: #96CBCE;">
+        <AnchorPane prefHeight="134.0" prefWidth="980.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #F8C390, #D279EE);;">
           <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
             <Text layoutX="67.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello! Welcome Back ...">
@@ -33,11 +33,11 @@
         </AnchorPane>
         <AnchorPane prefHeight="293.0" prefWidth="980.0">
           <children>
-            <Pane layoutX="54.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane_book_issue" stylesheets="@../Styles/AdminHome.css">
+            <Pane layoutX="54.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" style="-fx-background-color: #F89D7B;" styleClass="pane" stylesheets="@../Styles/Menu.css">
               <children>
-                <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book">
+                <Text layoutX="25.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0" />
+                    <Font name="Potta One Regular" size="28.0" />
                   </font>
                 </Text>
                 <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
@@ -57,11 +57,11 @@
                         </Text>
               </children>
             </Pane>
-            <Pane layoutX="263.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+            <Pane layoutX="263.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" style="-fx-background-color: #c3c7f4;" styleClass="pane" stylesheets="@../Styles/Menu.css">
               <children>
                 <Text layoutX="38.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0" />
+                    <Font name="Potta One Regular" size="28.0" />
                   </font>
                 </Text>
                 <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
@@ -76,11 +76,11 @@
                         </Text>
               </children>
             </Pane>
-            <Pane layoutX="463.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" styleClass="pane" stylesheets="@../Styles/Menu.css">
+            <Pane layoutX="463.0" layoutY="14.0" prefHeight="209.0" prefWidth="129.0" style="-fx-background-color: #F2DDDC;" styleClass="pane" stylesheets="@../Styles/Menu.css">
               <children>
-                <Text layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Issued Book" wrappingWidth="129.33333333333326">
+                <Text layoutX="7.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Issued Book" wrappingWidth="141.99995930989576">
                   <font>
-                    <Font name="Blackadder ITC" size="28.0" />
+                    <Font name="Potta One Regular" size="18.0" />
                   </font>
                 </Text>
                 <ImageView fitHeight="75.0" fitWidth="50.0" layoutX="40.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
