@@ -3,78 +3,116 @@
 * [Overview](#overview)
 * [Getting started](#getting-started)
 * [Screens and features](#screens-and-features)
-  * [Register and Log in](#register-and-log-in)
-  * [Home screen](#home-screen)
-    * [User](#user)
-    * [Admin](#admin)
-  * [Size bar](#side-bar)
-    * [User](#user-1)
-    * [Admin](#admin-1)
-  * [Show book](#show-book)
-  * [Book Detail](#books-detail)
+  * [LogIn](#login)
+  * [Register](#register)
+  * [Side bar](#side-bar)
+  * [User Features](#user-features)
+    * [Home screen](#user-home-screen)
+    * [Show book](#user-show-book)
+    * [Favorites](#user-favorites)
+    * [Borrow and Return Book](#user-borrow-and-return-book)
+  * [Admin Features](#admin-features)
+    * [Home screen](#admin-home-screen)
+    * [Show book](#admin-show-book)
+    * [Add Book](#admin-add-book)
+    * [User Manager](#admin-user-manager)
+    * [User Requests](#admin-user-requests)
   * [Setting](#setting)
+
+---
+
 # Overview
-This is an online library application to support the real library. You can search and apply to borrow books, when your request is approved you can go directly to the library to borrow. If you cannot borrow, you can add to your favorites to borrow again when the book is available. You can also rate books with comments to the author and other readers.
+
+This is an online library application to support the real library. You can search and apply to borrow books, and when your request is approved, you can go directly to the library to borrow them. If unavailable, you can add them to your favorites to borrow later. You can also rate books with comments for the author and other readers.
+
+---
 
 # Getting started
+
 To use the app, you need to:
-* Download or clone source code from this github.
-* Install jdk22 or later. (jdk23 recommended).
-* Install mysql. Download and add MySQL Connector/J to the project.
-* Create a database (you can export sql code from: https://dbdiagram.io/d/OOP-6704a091fb079c7ebdabcbcb).
-* Install required dependencies and run.
+- Download or clone the source code from this GitHub repository.
+- Install JDK22 or later (JDK23 recommended).
+- Install MySQL and add the MySQL Connector/J to the project.
+- Create a database (you can export SQL code from [DBDiagram](https://dbdiagram.io/d/OOP-6704a091fb079c7ebdabcbcb)).
+- Install the required dependencies and run.
+
+---
 
 # Screens and features
 
-## Register and Log in
+## LogIn
 
-This screen will appear when you open the app. Here you can login with username and password.
+This screen appears when you open the app. You can log in with your username and password.
 
-![image](user-attachments/LogIn.png)
+![Log In](user-attachments/LogIn.png)
 
-If you haven't have an account, go to register screen by click on "register" on the right-bottom. You can register as admin or user.
+---
 
-![image](user-attachments/Register.png)
+## Register
 
-## Home screen
+If you don't have an account, go to the register screen by clicking "register" at the bottom right. You can register as either an admin or a user.
 
-After logged in, you will see the home screen. User and Admin have different view on it.
+![Register](user-attachments/Register.png)
 
-### User
-![User View](user-attachments/UserHomeView.png)
-
-### Admin
-![Admin View](user-attachments/AdminHomeView.png)
+---
 
 ## Side bar
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
 
-  <div style="text-align: center; width: 50%;">
-    <img src="user-attachments/UserNavigation.png" alt="User View" style="height: 500px; width: auto; border: 1px solid black;">
+  <div style="text-align: center; width: 45%;">
+    <img src="user-attachments/UserNavigation.png" alt="User Navigation" style="height: 500px; width: auto; border: 1px solid black;">
     <p><strong>User</strong></p>
   </div>
 
-  <div style="text-align: center; width: 50%;">
-    <img src="user-attachments/AdminNavigation.png" alt="Admin View" style="height: 500px; width: auto; border: 1px solid black;">
+  <div style="text-align: center; width: 45%;">
+    <img src="user-attachments/AdminNavigation.png" alt="Admin Navigation" style="height: 500px; width: auto; border: 1px solid black;">
     <p><strong>Admin</strong></p>
   </div>
 
 </div>
 
-## Show Book
+---
 
-### User
-![User View](user-attachments/UserBorrowBookView.png)
+## User Features
 
-### Admin
-![Admin View](user-attachments/AdminShowBookView.png)
+### Home screen
+![User Home](user-attachments/UserHomeView.png)
 
-## Book's detail
+### Show book
+![User Borrow Book](user-attachments/UserBorrowBookView.png)
 
-![image](user-attachments/BookDetail.png)
+### Favorites
+![User Favorites](user-attachments/UserFavoritesView.png)
+
+### Borrow and Return Book
+#### User Requests
+![User Requests](user-attachments/UserRequestsView.png)
+
+#### User Return Book
+![User Return Book](user-attachments/UserReturnBookView.png)
+
+---
+
+## Admin Features
+
+### Home screen
+![Admin Home](user-attachments/AdminHomeView.png)
+
+### Show book
+![Admin Show Book](user-attachments/AdminShowBookView.png)
+
+### Add Book
+![Admin Add Book](user-attachments/AdminAddBook.png)
+
+### User Manager
+![Admin User Manager](user-attachments/AdminUserManager.png)
+
+### User Requests
+![Admin User Requests](user-attachments/AdminUserRequest.png)
+
+---
 
 ## Setting
 
-![image](user-attachments/Setting.png)
-
+![User Settings](user-attachments/Setting.png)
