@@ -162,12 +162,12 @@ public class BookService {
                     preparedStatement.setString(11, keyword3);
                     ResultSet resultSet = preparedStatement.executeQuery();
 
-                    System.out.println("Current book:");
-                    System.out.println("ISBN: " + bookCurrent.getIsbn());
-                    System.out.println("Title: " + bookCurrent.getTitle());
-                    System.out.println("Author: " + bookCurrent.getAuthor());
-                    System.out.println("\n");
-                    System.out.println("Fetched books:");
+//                    System.out.println("Current book:");
+//                    System.out.println("ISBN: " + bookCurrent.getIsbn());
+//                    System.out.println("Title: " + bookCurrent.getTitle());
+//                    System.out.println("Author: " + bookCurrent.getAuthor());
+//                    System.out.println("\n");
+//                    System.out.println("Fetched books:");
                     while (resultSet.next()) {
                         String title = resultSet.getString("Title");
                         String author = resultSet.getString("Author");
@@ -182,9 +182,9 @@ public class BookService {
                         book.setqrCode(resultSet.getBytes("qrcode"));
                         recommendedList.add(book);
 
-                        System.out.println("ISBN: " + resultSet.getString("ISBN"));
-                        System.out.println("Title: " + resultSet.getString("title"));
-                        System.out.println("Author: " + resultSet.getString("Author") + "\n");
+//                        System.out.println("ISBN: " + resultSet.getString("ISBN"));
+//                        System.out.println("Title: " + resultSet.getString("title"));
+//                        System.out.println("Author: " + resultSet.getString("Author") + "\n");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
