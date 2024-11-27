@@ -7,7 +7,7 @@
   * [Home screen](#home-screen)
     * [User](#user)
     * [Admin](#admin)
-  * [Size bar](#size-bar)
+  * [Size bar](#side-bar)
     * [User](#user-1)
     * [Admin](#admin-1)
   * [Show book](#show-book)
@@ -46,7 +46,7 @@ After logged in, you will see the home screen. User and Admin have different vie
 ### Admin
 ![Admin View](user-attachments/AdminHomeView.png)
 
-## Size bar
+## Side bar
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
 
