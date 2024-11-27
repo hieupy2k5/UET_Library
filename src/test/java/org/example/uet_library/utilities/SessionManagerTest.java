@@ -1,6 +1,7 @@
+package org.example.uet_library.utilities;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.example.uet_library.utilities.SessionManager;
 import org.junit.jupiter.api.*;
 
 class SessionManagerTest {

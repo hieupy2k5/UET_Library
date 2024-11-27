@@ -38,7 +38,8 @@ public class Book implements TableItem {
         return category;
     }
 
-    public Book(String title, String author, String isbn, String imageUrl, int year, String category,
+    public Book(String title, String author, String isbn, String imageUrl, int year,
+        String category,
         String infoBookLink, String description) {
         this.title = title;
         this.author = author;
@@ -52,7 +53,8 @@ public class Book implements TableItem {
         this.description = description;
     }
 
-    public Book(String title, String author, String isbn, String imageUrl, int year, String category,
+    public Book(String title, String author, String isbn, String imageUrl, int year,
+        String category,
         int quantity) {
         this.title = title;
         this.author = author;

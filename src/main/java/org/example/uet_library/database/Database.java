@@ -5,12 +5,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-
+    private String dbName = "";
     public Connection connection;
+
+    public Database() {
+    }
+
+    public Database(String dbName) {
+        this.dbName = dbName;
+    }
 
     public Connection getConnection() {
         Config config = Config.getInstance();
-        String dbName = config.get("DATABASE_NAME");
+        if (dbName.isEmpty()) dbName = config.get("DATABASE_NAME");
         String dbUsername = config.get("DATABASE_USERNAME");
         String dbPassword = config.get("DATABASE_PASSWORD");
         String dbHost = config.get("DATABASE_HOST");

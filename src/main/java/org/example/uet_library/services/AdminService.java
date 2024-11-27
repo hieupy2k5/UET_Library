@@ -34,7 +34,7 @@ public class AdminService {
             @Override
             protected Void call() throws Exception {
                 Database connection = new Database();
-                String queryInsert = "INSERT INTO books(ISBN, Title, Author, year_published, image_url, quantity, category, QRCODE, book_link, description) values(?,?,?,?,?,?,?,?,?,?)";
+                String queryInsert = "INSERT INTO books (ISBN, Title, Author, year_published, image_url, quantity, category, QRCODE, book_link, description) values(?,?,?,?,?,?,?,?,?,?)";
                 byte[] qr = QRGenerateAPI.getInstance().generateQRCode(book.getInfoBookLink());
                 try (Connection conDB = connection.getConnection();) {
                     PreparedStatement ps = conDB.prepareStatement(queryInsert);
