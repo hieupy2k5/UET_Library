@@ -160,8 +160,8 @@ public class UserService {
                 insertStmt.executeUpdate();
 
                 return true;
-            } else { // Insufficient number of books => Tell users to get lost
-                System.out.println("Not enough books available.");
+            } else {
+                System.out.println("Error requesting book.");
                 return false;
             }
         } catch (SQLException e) {
@@ -178,7 +178,10 @@ public class UserService {
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, borrowId);
             updateStmt.setString(2, bookId);
-            updateStmt.executeUpdate();
+            int cnt = updateStmt.executeUpdate();
+            if (cnt == 0) {
+                return false;
+            }
 
             // Update each selected borrow entry with the return date
             String returnQuery = "UPDATE borrow SET status = 'returned', return_date = CONVERT_TZ(NOW(), 'UTC', '+07:00') WHERE id = ?";
@@ -193,7 +196,7 @@ public class UserService {
         }
     }
 
-    public void borrowBook(int requestId, String bookId) {
+    public boolean borrowBook(int requestId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Insert new borrow record
@@ -211,27 +214,62 @@ public class UserService {
             deleteStmt.setInt(1, requestId);
             deleteStmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
 
-    public void tryAgain(int requestId) {
+    public boolean requestAgain(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
-            int userId = SessionManager.getInstance().getUserId();
             String updateQuery = "UPDATE requests SET status = 'pending' WHERE id = ?";
             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
             updateStmt.setInt(1, requestId);
             updateStmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
 
+    public BookCheckResult isBookBorrowedOrRequested(String bookId) {
+        Database db = new Database();
+        try (Connection conn = db.getConnection()) {
+            int userId = SessionManager.getInstance().getUserId();
+            String query = """
+                SELECT 'requested' AS status FROM requests WHERE book_id = ? AND user_id = ?
+                UNION
+                SELECT 'borrowed' AS status FROM borrow WHERE book_id = ? AND user_id = ? AND status = 'borrowed'
+                """;
+            PreparedStatement queryStmt = conn.prepareStatement(query);
+            queryStmt.setString(1, bookId);
+            queryStmt.setInt(2, userId);
+            queryStmt.setString(3, bookId);
+            queryStmt.setInt(4, userId);
+            queryStmt.executeQuery();
+
+            ResultSet rs = queryStmt.executeQuery();
+            while (rs.next()) {
+                if (rs.getString("status").equals("requested")) {
+                    return BookCheckResult.ALREADY_REQUESTED;
+                } else if (rs.getString("status").equals("borrowed")) {
+                    return BookCheckResult.ALREADY_BORROWED;
+                }
+            }
+
+            return BookCheckResult.CAN_BE_REQUESTED;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return BookCheckResult.ERROR;
+        }
+    }
 
     public Task<ObservableList<Favor>> fetchFavorFromDB() {
         return new Task<>() {

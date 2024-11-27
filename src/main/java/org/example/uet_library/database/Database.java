@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
-
     public Connection connection;
+
+    public Database() {
+    }
 
     public Connection getConnection() {
         Config config = Config.getInstance();
