@@ -72,6 +72,8 @@ public class MenuController {
     @FXML
     public Button button_Home_User;
 
+    private String currentFXML = "";
+
 
     public void initialize() {
         loadClock();
@@ -168,37 +170,50 @@ public class MenuController {
     }
 
     public void loadView(String fxmlFileName) {
-        try {
-            if (contentPane != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
-                AnchorPane newPane = loader.load();
+        System.out.println("Current FXML: " + getCurrentFXML());
+        System.out.println("New FXML: " + fxmlFileName);
+        if (!getCurrentFXML().equals(fxmlFileName)) {
+            try {
+                if (contentPane != null) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
+                    AnchorPane newPane = loader.load();
 
-                contentPane.getChildren().clear();
-                contentPane.getChildren().add(newPane);
-            } else {
-                System.out.println("contentPane is null. Cannot load the view.");
+                    contentPane.getChildren().clear();
+                    contentPane.getChildren().add(newPane);
+
+                    setCurrentFXML(fxmlFileName);
+                } else {
+                    System.out.println("contentPane is null. Cannot load the view.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public void loadHomeUser() {
-        try {
-            if (contentPane != null) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLs/UserHome.fxml"));
-                AnchorPane newPane = loader.load();
-                // Uncomment the lines + change the temporary fxml to see User Home View
-                UserHomeController userHomeController = loader.getController();
-                userHomeController.setStage(primaryStage);
-                userHomeController.setMenuController(this);
-                contentPane.getChildren().clear();
-                contentPane.getChildren().add(newPane);
-            } else {
-                System.out.println("contentPane is null. Cannot load the view.");
+        System.out.println("Current FXML: " + getCurrentFXML());
+        System.out.println("New FXML: " + "/FXMLs/UserHome.fxml");
+
+        if (!getCurrentFXML().equals("/FXMLs/UserHome.fxml")) {
+            try {
+                if (contentPane != null) {
+                    FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/FXMLs/UserHome.fxml"));
+                    AnchorPane newPane = loader.load();
+                    // Uncomment the lines + change the temporary fxml to see User Home View
+                    UserHomeController userHomeController = loader.getController();
+                    userHomeController.setStage(primaryStage);
+                    userHomeController.setMenuController(this);
+                    contentPane.getChildren().clear();
+                    contentPane.getChildren().add(newPane);
+                    setCurrentFXML("/FXMLs/UserHome.fxml");
+                } else {
+                    System.out.println("contentPane is null. Cannot load the view.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -239,4 +254,11 @@ public class MenuController {
             : (Parent) contentPane.getChildren().get(0);
     }
 
+    public String getCurrentFXML() {
+        return currentFXML;
+    }
+
+    public void setCurrentFXML(String currentFXML) {
+        this.currentFXML = currentFXML;
+    }
 }
