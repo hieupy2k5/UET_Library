@@ -1,8 +1,13 @@
 package org.example.uet_library.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -32,7 +37,7 @@ public class SignUpController implements Initializable {
         choiceBox.setValue(choices[1]);
     }
 
-    public void handleSignUpButton() throws Exception {
+    public void handleSignUpButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
         String confirmPassword = confirmPasswordFld.getText();
@@ -85,9 +90,11 @@ public class SignUpController implements Initializable {
         if (signUpResult == SignUpResult.ADMIN_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new admin account",
                 "You can log in using your new admin account now!");
+            this.changeToLoginScene(event);
         } else if (signUpResult == SignUpResult.USER_CREATED) {
             AlertHelper.showAlert(AlertType.INFORMATION, "Successfully create a new user account",
                 "You can log in using your new user account now!");
+            this.changeToLoginScene(event);
         } else if (signUpResult == SignUpResult.ALREADY_EXISTS) {
             AlertHelper.showAlert(AlertType.ERROR, "Username already exists",
                 "Please choose another username");
@@ -98,6 +105,10 @@ public class SignUpController implements Initializable {
     }
 
     public void handleLogInButton(javafx.scene.input.MouseEvent event) throws Exception {
+        ChangeSceneMachine.getInstance().changeScene("LogIn.fxml", event, -1, -1);
+    }
+
+    private void changeToLoginScene(ActionEvent event) throws IOException {
         ChangeSceneMachine.getInstance().changeScene("LogIn.fxml", event, -1, -1);
     }
 
