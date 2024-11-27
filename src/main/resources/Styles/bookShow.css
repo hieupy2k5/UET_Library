@@ -47,3 +47,10 @@
     -fx-fit-width: 100%;
     -fx-fit-height: 100%;
 }
+
+.button-show-more {
+    -fx-background-color: #87A2FF;
+    -fx-text-fill: white;
+    -fx-border-color: #87A2FF;
+    -fx-border-radius: 5;
+}

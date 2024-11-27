@@ -134,7 +134,7 @@ public class RatingDialogController {
             protected Void call() throws Exception {
                 Database db = new Database();
                 try(Connection con = db.getConnection()) {
-                    String sql = "INSERT INTO Ratings (Comment, User_name, Rating, ISBN) VALUES (?, ?, ?, ?)";
+                    String sql = "INSERT INTO ratings (Comment, User_name, Rating, ISBN) VALUES (?, ?, ?, ?)";
                     PreparedStatement ps = con.prepareStatement(sql);
                     String comment = commentField.getText();
                     ps.setString(1, comment);
@@ -192,7 +192,7 @@ public class RatingDialogController {
             protected Void call() throws Exception {
                 Database db = new Database();
                 try(Connection con = db.getConnection()) {
-                    String sql = "Update Ratings SET comment = ?, rating = ? WHERE User_name = ? AND isbn = ?";
+                    String sql = "Update ratings SET comment = ?, rating = ? WHERE User_name = ? AND isbn = ?";
                     PreparedStatement ps = con.prepareStatement(sql);
                     ps.setString(1, commentField.getText());
                     ps.setInt(2, rating);

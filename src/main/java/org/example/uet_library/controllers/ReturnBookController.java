@@ -256,7 +256,7 @@ public class ReturnBookController extends TableViewController<Borrow> {
                 Database database = new Database();
                 try {
                     Connection connection = database.getConnection();
-                    String query = "SELECT ISBN FROM Ratings WHERE user_name = ?";
+                    String query = "SELECT ISBN FROM ratings WHERE user_name = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(query);
                     preparedStatement.setString(1, RatingDialogController.userName);
                     ResultSet resultSet = preparedStatement.executeQuery();
