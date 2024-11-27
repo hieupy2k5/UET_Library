@@ -5,7 +5,7 @@
 * [Screens and features](#screens-and-features)
   * [LogIn](#login)
   * [Register](#register)
-  * [Sidebar](#side-bar)
+  * [Sidebar](#sidebar)
   * [User Features](#user-features)
     * [Home screen](#home-screen)
     * [Show book](#show-book)
