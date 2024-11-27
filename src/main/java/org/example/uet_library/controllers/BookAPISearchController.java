@@ -144,6 +144,7 @@ public class BookAPISearchController {
         };
         imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));
         new Thread(imageTask).start();
+
         
         VBox detailsBox = new VBox(5);
         detailsBox.getChildren().addAll(
