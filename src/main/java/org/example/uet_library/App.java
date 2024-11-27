@@ -32,6 +32,9 @@ public class App extends Application {
             getClass().getResource("/Fonts/blackadder-itc/BITCBLKAD.ttf").toExternalForm(),
             14
         );
+        Font.loadFont(
+                getClass().getResource("/Fonts/PottaOne-Regular.ttf").toExternalForm(), 14
+        );
 
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
