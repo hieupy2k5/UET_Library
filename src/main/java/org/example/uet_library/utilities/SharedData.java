@@ -30,7 +30,7 @@ public class SharedData {
     }
 
     public void addToCart(Book book) {
-        BookCheckResult bookCheckResult = UserService.getInstance().isBookBorrowedOrRequested(book.getIsbn());
+        BookCheckResult bookCheckResult = BookService.getInstance().isBookBorrowedOrRequested(book.getIsbn());
         if (bookCheckResult == BookCheckResult.ALREADY_REQUESTED) {
             AlertHelper.showAlert(AlertType.ERROR, "Book already in request list",
                 "Please check \"My Requests\" tab to see your request for this book.");

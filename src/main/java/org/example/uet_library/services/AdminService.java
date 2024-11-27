@@ -61,26 +61,18 @@ public class AdminService {
         return new Task<>() {
             @Override
             protected Boolean call() throws Exception {
-                Database connection = new Database();
-                try (Connection conDB = connection.getConnection()) {
-                    String queryDelete = "DELETE FROM books WHERE ISBN= ?";
-                    PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
-                    preparedStatement.setString(1, ISBN);
-                    preparedStatement.execute();
+                Database db = new Database();
+                try (Connection conDB = db.getConnection()) {
+                    String deleteBook = "DELETE FROM books WHERE ISBN = ?";
+                    PreparedStatement deleteBookStmt = conDB.prepareStatement(deleteBook);
+                    deleteBookStmt.setString(1, ISBN);
+                    deleteBookStmt.executeUpdate();
 
-                    String favorDelete = "DELETE FROM favor WHERE book_id= ?";
-                    preparedStatement = conDB.prepareStatement(favorDelete);
-                    preparedStatement.setString(1, ISBN);
-                    preparedStatement.execute();
-
-                    String ratingDelete = "DELETE FROM ratings WHERE ISBN= ?";
-                    preparedStatement = conDB.prepareStatement(ratingDelete);
-                    preparedStatement.setString(1, ISBN);
-                    preparedStatement.execute();
+                    return true;
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     return false;
                 }
-                return true;
             }
         };
     }
@@ -307,7 +299,7 @@ public class AdminService {
             deleteStmt.setInt(1, userId);
             deleteStmt.executeUpdate();
 
-            String favorDelete = "DELETE FROM favor WHERE user_id= ?";
+            String favorDelete = "DELETE FROM favors WHERE user_id= ?";
             PreparedStatement preparedStatement = conn.prepareStatement(favorDelete);
             preparedStatement.setInt(1, userId);
             preparedStatement.execute();

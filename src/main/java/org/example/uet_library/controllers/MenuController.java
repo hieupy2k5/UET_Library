@@ -170,8 +170,6 @@ public class MenuController {
     }
 
     public void loadView(String fxmlFileName) {
-        System.out.println("Current FXML: " + getCurrentFXML());
-        System.out.println("New FXML: " + fxmlFileName);
         if (!getCurrentFXML().equals(fxmlFileName)) {
             try {
                 if (contentPane != null) {
@@ -192,8 +190,6 @@ public class MenuController {
     }
 
     public void loadHomeUser() {
-        System.out.println("Current FXML: " + getCurrentFXML());
-        System.out.println("New FXML: " + "/FXMLs/UserHome.fxml");
 
         if (!getCurrentFXML().equals("/FXMLs/UserHome.fxml")) {
             try {
