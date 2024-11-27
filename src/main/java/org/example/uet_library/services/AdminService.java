@@ -61,10 +61,20 @@ public class AdminService {
         return new Task<>() {
             @Override
             protected Boolean call() throws Exception {
-                String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                 Database connection = new Database();
                 try (Connection conDB = connection.getConnection()) {
+                    String queryDelete = "DELETE FROM books WHERE ISBN= ?";
                     PreparedStatement preparedStatement = conDB.prepareStatement(queryDelete);
+                    preparedStatement.setString(1, ISBN);
+                    preparedStatement.execute();
+
+                    String favorDelete = "DELETE FROM favor WHERE book_id= ?";
+                    preparedStatement = conDB.prepareStatement(favorDelete);
+                    preparedStatement.setString(1, ISBN);
+                    preparedStatement.execute();
+
+                    String ratingDelete = "DELETE FROM ratings WHERE ISBN= ?";
+                    preparedStatement = conDB.prepareStatement(ratingDelete);
                     preparedStatement.setString(1, ISBN);
                     preparedStatement.execute();
                 } catch (SQLException e) {
@@ -296,6 +306,11 @@ public class AdminService {
             PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
             deleteStmt.setInt(1, userId);
             deleteStmt.executeUpdate();
+
+            String favorDelete = "DELETE FROM favor WHERE user_id= ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(favorDelete);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.execute();
 
             return true;
         } catch (SQLException e) {
