@@ -160,8 +160,8 @@ public class UserService {
                 insertStmt.executeUpdate();
 
                 return true;
-            } else { // Insufficient number of books => Tell users to get lost
-                System.out.println("Not enough books available.");
+            } else {
+                System.out.println("Error requesting book.");
                 return false;
             }
         } catch (SQLException e) {
@@ -193,7 +193,7 @@ public class UserService {
         }
     }
 
-    public void borrowBook(int requestId, String bookId) {
+    public boolean borrowBook(int requestId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
             // Insert new borrow record
@@ -211,8 +211,10 @@ public class UserService {
             deleteStmt.setInt(1, requestId);
             deleteStmt.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

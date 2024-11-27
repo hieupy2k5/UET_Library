@@ -33,4 +33,8 @@ public class Database {
         }
         return connection;
     }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
 }
