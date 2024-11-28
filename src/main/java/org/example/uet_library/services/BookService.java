@@ -14,14 +14,24 @@ import org.example.uet_library.enums.BookCheckResult;
 import org.example.uet_library.models.Book;
 import org.example.uet_library.utilities.SessionManager;
 
-
+/**
+ * Service class that handles all operations related to books, such as fetching books from the database,
+ * managing favorites, recommendations, and other related tasks. This class follows the Singleton pattern.
+ */
 public class BookService {
 
     private static BookService instance;
 
+    /**
+     * Private constructor to enforce Singleton pattern.
+     */
     private BookService() {
     }
 
+    /**
+     * Gets the single instance of the BookService.
+     * @return the singleton instance of BookService.
+     */
     public static BookService getInstance() {
         if (instance == null) {
             instance = new BookService();
@@ -29,7 +39,11 @@ public class BookService {
         return instance;
     }
 
-
+    /**
+     * Fetches all books from the database.
+     * @return a Task that produces an ObservableList of all books.
+     * @throws Exception if there is a database error.
+     */
     public Task<ObservableList<Book>> fetchBookFromDB() {
         return new Task<>() {
             @Override
@@ -71,6 +85,11 @@ public class BookService {
         };
     }
 
+    /**
+     * Fetches the top 5 recently added books from the database, ordered by their addition date.
+     * @return a Task that produces an ObservableList of the top 5 recently added books.
+     * @throws Exception if there is a database error.
+     */
     public Task<ObservableList<Book>> top5BookRecentlyAdded() {
         return new Task<>() {
             @Override
@@ -105,6 +124,11 @@ public class BookService {
         };
     }
 
+    /**
+     * Fetches the total number of books in the database.
+     * @return a Task that produces the total number of books as an Integer.
+     * @throws Exception if there is a database error.
+     */
     public Task<Integer> fetchTotalBook() {
         return new Task<>() {
             @Override
@@ -124,6 +148,12 @@ public class BookService {
         };
     }
 
+    /**
+     * Fetches recommended books based on the given book's title, author, and category.
+     * @param bookCurrent the book for which recommendations are fetched.
+     * @return a Task that produces an ObservableList of recommended books.
+     * @throws Exception if there is a database error.
+     */
     public Task<ObservableList<Book>> fetchRecommendations(Book bookCurrent) {
         return new Task<>() {
             @Override
@@ -197,10 +227,10 @@ public class BookService {
     }
 
     /**
-     * Use for popUp search
-     *
-     * @param keyword is bookTitle or Author.
-     * @return ObservableList result.
+     * Searches for books in the database by title or author using a keyword.
+     * @param keyword the keyword used for searching.
+     * @return a Task that produces an ObservableList of books matching the keyword.
+     * @throws Exception if there is a database error.
      */
     public Task<ObservableList<Book>> fetchBookByTitleOrAuthor(String keyword) {
         return new Task<>() {
@@ -242,7 +272,11 @@ public class BookService {
         };
     }
 
-
+    /**
+     * Removes a book from the favorites list based on the favorite ID.
+     * @param favorId the ID of the favorite entry to be removed.
+     * @return true if the book was removed successfully, false otherwise.
+     */
     public boolean removeBookFromFavoritesByID(int favorId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -259,6 +293,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Removes a book from the favorites list based on the book's ID and the current user's ID.
+     * @param book the book to be removed from favorites.
+     * @return true if the book was removed successfully, false otherwise.
+     */
     public boolean removeBookFromFavoritesByBookIDAndUserID(Book book) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -278,6 +317,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Fetches the list of favorite book IDs for a given user.
+     * @param userID the ID of the user whose favorite books are being fetched.
+     * @return a Set of book IDs that are marked as favorites by the user.
+     */
     public Set<String> fetchFavoriteBooksByUserID(int userID) {
         Set<String> favoriteBooks = new HashSet<>();
         String query = "SELECT book_id FROM favors WHERE user_id = ?";
@@ -301,7 +345,11 @@ public class BookService {
         return favoriteBooks;
     }
 
-
+    /**
+     * Checks if a book is already borrowed or requested by the current user.
+     * @param bookId the ID of the book being checked.
+     * @return a BookCheckResult indicating whether the book is borrowed, requested, or can be requested.
+     */
     public BookCheckResult isBookBorrowedOrRequested(String bookId) {
         Database db = new Database();
         try (Connection conn = db.getConnection()) {
@@ -334,6 +382,11 @@ public class BookService {
         }
     }
 
+    /**
+     * Checks if a book is borrowed by any user.
+     * @param bookId the ID of the book being checked.
+     * @return a BookCheckResult indicating whether the book is borrowed or can be deleted.
+     */
     public BookCheckResult isBookBorrowedByAnyone(String bookId) {
         Database db = new Database();
         try (Connection conn = db.getConnection()) {

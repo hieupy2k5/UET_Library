@@ -30,6 +30,11 @@ public class AdminService {
         return instance;
     }
 
+    /**
+     * Adds a new book to the database with its details and generates a QR code for it.
+     * @param book the book object containing all the details to be added.
+     * @return a Task that performs the database operation asynchronously.
+     */
     public Task<Void> addBook(Book book) {
         return new Task<>() {
             @Override
@@ -58,6 +63,11 @@ public class AdminService {
         };
     }
 
+    /**
+     * Deletes a book from the database based on its ISBN.
+     * @param ISBN the ISBN of the book to be deleted.
+     * @return a Task that returns true if the book was successfully deleted, otherwise false.
+     */
     public Task<Boolean> deleteBook(String ISBN) {
         return new Task<>() {
             @Override
@@ -78,7 +88,11 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Checks if a book with the given ISBN exists in the database.
+     * @param isbn the ISBN of the book to check.
+     * @return true if the book exists, otherwise false.
+     */
     public boolean isBookExisting(String isbn) {
         String query = "SELECT COUNT(*) FROM books WHERE ISBN = ?";
         Database connection = new Database();
@@ -95,7 +109,11 @@ public class AdminService {
         return false;
     }
 
-
+    /**
+     * Fetches a list of books from the database that match the provided ISBN or Title (partial match).
+     * @param ISBN the search term used to match the ISBN or Title.
+     * @return a Task that returns an ObservableList of Book objects matching the search criteria.
+     */
     public Task<ObservableList<Book>> fetchBookFromDB(String ISBN) {
         return new Task<>() {
             @Override
@@ -136,7 +154,10 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Fetches all users from the database.
+     * @return a Task that returns an ObservableList of User objects.
+     */
     public Task<ObservableList<User>> fetchUserFromDB() {
         return new Task<>() {
             @Override
@@ -172,7 +193,10 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Fetches all pending user requests from the database and includes details about the user and book.
+     * @return a Task that returns an ObservableList of Request objects.
+     */
     public Task<ObservableList<Request>> fetchUserRequestFromDB() {
         return new Task<>() {
             @Override
@@ -219,7 +243,11 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Updates the details of an existing book in the database.
+     * @param book the Book object containing updated information.
+     * @return a Task that performs the update operation asynchronously.
+     */
     public Task<Void> editBook(Book book) {
         return new Task<>() {
             @Override
@@ -243,6 +271,12 @@ public class AdminService {
         };
     }
 
+    /**
+     * Accepts a user request for a book, updates the request status, and decreases the book quantity.
+     * @param userId the ID of the user making the request.
+     * @param bookId the ISBN of the book being requested.
+     * @return a RequestResult indicating the result of the operation (ACCEPTED, INVALID_INFO, or ERROR).
+     */
     public RequestResult acceptRequest(int userId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -269,6 +303,12 @@ public class AdminService {
         }
     }
 
+    /**
+     * Denies a user request for a book and updates the request status to 'denied.'
+     * @param userId the ID of the user making the request.
+     * @param bookId the ISBN of the book being requested.
+     * @return a RequestResult indicating the result of the operation (DENIED, INVALID_INFO, or ERROR).
+     */
     public RequestResult denyRequest(int userId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -289,6 +329,11 @@ public class AdminService {
         }
     }
 
+    /**
+     * Deletes a user from the database based on their user ID.
+     * @param userId the ID of the user to be deleted.
+     * @return true if the user was successfully deleted, otherwise false.
+     */
     public boolean deleteUser(int userId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -305,6 +350,11 @@ public class AdminService {
         }
     }
 
+    /**
+     * Retrieves the quantity of a book available for a specific request.
+     * @param requestId the ID of the request.
+     * @return the quantity of the book if found, otherwise null.
+     */
     public Integer bookQuantityForRequest(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -326,6 +376,10 @@ public class AdminService {
         }
     }
 
+    /**
+     * Loads the total number of users from the database.
+     * @return a Task that returns the total number of users as an Integer.
+     */
     public Task<Integer> loadNumberOfUser() {
         return new Task<>() {
             @Override
@@ -347,7 +401,10 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Retrieves the total number of distinct books that have been borrowed from the database.
+     * @return a Task that returns the total number of borrowed books as an Integer.
+     */
     public Task<Integer> fetchNumberOfBookBorrowed() {
         return new Task<>() {
 
@@ -370,7 +427,10 @@ public class AdminService {
         };
     }
 
-
+    /**
+     * Retrieves the top 6 most borrowed books along with their titles and image URLs.
+     * @return a Task that returns an ObservableList of Book objects representing the top borrowed books.
+     */
     public Task<ObservableList<Book>> top6BookMostBorrowed() {
         return new Task<>() {
             @Override
@@ -403,6 +463,10 @@ public class AdminService {
         };
     }
 
+    /**
+     * Fetches the top 5 users who have borrowed the most books.
+     * @return a Task that returns an ObservableList of User objects, each including their borrowed book count.
+     */
     public Task<ObservableList<User>> fetchTop5Borrower() {
         return new Task<>() {
             @Override

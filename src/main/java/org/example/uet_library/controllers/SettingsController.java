@@ -30,6 +30,9 @@ public class SettingsController {
     String username = null;
     String currentPasswordHash = null;
 
+    /**
+     * Load user info.
+     */
     private void loadUserInfo() {
         Database connection = new Database();
         String tableName = isAdmin ? "admins" : "users";
@@ -90,12 +93,15 @@ public class SettingsController {
     @FXML
     private void doneUserName() { userNameField.setDisable(true); }
 
+    /**
+     * Show a dialog if user enter correct password then perform changing.
+     */
     @FXML
     private void changePassword() {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Xác nhận mật khẩu");
-        dialog.setHeaderText("Nhập mật khẩu hiện tại để tiếp tục:");
-        dialog.setContentText("Mật khẩu:");
+        dialog.setTitle("Password confirmation");
+        dialog.setHeaderText("Enter password to continue: ");
+        dialog.setContentText("Password: ");
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
@@ -105,9 +111,9 @@ public class SettingsController {
                 passwordField.setText("");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi");
-                alert.setHeaderText("Mật khẩu không đúng");
-                alert.setContentText("Vui lòng nhập đúng mật khẩu hiện tại.");
+                alert.setTitle("Error");
+                alert.setHeaderText("");
+                alert.setContentText("Please enter current password.");
                 alert.showAndWait();
             }
         }
@@ -140,6 +146,9 @@ public class SettingsController {
         passwordField.setDisable(true);
     }
 
+    /**
+     * Save all changes about account to database.
+     */
     @FXML
     private void saveChanges() {
         String tableName = isAdmin ? "admins" : "users";
