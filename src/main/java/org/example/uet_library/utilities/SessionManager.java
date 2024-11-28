@@ -2,6 +2,7 @@ package org.example.uet_library.utilities;
 
 /**
  * This records for each session, which user is logging in.
+ * This is Singleton.
  */
 public class SessionManager {
 

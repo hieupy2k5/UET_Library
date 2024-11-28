@@ -159,10 +159,23 @@ abstract class TableViewController<T extends TableItem> {
         this.getTableView().setItems(sortedData);
     }
 
+    /**
+     * Set up the search bar and decide which field should match the user's input.
+     * @param tableItem the items in the table that we want to search.
+     * @param query the search text that user enters.
+     * @return whether any result is found.
+     */
     abstract boolean searchPredicate(T tableItem, String query);
 
+    /**
+     * For each table view, set up the appropriate columns.
+     */
     abstract void setUpColumns();
 
+    /**
+     * Merge the information of book title, author name and book image.
+     * @return the merged column.
+     */
     abstract TableColumn<T, Void> getInformationColumn();
 
     abstract TableView<T> getTableView();
@@ -183,9 +196,19 @@ abstract class TableViewController<T extends TableItem> {
     public void loadFavouriteBooks() {
     }
 
+    /**
+     * Each table view will have their own options buttons.
+     * This is for setting up them.
+     */
     public void setUpAdditionalButtons() {
     }
 
+    /**
+     * For table that needs to sort their list of TableItem.
+     * (The tables that need sorting will override this)
+     * @param observableList contains the items to be sorted.
+     * @return the sorted List.
+     */
     public ObservableList<T> sortObservableList(ObservableList<T> observableList) {
         return observableList;
     }

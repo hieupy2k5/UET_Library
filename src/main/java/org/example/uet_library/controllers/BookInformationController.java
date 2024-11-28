@@ -32,6 +32,11 @@ import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
+/**
+ * Controller class for managing the detailed view of a book in the library management system.
+ * Provides functionality for displaying book details, comments, recommendations, and user interactions
+ * such as adding a book to favorites or the cart.
+ */
 public class BookInformationController {
     private final Image STAR_NOT_FILL = new Image(getClass().getResource("/Images/star.png").toExternalForm(),40,40,true, true);
     private final Image STAR_FILL = new Image(getClass().getResource("/Images/star_color.png").toExternalForm(),40,40,true, true);
@@ -99,6 +104,12 @@ public class BookInformationController {
 
     private boolean showAllFeedBack = false;
 
+    /**
+     * Navigates back to the previous screen, either the user home or the search results page.
+     *
+     * @param event The action event triggered by clicking the back button.
+     * @throws IOException If the FXML file cannot be loaded.
+     */
     @FXML
     void BackOnAction(ActionEvent event) throws IOException {
         if (userHomeController != null) {
@@ -108,6 +119,11 @@ public class BookInformationController {
         }
     }
 
+    /**
+     * Asynchronously fetches feedback comments for the current book.
+     *
+     * @return A {@link Task} that returns an {@link ObservableList} of {@link Rating}.
+     */
     public Task<ObservableList<Rating>> getFeedBack() {
         return new Task<ObservableList<Rating>>() {
             @Override
@@ -138,6 +154,13 @@ public class BookInformationController {
             }
         };
     }
+
+    /**
+     * Sets data for the current book being displayed, including its description, author, title,
+     * image, QR code, availability, and related recommendations.
+     *
+     * @param book The {@link Book} object containing the book's details.
+     */
     public void setData(Book book) {
         this.bookCurrent = book;
         description.setText(book.getDescription());
@@ -168,6 +191,9 @@ public class BookInformationController {
         setCommentBook();
     }
 
+    /**
+     * Asynchronously fetches recommended books for the current book.
+     */
     public void fetchBookForRecommendBook() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchRecommendations(this.bookCurrent);
         task.setOnSucceeded(event -> {

@@ -10,6 +10,10 @@ public class Database {
     public Database() {
     }
 
+    /**
+     * Get connection from DB.
+     * @return the Connection we are trying to access.
+     */
     public Connection getConnection() {
         Config config = Config.getInstance();
         String dbName = config.get("DATABASE_NAME");
