@@ -1,3 +1,8 @@
+/**
+ * The {@code UserController} class handles user-related operations, including signing up
+ * users/admins and validating login credentials.
+ * It interacts with the database to manage user and admin records.
+ */
 package org.example.uet_library.controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -11,6 +16,23 @@ import org.example.uet_library.enums.SignUpResult;
 
 public class UserController {
 
+    /**
+     * Registers a new user or admin in the system.
+     * <p>
+     * This method checks if the username already exists in either the "admins" or "users" table.
+     * If the username is unique, it inserts a new record into the appropriate table.
+     * Passwords are hashed using BCrypt before being stored in the database.
+     * </p>
+     *
+     * @param username  the username for the new user/admin
+     * @param password  the plaintext password to be hashed and stored
+     * @param firstName the first name of the user/admin
+     * @param lastName  the last name of the user/admin
+     * @param email     the email address of the user/admin
+     * @param isAdmin   a flag indicating whether the user is an admin
+     * @return a {@link SignUpResult} indicating the outcome of the operation:
+     *         {@code USER_CREATED}, {@code ADMIN_CREATED}, {@code ALREADY_EXISTS}, or {@code FAILED}
+     */
     public SignUpResult signUpUser(String username, String password, String firstName,
         String lastName,
         String email, boolean isAdmin) {
@@ -57,10 +79,19 @@ public class UserController {
     }
 
     /**
-     * For checking log ins.
+     * Validates login credentials for a user or admin.
+     * <p>
+     * This method queries the "users" and "admins" tables to find a record matching the provided
+     * username. If a match is found, it verifies the provided password against the stored hashed
+     * password. It also determines whether the record belongs to a user or admin.
+     * </p>
      *
-     * @return a pair of Integer and Boolean, whereas Integer denotes the ID of the user/admin and
-     * Boolean denotes whether the person is admin or not.
+     * @param username the username to be authenticated
+     * @param password the plaintext password to be verified
+     * @return a {@link Pair} containing:
+     *         - {@code Integer}: the ID of the authenticated user/admin, or {@code null} if authentication fails.
+     *         - {@code Boolean}: {@code true} if the authenticated entity is an admin, {@code false} otherwise.
+     *         Returns {@code Pair<>(null, null)} if authentication fails.
      */
     public Pair<Integer, Boolean> checkLogInCredentials(String username, String password) {
         String query = """

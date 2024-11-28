@@ -1,3 +1,10 @@
+/**
+ * The {@code SignUpController} class handles the user interface and logic for the sign-up process.
+ * <p>
+ * It manages user input validation, communicates with the {@link UserController} to register users,
+ * and updates the application scene as required.
+ * </p>
+ */
 package org.example.uet_library.controllers;
 
 import java.io.IOException;
@@ -31,12 +38,28 @@ public class SignUpController implements Initializable {
     UserController userController = new UserController();
     private final String[] choices = {"Admin", "User"};
 
+    /**
+     * Initializes the controller class. Sets up default values and options for the choice box.
+     *
+     * @param url            the location used to resolve relative paths for the root object, or null if not known
+     * @param resourceBundle the resources used to localize the root object, or null if not provided
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         choiceBox.getItems().addAll(choices);
         choiceBox.setValue(choices[1]);
     }
 
+    /**
+     * Handles the sign-up button click event.
+     * <p>
+     * Validates user inputs, checks for potential errors, and interacts with the {@link UserController}
+     * to register a new user or admin. Displays alerts based on the operation's outcome.
+     * </p>
+     *
+     * @param event the event triggered by the sign-up button
+     * @throws Exception if an error occurs while handling the event
+     */
     public void handleSignUpButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
@@ -104,10 +127,25 @@ public class SignUpController implements Initializable {
         }
     }
 
+    /**
+     * Handles the login button click event.
+     * <p>
+     * Navigates the user to the login scene.
+     * </p>
+     *
+     * @param event the mouse event triggered by clicking the login button
+     * @throws Exception if an error occurs while navigating to the login scene
+     */
     public void handleLogInButton(javafx.scene.input.MouseEvent event) throws Exception {
         ChangeSceneMachine.getInstance().changeScene("LogIn.fxml", event, -1, -1);
     }
 
+    /**
+     * Changes the current scene to the login scene.
+     *
+     * @param event the event that triggers the scene change
+     * @throws IOException if an error occurs while loading the login scene
+     */
     private void changeToLoginScene(ActionEvent event) throws IOException {
         ChangeSceneMachine.getInstance().changeScene("LogIn.fxml", event, -1, -1);
     }

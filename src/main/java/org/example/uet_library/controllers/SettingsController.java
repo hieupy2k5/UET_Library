@@ -14,6 +14,11 @@ import javafx.scene.control.TextInputDialog;
 import org.example.uet_library.database.Database;
 import org.example.uet_library.utilities.SessionManager;
 
+/**
+ * Controller class for managing user settings in the application.
+ * It provides functionalities to view, edit, and save user account details
+ * such as name, email, username, and password.
+ */
 public class SettingsController {
 
     @FXML
@@ -22,6 +27,9 @@ public class SettingsController {
     public int userID = SessionManager.getInstance().getUserId();;
     public boolean isAdmin = SessionManager.getInstance().isAdmin();
 
+    /**
+     * Initializes the settings view by loading user information and disabling all fields by default.
+     */
     public void initialize() {
         loadUserInfo();
         disableFields();
@@ -31,7 +39,7 @@ public class SettingsController {
     String currentPasswordHash = null;
 
     /**
-     * Load user info.
+     * Loads the user information from the database based on the current session user ID.
      */
     private void loadUserInfo() {
         Database connection = new Database();
@@ -121,6 +129,12 @@ public class SettingsController {
 
     private UserController userController = new UserController();
 
+    /**
+     * Verifies the entered password against the stored password hash in the database.
+     *
+     * @param enteredPassword the password entered by the user
+     * @return {@code true} if the password is correct, {@code false} otherwise
+     */
     private boolean checkPassword(String enteredPassword) {
         Database connection = new Database();
         String tableName = isAdmin ? "admins" : "users";

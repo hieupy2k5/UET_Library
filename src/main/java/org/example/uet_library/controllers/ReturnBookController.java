@@ -1,3 +1,9 @@
+/**
+ * Controller class for managing the return book functionality in the library system.
+ * Handles the display and interaction with a list of borrowed books,
+ * allowing users to return books and provide ratings.
+ * Extends the {@link TableViewController} for handling table-based views.
+ */
 package org.example.uet_library.controllers;
 
 import java.io.IOException;
@@ -60,6 +66,9 @@ public class ReturnBookController extends TableViewController<Borrow> {
 
     private Borrow borrowSelected;
 
+    /**
+     * Sets up the table columns with their respective property mappings.
+     */
     public void setUpColumns() {
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
@@ -119,6 +128,9 @@ public class ReturnBookController extends TableViewController<Borrow> {
             || borrow.getCategory().toLowerCase().contains(query);
     }
 
+    /**
+     * Configures additional buttons (return and rate) in the table's action column.
+     */
     public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button returnButton = new Button();
@@ -179,6 +191,11 @@ public class ReturnBookController extends TableViewController<Borrow> {
         });
     }
 
+    /**
+     * Shows a confirmation dialog to return a book.
+     *
+     * @param borrowBook the book to return
+     */
     private void showQuantityDialog(Borrow borrowBook) {
         Platform.runLater(() -> {
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -200,6 +217,11 @@ public class ReturnBookController extends TableViewController<Borrow> {
         });
     }
 
+    /**
+     * Handles the return process of a borrowed book.
+     *
+     * @param borrowedBook the book to return
+     */
     private void returnBook(Borrow borrowedBook) {
         Task<Boolean> returnTask = new Task<>() {
             @Override
@@ -229,6 +251,12 @@ public class ReturnBookController extends TableViewController<Borrow> {
         new Thread(returnTask).start();
     }
 
+    /**
+     * Shows the rating dialog for a borrowed book.
+     *
+     * @param borrowedBook the book to rate
+     * @param type         the type of feedback
+     */
     private void showRatingDialog(Borrow borrowedBook, String type) {
         try {
             FXMLLoader loader = new FXMLLoader(
