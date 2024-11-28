@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 import org.example.uet_library.controllers.LogInController;
 import org.example.uet_library.database.Database;
 
+/**
+ * Welcome to our project!
+ */
 public class App extends Application {
     Connection connection = new Database().getConnection();
 
