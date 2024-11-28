@@ -1,3 +1,9 @@
+/**
+ * Controller class for handling the rating dialog in the library system.
+ * This class provides functionality for users to rate and provide feedback on borrowed books.
+ * It allows users to rate a book with a star-based system and add comments.
+ * Additionally, users can update their ratings and comments for books they have already rated.
+ */
 package org.example.uet_library.controllers;
 
 import javafx.concurrent.Task;
@@ -68,12 +74,21 @@ public class RatingDialogController {
 
     private ReturnBookController returnBookController;
 
+    /**
+     * Sets the reference to the controller managing the return book process.
+     *
+     * @param returnBookController the {@link ReturnBookController} instance.
+     */
     public void setReturnDocumentController(ReturnBookController returnBookController) {
         this.returnBookController = returnBookController;
     }
     private Borrow borrow;
 
     private String type;
+
+    /**
+     * Initializes the controller, setting up the event listeners for star rating buttons and resetting the star icons.
+     */
     @FXML
     private void initialize() {
         resetStar();
@@ -85,6 +100,11 @@ public class RatingDialogController {
         butStar5.setOnMouseClicked(event -> setRating(5));
     }
 
+    /**
+     * Sets the rating based on the number of stars clicked and updates the star icons.
+     *
+     * @param newRating the new rating value.
+     */
     private void setRating(int newRating) {
         if (this.rating == newRating) {
             return;
@@ -107,7 +127,11 @@ public class RatingDialogController {
         star5.setImage(starEmpty);
     }
 
-
+    /**
+     * Sets the book data for which the rating dialog is displayed.
+     *
+     * @param borrowedBook the {@link Borrow} object representing the borrowed book.
+     */
     public void setData(Borrow borrowedBook) {
         this.borrow = borrowedBook;
         Image image = null;
@@ -122,12 +146,22 @@ public class RatingDialogController {
         ImageBook.setFitWidth(image.getWidth());
     }
 
+    /**
+     * Closes the dialog when the cancel button is clicked.
+     *
+     * @param event the {@link ActionEvent} triggered by the cancel button.
+     */
     @FXML
     private void cancelOnAction(ActionEvent event) {
         Stage currentStage = (Stage) cancelButton.getScene().getWindow();
         currentStage.close();
     }
 
+    /**
+     * Saves the user's comment and rating to the database.
+     *
+     * @return a {@link Task} representing the save operation.
+     */
     public Task<Void> saveComment() {
         return new Task<>() {
             @Override
@@ -150,6 +184,11 @@ public class RatingDialogController {
         };
     }
 
+    /**
+     * Handles the action for the save button, saving or updating the user's rating and comment.
+     *
+     * @param event the {@link ActionEvent} triggered by the save button.
+     */
     @FXML
     public void SaveButtonOnAction(ActionEvent event) {
         if (commentField == null || commentField.getText().isEmpty()) {

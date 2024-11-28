@@ -1,3 +1,8 @@
+/**
+ * Controller class for managing user-related operations in the application.
+ * This class provides functionalities to display, search, edit, and delete users
+ * using a TableView. It also interacts with the database for CRUD operations.
+ */
 package org.example.uet_library.controllers;
 
 import javafx.application.Platform;
@@ -31,6 +36,10 @@ public class UserManagerController {
     public TextField searchField;
     private ObservableList<User> userObservableList;
 
+    /**
+     * Initializes the controller, setting up TableView columns and fetching data from the database.
+     * This method is called automatically when the associated FXML file is loaded.
+     */
     public void initialize() {
         tableView.setPlaceholder(new Label("No user? So sad..."));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -41,6 +50,10 @@ public class UserManagerController {
         fetchFromDB();
     }
 
+    /**
+     * Fetches the list of users from the database asynchronously and updates the TableView.
+     * While fetching data, a progress indicator is displayed.
+     */
     public void fetchFromDB() {
         Task<ObservableList<User>> task = AdminService.getInstance().fetchUserFromDB();
         task.setOnRunning(event -> Platform.runLater(() -> waitProgress.setVisible(true)));
@@ -55,6 +68,10 @@ public class UserManagerController {
         new Thread(task).start();
     }
 
+    /**
+     * Sets up a search functionality for the user list.
+     * Filters the list based on the user's input in the search field.
+     */
     private void setupSearch() {
         if (userObservableList == null || userObservableList.isEmpty()) return;
         FilteredList<User> filteredData = new FilteredList<>(userObservableList, b -> true);
@@ -71,6 +88,9 @@ public class UserManagerController {
         tableView.setItems(sortedData);
     }
 
+    /**
+     * Sets up action buttons (edit and delete) in the `actionColumn` for each user in the table.
+     */
     private void setupActionButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button editButton = createButton("/Images/edit.png");
@@ -89,6 +109,12 @@ public class UserManagerController {
         });
     }
 
+    /**
+     * Creates a styled button with an icon.
+     *
+     * @param imagePath the path to the icon image resource.
+     * @return a configured Button instance.
+     */
     private Button createButton(String imagePath) {
         Button button = new Button();
         ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
@@ -99,6 +125,12 @@ public class UserManagerController {
         return button;
     }
 
+    /**
+     * Handles editing a user. Displays a dialog with editable fields for user details.
+     * Updates the user information in the database upon confirmation.
+     *
+     * @param user the user to be edited.
+     */
     private void handleEditUser(User user) {
         GridPane grid = new GridPane();
         grid.setVgap(10);
@@ -137,12 +169,25 @@ public class UserManagerController {
         });
     }
 
+    /**
+     * Creates a configured TextField with an initial value and a placeholder text.
+     *
+     * @param text   the initial text value.
+     * @param prompt the placeholder text.
+     * @return a configured TextField instance.
+     */
     private TextField createTextField(String text, String prompt) {
         TextField textField = new TextField(text);
         textField.setPromptText(prompt);
         return textField;
     }
 
+    /**
+     * Handles deleting a user. Displays a confirmation dialog and removes the user
+     * from the database and TableView upon confirmation.
+     *
+     * @param user the user to be deleted.
+     */
     private void handleDeleteUser(User user) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete User");

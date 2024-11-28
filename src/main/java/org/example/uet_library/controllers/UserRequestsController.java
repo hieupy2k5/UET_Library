@@ -1,3 +1,8 @@
+/**
+ * Controller for managing user requests in a library application.
+ * This class handles the interaction between the UI components and the backend services
+ * to manage book borrowing requests made by users.
+ */
 package org.example.uet_library.controllers;
 
 import java.util.Map;
@@ -32,6 +37,10 @@ public class UserRequestsController extends TableViewController<Request> {
 
     private final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
+    /**
+     * Configures the columns for the table view.
+     * Sets up cell value factories to bind data from the {@link Request} model.
+     */
     public void setUpColumns() {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -72,6 +81,13 @@ public class UserRequestsController extends TableViewController<Request> {
         userRequestsList = list;
     }
 
+    /**
+     * Defines the search criteria for filtering user requests.
+     *
+     * @param request the request to evaluate.
+     * @param query   the search query string.
+     * @return {@code true} if the request matches the query; {@code false} otherwise.
+     */
     @Override
     final boolean searchPredicate(Request request, String query) {
         return request.getUsername().toLowerCase().contains(query)
@@ -80,6 +96,10 @@ public class UserRequestsController extends TableViewController<Request> {
             || request.getStatus().toLowerCase().contains(query);
     }
 
+    /**
+     * Sets up additional buttons (accept/deny) in the action column.
+     * The buttons allow administrators to approve or reject user requests.
+     */
     public void setUpAdditionalButtons() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
             private final Button acceptButton = new Button();

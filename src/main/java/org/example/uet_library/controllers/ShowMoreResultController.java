@@ -1,3 +1,9 @@
+/**
+ * The {@code ShowMoreResultController} class manages the "Show More Results" page functionality in the library application.
+ * <p>
+ * It displays a paginated list of books, allows users to search for books, navigate between pages, and view detailed information about a selected book.
+ * </p>
+ */
 package org.example.uet_library.controllers;
 
 import javafx.collections.ObservableList;
@@ -45,6 +51,7 @@ public class ShowMoreResultController {
 
     private int currentPage;
 
+
     public void setMenuController (MenuController menuController) {
         this.menuController = menuController;
     }
@@ -64,6 +71,12 @@ public class ShowMoreResultController {
         pagination.setPageFactory(this::createPage);
     }
 
+    /**
+     * Creates a page for the pagination control based on the given page index.
+     *
+     * @param pageIndex the index of the page to create
+     * @return a {@link ScrollPane} containing the book items for the page
+     */
     private ScrollPane createPage(int pageIndex ) {
         this.currentPage = pageIndex;
         VBox pageBox = new VBox(10);
@@ -83,6 +96,12 @@ public class ShowMoreResultController {
         return scrollPane;
     }
 
+    /**
+     * Creates an {@link HBox} representing a single book item.
+     *
+     * @param book the book to represent
+     * @return an HBox containing the book's information
+     */
     private HBox createBookBox(Book book) {
         HBox bookBox = new HBox(10);
         bookBox.setStyle("-fx-padding: 10; -fx-background-color: #E7F5DC; -fx-border-color: #728156; -fx-border-radius: 5px;");
@@ -131,11 +150,23 @@ public class ShowMoreResultController {
         return bookBox;
     }
 
+    /**
+     * Handles the "Go Back" button action, navigating back to the previous screen.
+     *
+     * @param event the event triggered by the button
+     * @throws IOException if an error occurs during navigation
+     */
     @FXML
     private void goBack(ActionEvent event) throws IOException {
         this.userHomeController.goBackShowMore();
     }
 
+    /**
+     * Displays the detailed information of the selected book.
+     *
+     * @param book the book to display details for
+     * @throws IOException if an error occurs while loading the book detail screen
+     */
     public void showBookDetail(Book book) throws IOException {
         screenBookStack.push(this.menuController.getContent());
         if (backToSearchStack.size() < 1) {
@@ -149,18 +180,33 @@ public class ShowMoreResultController {
         this.menuController.setContent(root);
     }
 
+    /**
+     * Navigates back to the search results page if available.
+     *
+     * @throws IOException if an error occurs during navigation
+     */
     public void goToSearchPage() throws IOException {
         if (!this.backToSearchStack.isEmpty()) {
             this.menuController.setContent(this.backToSearchStack .pop());
         }
     }
 
+    /**
+     * Navigates back to the previous book detail page if available.
+     *
+     * @throws IOException if an error occurs during navigation
+     */
     public void goToPreviousBook() throws IOException {
         if (this.screenBookStack.size() > 1) {
             this.menuController.setContent(this.screenBookStack.pop());
         }
     }
 
+    /**
+     * Handles the search action, fetching books that match the user's query.
+     *
+     * @param event the event triggered by the search action
+     */
     @FXML
     public void searchBookOnAction(ActionEvent event) {
         if (!searchTextField.getText().isEmpty()) {
@@ -168,6 +214,11 @@ public class ShowMoreResultController {
         }
     }
 
+    /**
+     * Fetches books from the database based on the given query.
+     *
+     * @param query the search query
+     */
     private void fetchBookForSearch(String query) {
         Task<ObservableList<Book>> task = BookService.getInstance()
                 .fetchBookByTitleOrAuthor(query);

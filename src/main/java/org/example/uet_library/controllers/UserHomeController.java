@@ -1,3 +1,8 @@
+/**
+ * Controller class for managing the user interface of the library home page.
+ * It provides functionality such as loading books, searching, pagination,
+ * navigating between book details, and managing the scene stack for the user experience.
+ */
 package org.example.uet_library.controllers;
 
 import java.io.IOException;
@@ -83,6 +88,12 @@ public class UserHomeController extends Parent implements Initializable {
         this.menuController = menuController;
     }
 
+    /**
+     * Initializes the controller and sets up initial data loading and UI configurations.
+     *
+     * @param url            the location of the FXML file.
+     * @param resourceBundle resources for localization.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Platform.runLater(() -> {
@@ -93,6 +104,9 @@ public class UserHomeController extends Parent implements Initializable {
             "-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
     }
 
+    /**
+     * Loads all books from the database and initializes the pagination.
+     */
     public void loadAllBooks() {
         Task<ObservableList<Book>> task = BookService.getInstance().fetchBookFromDB();
 
@@ -108,6 +122,9 @@ public class UserHomeController extends Parent implements Initializable {
         executorService.execute(task);
     }
 
+    /**
+     * Sets up the search popup for live search results.
+     */
     private void setUpSearchPopup() {
         searchPopup = new Popup();
         searchPopup.setAutoHide(true);
@@ -129,6 +146,11 @@ public class UserHomeController extends Parent implements Initializable {
         });
     }
 
+    /**
+     * Displays search results in a popup.
+     *
+     * @param books the list of books to display.
+     */
     private void displaySearchResults(ObservableList<Book> books) {
         ListView<String> listView = new ListView<>();
         listView.setPrefWidth(400);
@@ -213,6 +235,11 @@ public class UserHomeController extends Parent implements Initializable {
 
     }
 
+    /**
+     * Opens the detailed view of all search results.
+     *
+     * @throws IOException if the FXML file cannot be loaded.
+     */
     private void openAllSearchResults() throws IOException {
         if (checkShowMore) {
             showMoreStack.push(this.menuController.getContent());
@@ -227,6 +254,9 @@ public class UserHomeController extends Parent implements Initializable {
         this.menuController.setContent(root);
     }
 
+    /**
+     * Sets up pagination for the book list.
+     */
     public void setUpPagination() {
         if (searchBooks == null) {
             pagina.setPageCount(1);
@@ -257,6 +287,9 @@ public class UserHomeController extends Parent implements Initializable {
         executorService.submit(countPage);
     }
 
+    /**
+     * Loads and displays the top 5 recently added books.
+     */
     private void loadTop5Books() {
         cardLayout.getChildren().clear();
         Task<ObservableList<Book>> task = BookService.getInstance().top5BookRecentlyAdded();
@@ -282,6 +315,12 @@ public class UserHomeController extends Parent implements Initializable {
         executorService.submit(task);
     }
 
+    /**
+     * Creates a page for pagination view.
+     *
+     * @param pageIndex the index of the page to create.
+     * @return a VBox containing the page content.
+     */
     private VBox createPage(int pageIndex) {
         if (pageCache.containsKey(pageIndex)) {
             return pageCache.get(pageIndex);
@@ -366,7 +405,12 @@ public class UserHomeController extends Parent implements Initializable {
         return pageBox;
     }
 
-
+    /**
+     * Opens the detailed view of a specific book.
+     *
+     * @param book the book to display.
+     * @throws IOException if the FXML file cannot be loaded.
+     */
     public void openBookDetails(Book book) throws IOException, InterruptedException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXMLs/User_BookView.fxml"));
         Parent root = fxmlLoader.load();
@@ -383,6 +427,11 @@ public class UserHomeController extends Parent implements Initializable {
         this.menuController.setContent(root);
     }
 
+    /**
+     * Navigates back to the previous scene.
+     *
+     * @throws IOException if an error occurs during navigation.
+     */
     public void goBack() throws IOException {
         if (!sceneStack.isEmpty()) {
             this.menuController.setContent(sceneStack.pop());
@@ -393,6 +442,11 @@ public class UserHomeController extends Parent implements Initializable {
         }
     }
 
+    /**
+     * Navigates back to the previous book detail view.
+     *
+     * @throws IOException if an error occurs during navigation.
+     */
     public void goPreviousBook() throws IOException {
         if (bookStack.size() >= 2) {
             this.menuController.setContent(bookStack.pop());
@@ -400,6 +454,11 @@ public class UserHomeController extends Parent implements Initializable {
         }
     }
 
+    /**
+     * Navigates back to the "show more results" view.
+     *
+     * @throws IOException if an error occurs during navigation.
+     */
     public void goBackShowMore() throws IOException {
         if (!showMoreStack.isEmpty()) {
             this.menuController.setContent(this.showMoreStack.pop());
