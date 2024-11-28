@@ -80,6 +80,9 @@ public class FavorBookController extends TableViewController<Favor> {
         return sortedFavoriteBooks;
     }
 
+    /**
+     * Save favor button.
+     */
     public void setUpAdditionalButtons() {
         optionColumn.setCellFactory(column -> new TableCell<>() {
             private final HBox hbox = new HBox();
@@ -135,6 +138,10 @@ public class FavorBookController extends TableViewController<Favor> {
         });
     }
 
+    /**
+     * Remove book from favors.
+     * @param favor contains book_id and user_id.
+     */
     private void removeFromFavorite(Favor favor) {
         Task<Boolean> removeTask = new Task<>() {
             @Override
