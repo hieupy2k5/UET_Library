@@ -21,6 +21,10 @@ import javafx.util.Pair;
 import org.example.uet_library.utilities.AlertHelper;
 import org.example.uet_library.utilities.SessionManager;
 
+/**
+ * Controller class for the login screen in the library management system.
+ * Handles user interactions and transitions between scenes based on login results.
+ */
 public class LogInController implements Initializable {
     public TextField usernameFld;
     public Text registerBtn;
@@ -34,14 +38,24 @@ public class LogInController implements Initializable {
         this.stage = stage;
     }
 
+    /**
+     * Handles the login button click event. Validates user credentials,
+     * sets session information, and transitions to the menu screen if successful.
+     *
+     * @param event the ActionEvent triggered by the login button
+     * @throws Exception if there is an error loading the next scene
+     */
     public void handleLogInButton(ActionEvent event) throws Exception {
         String username = usernameFld.getText();
         String password = passwordFld.getText();
+        // Save username for later use in ratings.
         RatingDialogController.userName = username.toLowerCase();
+        // Check credentials with the user controller
         Pair<Integer, Boolean> logInResult = userController.checkLogInCredentials(username, password);
         Integer userID = logInResult.getKey();
         Boolean isAdmin = logInResult.getValue();
         if (userID != null && userID != -1) {
+            // Set session details for the logged-in user
             SessionManager.getInstance().setUserId(userID);
             SessionManager.getInstance().setAdmin(isAdmin);
 
@@ -62,6 +76,7 @@ public class LogInController implements Initializable {
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(menuScene);
 
+            // Adjust the stage size and center it on the screen
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
             window.setWidth(1180);
@@ -80,10 +95,24 @@ public class LogInController implements Initializable {
         }
     }
 
+    /**
+     * Handles the sign-up button click event. Transitions to the sign-up screen.
+     *
+     * @param event the MouseEvent triggered by clicking the sign-up button
+     * @throws Exception if there is an error loading the sign-up scene
+     */
     public void handleSignUpButton(MouseEvent event) throws Exception {
         ChangeSceneMachine.getInstance().changeScene("SignUp.fxml", event, -1, -1);
     }
 
+
+    /**
+     * Initializes the controller after its root element has been completely loaded.
+     * This method is called automatically by the JavaFX runtime.
+     *
+     * @param url the location used to resolve relative paths for the root object
+     * @param resourceBundle the resources used to localize the root object
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }

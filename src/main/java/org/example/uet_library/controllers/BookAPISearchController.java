@@ -22,12 +22,19 @@ import org.example.uet_library.models.Book;
 import org.example.uet_library.apis.BookAPI;
 import java.io.IOException;
 
+/**
+ * Controller class for managing book searches via an API in the library system.
+ * This class handles the search, pagination, and selection of books fetched from an external API.
+ */
 public class BookAPISearchController {
+
+    /**
+     * Reference to the main menu controller, used to navigate back to the main content area.
+     */
     public static MenuController menuController;
+
     private int currentPage = 0;
-
     private HBox selectedHBox = null;
-
     private static Parent pageCache;
 
     @FXML
@@ -36,25 +43,36 @@ public class BookAPISearchController {
     @FXML
     private ChoiceBox<String> filterSearch;
 
-    public void setMenuController(MenuController menuController) {
-        this.menuController = menuController;
-    }
-
     @FXML
     private Pagination pagination;
 
     private static final int BOOKS_PER_PAGE = 10;
-
     private ObservableList<Book> allBooks = FXCollections.observableArrayList();
-
     private Book selectedBook;
 
+    /**
+     * Initializes the controller by setting up the filter options for the search functionality.
+     */
     @FXML
     public void initialize() {
         filterSearch.setItems(FXCollections.observableArrayList("Title", "Author", "ISBN"));
         filterSearch.setValue("Title");
     }
 
+    /**
+     * Sets the menu controller for navigation purposes.
+     *
+     * @param menuController the {@link MenuController} instance to be used for navigation.
+     */
+    public void setMenuController(MenuController menuController) {
+        this.menuController = menuController;
+    }
+
+    /**
+     * Event handler for initiating a book search when the search button is clicked.
+     *
+     * @param event the {@link ActionEvent} triggered by the search button.
+     */
     @FXML
     public void searchBookOnAction(ActionEvent event) {
         String query = queryBook.getText();
@@ -73,9 +91,10 @@ public class BookAPISearchController {
     }
 
     /**
-     * Fetch book from API to my Lib
-     * @param query
-     * @param filter
+     * Fetches books from the API based on the search query and filter.
+     *
+     * @param query  the search term to be used for filtering books.
+     * @param filter the type of filter to apply (e.g., Title, Author, ISBN).
      */
     private void searchBooks(String query, String filter) {
         Task<ObservableList<Book>> task = BookAPI.searchBooks(query, filter);
@@ -97,9 +116,10 @@ public class BookAPISearchController {
     }
 
     /**
+     * Creates a paginated view for displaying books.
      *
-     * @param pageIndex
-     * @return the page we control with pagination
+     * @param pageIndex the current page index to be displayed.
+     * @return a {@link ScrollPane} containing the paginated books for the given page.
      */
     private ScrollPane createPage(int pageIndex) {
         this.currentPage = pageIndex;
@@ -122,9 +142,10 @@ public class BookAPISearchController {
     }
 
     /**
+     * Creates a visual representation of a book as an HBox.
      *
-     * @param book
-     * @return each hbox will contain one book
+     * @param book the {@link Book} instance to be displayed.
+     * @return an {@link HBox} containing book details and an image.
      */
     private HBox createBookBox(Book book) {
         HBox bookBox = new HBox(10);
@@ -145,20 +166,18 @@ public class BookAPISearchController {
         imageTask.setOnSucceeded(event -> imageView.setImage(imageTask.getValue()));
         new Thread(imageTask).start();
 
-        
+
         VBox detailsBox = new VBox(5);
         detailsBox.getChildren().addAll(
-                new Text("Title: " + book.getTitle()),
-                new Text("Author: " + book.getAuthor()),
-                new Text("Year: " + book.getYear()),
-                new Text("ISBN: " + book.getIsbn())
+            new Text("Title: " + book.getTitle()),
+            new Text("Author: " + book.getAuthor()),
+            new Text("Year: " + book.getYear()),
+            new Text("ISBN: " + book.getIsbn())
         );
 
         bookBox.getChildren().addAll(imageView, detailsBox);
 
-
         bookBox.setOnMouseClicked(event -> {
-
             if (selectedHBox != null) {
                 selectedHBox.setStyle("-fx-padding: 10; -fx-background-color: #E7F5DC; -fx-border-color: #728156; -fx-border-radius: 5px;");
             }
@@ -172,6 +191,11 @@ public class BookAPISearchController {
         return bookBox;
     }
 
+    /**
+     * Event handler for adding the selected book to the library.
+     *
+     * @param event the {@link ActionEvent} triggered by the "Add Book" button.
+     */
     @FXML
     public void addBookOnAction(ActionEvent event) {
         if (selectedBook == null) {
@@ -193,8 +217,13 @@ public class BookAPISearchController {
         }
     }
 
+    /**
+     * Navigates back to the previous page stored in the cache.
+     *
+     * @throws IOException if an error occurs during navigation.
+     */
     public static void setBack() throws IOException {
-        if(!(pageCache == null)) {
+        if (!(pageCache == null)) {
             menuController.setContent(pageCache);
         }
     }

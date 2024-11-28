@@ -340,7 +340,8 @@ public class UserHomeController extends Parent implements Initializable {
         ScrollPane scrollPane = new ScrollPane(gridPane);
         scrollPane.setPrefWidth(960);
         scrollPane.setPrefHeight(460);
-        scrollPane.setStyle("-fx-background-color: transparent;");
+        scrollPane.setStyle(
+                "-fx-background-color:  linear-gradient(from 26.52% 5.85% to 73.475% 94.15%, #F1EEF9,  #F6D5D1);");
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         pageBox.getChildren().add(scrollPane);
 
@@ -438,7 +439,6 @@ public class UserHomeController extends Parent implements Initializable {
             this.bookStack.clear();
             this.showMoreStack.clear();
             isPush = true;
-            countToBack = 0;
         }
     }
 
@@ -450,7 +450,6 @@ public class UserHomeController extends Parent implements Initializable {
     public void goPreviousBook() throws IOException {
         if (bookStack.size() >= 2) {
             this.menuController.setContent(bookStack.pop());
-            countToBack--;
         }
     }
 

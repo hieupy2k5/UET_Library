@@ -77,14 +77,14 @@ public class SignUpController implements Initializable {
             AlertHelper.showAlert(AlertType.ERROR, "Empty password",
                 "You cannot leave your password empty!");
             return;
-//        } else if (password.length() < 8) {
-//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too short",
-//                "Your password must be at least 8 characters");
-//            return;
-//        } else if (password.length() >= 30) {
-//            AlertHelper.showAlert(AlertType.ERROR, "Your password is too long",
-//                "Are you going to remember all this? Your password should be less than 30 characters");
-//            return;
+        } else if (password.length() < 8) {
+            AlertHelper.showAlert(AlertType.ERROR, "Your password is too short",
+                "Your password must be at least 8 characters");
+            return;
+        } else if (password.length() >= 30) {
+            AlertHelper.showAlert(AlertType.ERROR, "Your password is too long",
+                "Are you going to remember all this? Your password should be less than 30 characters");
+            return;
         } else if (confirmPassword.isEmpty()) {
             AlertHelper.showAlert(AlertType.ERROR, "Empty password confirmation",
                 "You haven't confirm your password yet!");

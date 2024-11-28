@@ -14,6 +14,13 @@ public class Config {
         return instance;
     }
 
+    /**
+     * We try to get the according field from .env file. If we have overwritten a field, it will be
+     * stored in our Map and we will retrieve from that instead.
+     *
+     * @param key is the field.
+     * @return the value of the key in either .env file or in Map.
+     */
     public String get(String key) {
         return overrides.containsKey(key) ? overrides.get(key) : dotenv.get(key);
     }

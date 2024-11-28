@@ -63,6 +63,13 @@ public class BookManagerController {
     @FXML
     private ImageView imageOfBook;
 
+
+    /**
+     * Initializes the controller and sets up event listeners and UI configurations.
+     * - Configures the ListView to display book titles.
+     * - Adds a listener to the ISBN search field for dynamic book fetching.
+     * - Configures event handling for selecting a book from the ListView.
+     */
     public void initialize() {
         this.resetImage();
         listViewTable.setCellFactory(new Callback<ListView<Book>, ListCell<Book>>() {
@@ -129,6 +136,12 @@ public class BookManagerController {
         removeBut.setDisable(true);
     }
 
+
+    /**
+     * Populates the text fields with the details of the selected book.
+     *
+     * @param selectedBook the book selected from the ListView.
+     */
     private void setTextField(Book selectedBook) {
         if (bookSelected != null) {
             AuthorEdit.setText(bookSelected.getAuthor());
@@ -141,6 +154,9 @@ public class BookManagerController {
         }
     }
 
+    /**
+     * Enables editing mode for the book details by making the text fields editable.
+     */
     @FXML
     private void handleEdit() {
         AuthorEdit.setEditable(true);
@@ -156,6 +172,9 @@ public class BookManagerController {
 
     }
 
+    /**
+     * Disables editing mode and restores the text fields to a non-editable state.
+     */
     private void handleCancel() {
         AuthorEdit.setEditable(false);
         ISBNEdit.setEditable(false);
@@ -169,6 +188,9 @@ public class BookManagerController {
         removeBut.setDisable(true);
     }
 
+    /**
+     * Disables editing mode and clears the text fields when no book is selected.
+     */
     private void handleNull() {
         AuthorEdit.setEditable(false);
         ISBNEdit.setEditable(false);
@@ -182,6 +204,12 @@ public class BookManagerController {
         removeBut.setDisable(true);
     }
 
+
+    /**
+     * Handles the removal of the selected book after confirmation from the user.
+     *
+     * @param event the ActionEvent triggered by clicking the "Remove" button.
+     */
     @FXML
     private void removeButton(ActionEvent event) {
         String isbn = ISBNEdit.getText();
@@ -207,6 +235,12 @@ public class BookManagerController {
 
     }
 
+    /**
+     * Removes a book from the database by its ISBN.
+     * - Checks if the book is currently borrowed before removing it.
+     *
+     * @param isbn the ISBN of the book to be removed.
+     */
     private void removeBook(String isbn) {
         BookCheckResult bookCheckResult = BookService.getInstance().isBookBorrowedByAnyone(isbn);
         System.out.println("checking availability...");
@@ -232,6 +266,9 @@ public class BookManagerController {
         new Thread(task).start();
     }
 
+    /**
+     * Clears all text fields in the form.
+     */
     private void setFieldsToNull() {
         AuthorEdit.setText(null);
         ISBNEdit.setText(null);
@@ -243,6 +280,12 @@ public class BookManagerController {
         categoryBook.setText(null);
     }
 
+
+    /**
+     * Saves the changes made to a book's details and updates the database.
+     *
+     * @param eventT the ActionEvent triggered by clicking the "Save" button.
+     */
     public void SaveBookOnAction(ActionEvent eventT) {
         bookSelected = new Book(titleEdit.getText(), AuthorEdit.getText(), ISBNEdit.getText(),
             bookSelected.getImageUrl(), Integer.parseInt(yearOfPublication.getText()),

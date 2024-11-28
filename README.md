@@ -59,7 +59,18 @@ Sau khi bấm vào nút đăng kí, màn hình sau sẽ hiện ra để giúp ch
 
 Thanh tính năng sẽ bao gồm những tính năng của User và Admin tùy vào nick của người dùng là gì. Mỗi khi bấm vào một tính năng nào thì màn hình sẽ thay đổi để phù hợp với tính năng đó.
 
-![SideBar](user-attachments/SideBar.png)
+[//]: # (![SideBar]&#40;user-attachments/SideBar.png&#41;)
+[//]: # (<img src = "user-attachments/AdminSideBar.png" width ="200" /> <img src = "user-attachments/UserSideBar.png" width ="200" />)
+<div class="container">
+    <div class="image-container">
+        <img src="user-attachments/AdminSideBar.png" alt="Admin Sidebar" width="200" />
+        <p>Admin Sidebar</p>
+    </div>
+    <div class="image-container">
+        <img src="user-attachments/UserSideBar.png" alt="User Sidebar" width="200" />
+        <p>User Sidebar</p>
+    </div>
+</div>
 
 ---
 

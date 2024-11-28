@@ -18,6 +18,11 @@ import org.example.uet_library.services.AdminService;
 import org.example.uet_library.services.BookService;
 import org.example.uet_library.models.User;
 
+
+/**
+ * Controller for the Admin Home screen in the library management system.
+ * Displays an overview of library statistics, top borrowers, and most borrowed books.
+ */
 public class AdminHomeController {
     private ObservableList<Book> bookTop6 = FXCollections.observableArrayList();
     private ObservableList<User> top5Users = FXCollections.observableArrayList();
@@ -87,7 +92,10 @@ public class AdminHomeController {
         loadTotalBook();
     }
 
-    // Fetch Total Book from database
+    /**
+     * Loads the total number of books in the library from the database.
+     * Also triggers loading the issued books and user count.
+     */
     private void loadTotalBook() {
         Task<Integer> task = BookService.getInstance().fetchTotalBook();
 
@@ -102,7 +110,10 @@ public class AdminHomeController {
         new Thread(task).start();
     }
 
-    // Fetch Total of user from database
+    /**
+     * Loads the total number of registered users from the database
+     * and updates the user count field.
+     */
     private void loadNumberOfUser() {
         Task<Integer> task = AdminService.getInstance().loadNumberOfUser();
         task.setOnSucceeded(e -> Platform.runLater(() -> {
@@ -115,6 +126,10 @@ public class AdminHomeController {
         new Thread(task).start();
     }
 
+    /**
+     * Loads the total number of borrowed books from the database.
+     * Also triggers loading the user count and pie chart.
+     */
     private void loadIssuedBook() {
         Task<Integer> task = AdminService.getInstance().fetchNumberOfBookBorrowed();
 
@@ -130,6 +145,10 @@ public class AdminHomeController {
         new Thread(task).start();
     }
 
+    /**
+     * Loads the data for the pie chart displaying the proportion of borrowed books
+     * versus books not yet borrowed.
+     */
     private void loadChart() {
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
@@ -144,6 +163,9 @@ public class AdminHomeController {
     }
 
 
+    /**
+     * Loads the top 6 most borrowed books from the database and updates the UI.
+     */
     public void loadTopBorrowedBook() {
         Task<ObservableList<Book>> task = AdminService.getInstance().top6BookMostBorrowed();
 
@@ -196,6 +218,9 @@ public class AdminHomeController {
         new Thread(task).start();
     }
 
+    /**
+     * Loads the top 5 borrowers and displays them in a table view.
+     */
     public void loadTopBorrower() {
         tableOfTopBorrower.setSpacing(15);
         tableOfTopBorrower.setStyle("-fx-border-color: #2A2A2A");
@@ -226,6 +251,14 @@ public class AdminHomeController {
         new Thread(task).start();
     }
 
+    /**
+     * Creates a row for the top borrowers table with specified columns.
+     *
+     * @param col1 the first column value
+     * @param col2 the second column value
+     * @param col3 the third column value
+     * @return the created HBox row
+     */
     public HBox createRow(String col1, String col2, String col3) {
         HBox row = new HBox();
         row.setSpacing(10);
@@ -246,6 +279,12 @@ public class AdminHomeController {
         return row;
     }
 
+    /**
+     * Asynchronously loads an image from a URL and sets it on the provided ImageView.
+     *
+     * @param imageView the ImageView to set the image on
+     * @param imageUrl the URL of the image
+     */
     private void loadImageAsync(ImageView imageView, String imageUrl) {
         Task<Image> task = new Task<>() {
             @Override

@@ -29,6 +29,10 @@ public class SharedData {
         return selectedBooksMap;
     }
 
+    /**
+     * Add selected book to cart.
+     * @param book is the selected book.
+     */
     public void addToCart(Book book) {
         BookCheckResult bookCheckResult = BookService.getInstance().isBookBorrowedOrRequested(book.getIsbn());
         if (bookCheckResult == BookCheckResult.ALREADY_REQUESTED) {

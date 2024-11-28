@@ -35,7 +35,27 @@ import org.example.uet_library.utilities.SessionManager;
 import org.example.uet_library.utilities.SharedData;
 
 /**
- * This is a feature for users.
+ * The {@code BorrowBookController} class is responsible for managing the borrowing functionality in the library
+ * management system. This controller handles operations like displaying books, allowing users to add books to a cart,
+ * marking books as favorites, and sending borrowing requests to the admin. It provides a user-friendly interface for
+ * interaction and ensures communication with the database through service classes.
+ *
+ * <p>Key Features:</p>
+ * <ul>
+ *     <li>Search for books by title, author, or ISBN.</li>
+ *     <li>Add books to a borrowing cart.</li>
+ *     <li>Mark/unmark books as favorites.</li>
+ *     <li>Submit borrowing requests for selected books.</li>
+ *     <li>Display and manage a user's borrowing cart.</li>
+ * </ul>
+ *
+ * <p>This controller extends {@link TableViewController}, inheriting its base methods for managing TableView
+ * components and integrating database fetching tasks.</p>
+ *
+ * @see TableViewController
+ * @see BookService
+ * @see UserService
+ * @see SharedData
  */
 public class BorrowBookController extends TableViewController<Book> {
 
@@ -131,12 +151,22 @@ public class BorrowBookController extends TableViewController<Book> {
         books = list;
     }
 
+    /**
+     * Configures post-initialization tasks, such as setting the initial position of the sliding pane.
+     */
     @Override
     public void postInitialize() {
         slidingPane.setTranslateX(900);
         slidingPane.setTranslateY(60);
     }
 
+    /**
+     * Predicate for searching books in the TableView. Matches the query against the title, author, or ISBN of each book.
+     *
+     * @param book  The book to test against the query.
+     * @param query The search query entered by the user.
+     * @return {@code true} if the book matches the query, {@code false} otherwise.
+     */
     @Override
     final boolean searchPredicate(Book book, String query) {
         return book.getTitle().toLowerCase().contains(query)
@@ -391,6 +421,9 @@ public class BorrowBookController extends TableViewController<Book> {
 
     private boolean isPaneOpen = false;
 
+    /**
+     * Toggles the visibility of the sliding cart pane. Refreshes the cart's TableView when opened.
+     */
     public void cartButtonClicked() {
         TranslateTransition slide = new TranslateTransition(Duration.millis(300), slidingPane);
 
