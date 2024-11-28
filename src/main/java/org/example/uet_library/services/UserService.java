@@ -18,6 +18,11 @@ import org.example.uet_library.models.Favor;
 import org.example.uet_library.models.Request;
 import org.example.uet_library.utilities.SessionManager;
 
+/**
+ * UserService class provides various operations related to user services such as fetching,
+ * borrowing, requesting, returning books, and managing user favorites.
+ * This class implements the Singleton design pattern to ensure only one instance is used.
+ */
 public class UserService {
 
     private static UserService instance;
@@ -25,6 +30,10 @@ public class UserService {
     private UserService() {
     }
 
+    /**
+     * Returns the singleton instance of UserService.
+     * @return the instance of UserService
+     */
     public static UserService getInstance() {
         if (instance == null) {
             instance = new UserService();
@@ -37,7 +46,6 @@ public class UserService {
 
     /**
      * Fetch borrow records from database
-     *
      * @return a list of borrow records
      */
     public Task<ObservableList<Borrow>> fetchBorrowFromDB() {
@@ -95,7 +103,10 @@ public class UserService {
         };
     }
 
-
+    /**
+     * Fetches request records for the current user from the database.
+     * @return a Task containing an ObservableList of Request objects
+     */
     public Task<ObservableList<Request>> fetchMyRequestFromDB() {
         return new Task<>() {
             @Override
@@ -139,8 +150,13 @@ public class UserService {
         };
     }
 
-
-
+    /**
+     * Requests a book for the current user.
+     * @param userId           the ID of the user making the request
+     * @param bookId           the ISBN of the book being requested
+     * @param requestedQuantity the quantity of the book requested
+     * @return true if the request was successful, false otherwise
+     */
     public boolean requestBook(int userId, String bookId, int requestedQuantity) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -170,6 +186,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Returns a borrowed book to the library.
+     * @param borrowId the ID of the borrow record
+     * @param bookId   the ISBN of the book being returned
+     * @return true if the book was successfully returned, false otherwise
+     */
     public boolean returnBook(int borrowId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -196,6 +218,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Borrows a book based on a user's request.
+     * @param requestId the ID of the request record
+     * @param bookId    the ISBN of the book being borrowed
+     * @return true if the book was successfully borrowed, false otherwise
+     */
     public boolean borrowBook(int requestId, String bookId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -221,7 +249,11 @@ public class UserService {
         }
     }
 
-
+    /**
+     * Updates a request's status to "pending" for the current user.
+     * @param requestId the ID of the request
+     * @return true if the update was successful, false otherwise
+     */
     public boolean requestAgain(int requestId) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
@@ -238,7 +270,11 @@ public class UserService {
         return false;
     }
 
-
+    /**
+     * Checks if a specific book has already been borrowed or requested by the current user.
+     * @param bookId the ISBN of the book to check
+     * @return a BookCheckResult indicating the status of the book
+     */
     public BookCheckResult isBookBorrowedOrRequested(String bookId) {
         Database db = new Database();
         try (Connection conn = db.getConnection()) {
@@ -271,6 +307,10 @@ public class UserService {
         }
     }
 
+    /**
+     * Fetches favorite books for the current user from the database.
+     * @return a Task containing an ObservableList of Favor objects
+     */
     public Task<ObservableList<Favor>> fetchFavorFromDB() {
         return new Task<>() {
             @Override
@@ -310,6 +350,11 @@ public class UserService {
         };
     }
 
+    /**
+     * Adds a book to the current user's favorites.
+     * @param book the Book object to be added to favorites
+     * @return true if the book was successfully added to favorites, false otherwise
+     */
     public boolean addBookToFavorites(Book book) {
         Database dbConnection = new Database();
         try (Connection conn = dbConnection.getConnection()) {
